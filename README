@@ -82,6 +82,10 @@ Testing
 
 		cd tests/browser
 		
+	and type
+	
+		make
+		
 	Before running the test app, you will need to create the following directory
 	tree where the test app is:
 	

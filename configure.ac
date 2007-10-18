@@ -42,21 +42,6 @@ if test -z $mozilla_nspr; then
    exit 1
 fi
 
-AC_MSG_CHECKING(Mozilla NSS pkg-config module name)
-mozilla_nss_pcs="nss mozilla-nss firefox-nss xulrunner-nss seamonkey-nss"
-for pc in $mozilla_nss_pcs; do
-	if $PKG_CONFIG --exists $pc; then
-		AC_MSG_RESULT($pc)
-		mozilla_nss=$pc
-		break;
-	fi
-done
-
-if test -z $mozilla_nss; then
-   echo You need to install the Mozilla NSS development package.
-   exit 1
-fi
-
 AC_MSG_CHECKING(Mozilla XPCOM pkg-config module name)
 mozilla_xpcom_pcs="xpcom mozilla-xpcom firefox-xpcom xulrunner-xpcom"
 for pc in $mozilla_xpcom_pcs; do
