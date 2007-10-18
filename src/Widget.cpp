@@ -33,7 +33,8 @@ Widget::BeginInvoke (Params * params)
 {
 	#ifdef NS_UNIX
 	g_idle_add (gtk_invoke, params);
-	return (nsresult)g_async_queue_pop (queueout);
+	g_async_queue_pop (queueout);
+	return NS_OK;
 	#else
 	return EndInvoke (params);
 	#endif
@@ -167,7 +168,7 @@ Widget::Init(Handle *hwnd, PRUint32 width, PRUint32 height)
 
 #ifdef NS_UNIX
 	gdk_threads_enter ();
-	GtkWidget *embed = native_embed_widget_foreign_new((GdkNativeWindow)(hwnd));
+	GtkWidget *embed = native_embed_widget_foreign_new((GdkNativeWindow)(GPOINTER_TO_INT(hwnd)));
 	gtk_widget_set_usize(embed, width, height);
 	gtk_widget_show(embed);
 	gdk_threads_leave ();
