@@ -1,0 +1,58 @@
+A simple library to embed Gecko (xulrunner) for the Mono Winforms
+WebControl.
+
+The Mono.Mozilla and xulbrowser are the current working directories.
+
+xulbrowser - c/c++ library bridge for xulrunner
+Mono.Mozilla - Managed wrapper
+tests/browser - test app
+
+Building
+========
+
+	Since Mozilla has changed quite a bit across various versions
+	and the way that it has been packaged and its APIs differ from
+	one version to another you will need to tune your setup
+	according to your OS.
+
+
+Platform: SUSE Linux Enterprise 10
+==================================
+
+	Before starting, make sure you install the 
+	following packages and any dependencies they
+	may have:
+
+		mozilla-nspr-devel
+		mozilla-xulrunner-devel	
+
+	Invoke configure like this:
+
+		./autogen.sh [--enable-optimize=yes]
+		
+	The --enable-optimize flag will enable -O2, if =no it will use -g3
+	instead.
+
+Testing
+=======
+
+	Once you have build and installed the software, go to:
+
+		cd tests/browser
+		
+	Before running the test app, you will need the standard xulrunner
+	folders here:
+	
+		chrome/
+		components/
+		defaults/
+		greprefs/
+		plugins/
+		res/
+		
+	You can copy these from build/xulrunner. Wherever you copy them from,
+	remove any components/*.dat files
+	
+	Then run
+	
+		mono test.exe	

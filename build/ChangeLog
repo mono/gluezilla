@@ -1,0 +1,35 @@
+2007-09-26 Andreia Gaita <avidigal@novell.com>
+
+	* add helper script to setup up the runtime on 
+	windows (when using a non-local xulrunner)
+
+2007-09-26 Andreia Gaita <avidigal@novell.com>
+
+	* added missing header
+	* batch equivalent of makefile for windows
+
+2007-08-11 Andreia Gaita <avidigal@novell.com>
+
+	* Fix include tree to match the xpcom-devel 
+	package organization
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+	
+	* Makefile: Minor changes to normalize calls
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+
+	* Remove unused idl's, for now, to keep it nice
+	and clean. It's possible that they're going to be
+	needed later on, I'll add them then.
+	* Add another extra include not available as an idl
+	file - to use the nsAppShell object.
+
+2007-06-22 Andreia Gaita <avidigal@novell.com>
+
+	* Add yet more idl's to the list. Add a few
+	headers that mozilla doesn't export as idl
+	but that are in the public areas (7 headers
+	needed just to get a stupid reference to the
+	native mozilla widget (?!?))
+	

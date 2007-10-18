@@ -1,0 +1,1 @@
+SUBDIRS = xulbrowser tests/browser

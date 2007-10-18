@@ -1,0 +1,30 @@
+These are all IDL files for unfrozen APIs in Mozilla, so they are 
+not included in the Gecko SDK. 
+These come from the Gecko 1.8.1.4 tree, so it should work with all 
+Firefox 2.0.x (possibly 1.5.x), Seamonkey 1.8.x, and XULRunner 1.8.x 
+products.
+
+* nsIAppShell.idl
+Required on linux to initialize the AppShell, that inits gtk_main / 
+xlib toolkits. Xulrunner/Windows works fine without this. :p
+
+* nsIBaseWindow.idl
+Absolutely required to call InitWindow and Create... the methods that
+actually create the browser window. Why this hasn't been included in 
+the sdk yet is beyond me, without this header there is no embedding, 
+period.
+
+* nsIDocShellTreeItem.idl
+Allows changing the type of wrapping that the webbrowser implementation
+uses - required to get into secure sites and possibly other stuff.
+
+* nsIDOMKeyEvent.idl 
+Oh, I don't know, it might be useful to actually cast the generic event
+caught in the event handler to a key event to get at the keys pressed...
+
+* nsIWebNavigation.idl
+From the docs:  The nsIWebNavigation interface defines an interface for 
+navigating the web.
+It provides methods and attributes to direct an object to navigate to a new
+location, stop or restart an in process load, or determine where the object
+has previously gone.

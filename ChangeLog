@@ -1,0 +1,46 @@
+
+Mon Aug 20 19:44:12 CEST 2007 Paolo Molaro <lupus@ximian.com>
+
+	* configure.ac: embed_base_s is not needed.
+
+2007-08-19 Andreia Gaita <avidigal@novell.com>
+
+	* configure.ac: Remove Mono.Mozilla
+
+2007-08-11 Andreia Gaita <avidigal@novell.com>
+
+	* src/, vender/, unused/: remove to clean up the tree,
+	not used anymore
+
+2007-07-04 Andreia Gaita <avidigal@novell.com>
+
+	* Update the readme to reflect the changes in the build
+	system.
+
+2007-06-22 Andreia Gaita <avidigal@novell.com>
+
+	* Extra flags on configure: --enable-local=yes, to use
+	a local xulrunner-sdk (inside build/*) instead of a 
+	system-installed one, --enable-optimize=no to take
+	out the optimization CXXFLAGS that autoconf* insists
+	on using.
+
+2007-06-18 Andreia Gaita <avidigal@novell.com>
+
+	* Fixes to the build to use the gecko/xulrunner devel
+	packages properly, correct a few include paths, add 
+	needed idl files.
+
+2007-06-18	Andreia Gaita	<avidigal@novell.com>
+
+	* Rewrite, refactor. The managed warapper lives 
+	now on Mono.Mozilla, the library is on xulbrowser. 
+	The library now uses the standalone xpcomglue. 
+	Build system fixed. 
+	Depends on gtk for linux (only), not working yet, 
+	works on windows (built with vs2003)
+
+2006-04-22  Zac Bowling  <zac@zacbowling.com>
+
+	* mozembed: initial version.
+

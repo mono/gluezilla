@@ -1,0 +1,36 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xulbrowser", "xulbrowser.vcproj", "{56A171F9-9FBE-4859-9EA0-DC7890E1998A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Mozilla", "..\Mono.Mozilla\Mono.Mozilla.csproj", "{3A1F2BAF-B92F-4F90-8250-A0F04ACCEADB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xuldotnet", "..\tests\browser\xuldotnet.csproj", "{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{56A171F9-9FBE-4859-9EA0-DC7890E1998A}.Debug.ActiveCfg = Debug|Win32
+		{56A171F9-9FBE-4859-9EA0-DC7890E1998A}.Release.ActiveCfg = Release|Win32
+		{56A171F9-9FBE-4859-9EA0-DC7890E1998A}.Release.Build.0 = Release|Win32
+		{3A1F2BAF-B92F-4F90-8250-A0F04ACCEADB}.Debug.ActiveCfg = Debug|.NET
+		{3A1F2BAF-B92F-4F90-8250-A0F04ACCEADB}.Debug.Build.0 = Debug|.NET
+		{3A1F2BAF-B92F-4F90-8250-A0F04ACCEADB}.Release.ActiveCfg = Release|.NET
+		{3A1F2BAF-B92F-4F90-8250-A0F04ACCEADB}.Release.Build.0 = Release|.NET
+		{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}.Debug.ActiveCfg = Debug|.NET
+		{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}.Debug.Build.0 = Debug|.NET
+		{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}.Release.ActiveCfg = Release|.NET
+		{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

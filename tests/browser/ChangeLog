@@ -1,0 +1,33 @@
+2007-08-19 Andreia Gaita <avidigal@novell.com>
+
+	* Use GAC'd Mono.Mozilla, remove local WebBrowser
+	files
+
+2007-08-09 Andreia Gaita <avidigal@novell.com>
+
+	* Add event helper classes from swf.
+	Navigation control, page reload, new window 
+	creation events
+
+2007-07-30 Andreia Gaita <avidigal@novell.com>
+
+	* Implement focus and activation management.
+	  Set initial resizing 
+	  Add more navigation support and events to 
+	  be able to build the WebBrowser sample from 
+	  msdn. The sample's first 2 tabs work fine,
+	  the third needs DocumentStream implemented.
+
+2007-07-21 Andreia Gaita <avidigal@novell.com>
+
+	* WebBrowser.cs, WebBrowserBase.cs: Implementation
+	of the webcontrol api - start building here, before
+	moving everything to winforms.
+	Implemented state control (unloaded, loaded, active),
+	implemented resize, loading and navigation.
+	WebBrowserBase.cs now holds a reference to 
+	Mono.Mozilla.WebBrowser.
+	Add a second webcontrol to test the mono.mozilla
+	list of bound controls and the gtk threading in 
+	the xulbrowser library.
+	Add vstudio 2005 project

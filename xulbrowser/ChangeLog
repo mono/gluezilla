@@ -1,0 +1,158 @@
+2007-10-07  Andreia Gaita  <avidigal@novell.com>
+
+	* Implement helper methods for the nsString class, to 
+	initialize/destroy nsString instances and get/set the actual
+	chars.
+	All dom interface methods that have string parameters
+	take a nsString class, which comes from these helper
+	methods.
+	Change the exit to really quit the gtk thread.
+	Add dom interface support.
+
+2007-09-23  Andreia Gaita  <avidigal@novell.com>
+
+	* Implement dialog popups through the custom 
+	PromptService - alert, alertcheck, confirm,
+	confirmcheck, confirmex, prompt, promptpassword,
+	promptusernameandpassword, select
+	Fix event naming.
+	BrowserWindow is now an interface, don't know if
+	that is to keep.
+
+2007-09-13  Andreia Gaita  <avidigal@novell.com>
+
+	* add enumeration to control focus
+	* remove blur method (not needed)
+	* fix bad parameter on gtk_shutdown
+
+2007-09-12  Andreia Gaita  <avidigal@novell.com>
+
+	* GtkWidget.cpp: Fix keyboard handling
+	* Widget.*, xulbrowser.*: 
+		- setup shutdown routines
+		- do a bit more logging, prepare for non-debug builds
+
+Mon Aug 20 19:45:18 CEST 2007 Paolo Molaro <lupus@ximian.com>
+
+	* Widget.cpp: set the parent earlier in CreateBrowserWindow ().
+
+2007-08-09 Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.*: Custom directory service
+	implementation to control where profiles, defaults
+	and components are loaded, and where the component
+	registry is saved. This is so that components can
+	be loaded from the xulrunner lib path but the 
+	registry is saved to the application dir.
+	
+	Saving and loading profiles from the application
+	dir also enables https, since it needs to save 
+	and load	the cert.db and similar files somewhere 
+	or else https is not initialized 
+	(https://bugzilla.mozilla.org/show_bug.cgi?id=309877)
+	
+	* BrowserWindow.*: Navigation control. Page reloading.
+	
+	* Widget.*: Custom GRE startup to use the custom
+	directory service provider (LocationProvider) instead
+	of the default provider.
+	Implement more events.
+	
+	* xulbrowser.*: Initialize library with application
+	dir (might come in handy later). Navigation control
+	
+
+2007-07-30 Andreia Gaita <avidigal@novell.com>
+
+	* Implement custom prompt and security dialog service
+	  components.
+	  Implement mouse, key and focus handlers and callbacks.
+	  Implement Focus and Activation management.
+	  Setup generic event callback (for monitoring)
+	  Separate ns* interface includes
+
+2007-07-21 Andreia Gaita <avidigal@novell.com>
+	
+	* Implement IEmbeddedSiteWindow for sizing and title
+	support. Implement resizing. Normalize width and height.
+	Fix casts.
+	Add vstudio 2005 project
+
+2007-07-05 Andreia Gaita <avidigal@novell.com>
+
+	* Clean up/reduce ifdef clutter/remove duplicate code 
+	on the gtk-related portions by invoking a "delegate" 
+	to call methods on the widget - the delegates handle 
+	the gtk stuff generically so things are nice and 
+	shiny and non-duplicated all over the place.
+	
+2007-07-04 Andreia Gaita <avidigal@novell.com>
+
+	* Fix the navigate method; use the embedded string api
+	through nsEmbedString; add an empty debug call just to
+	force load the library and to make it easier to debug
+
+2007-07-04 Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp, BrowserWindow.h, xulbrowser.h: 
+	Change the include paths of non-frozen interfaces to use
+	the xulrunner-devel package tree.
+
+2007-06-25 Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp: 
+	- Apart from a few changes in variable 
+	naming (out with the prefixes, eek), add initializations 
+	for session history and window creator. 
+	- When on gtk, get the native	mozilla widget that is the 
+	real drawing surface (not used for now, might come in handy
+	later).
+	- Save the current uri in the object so it can be	reloaded 
+	later (overload to the Navigate method).
+	- Add a lot of debug printlines (gtk only).
+	- Add implementation of nsIWindowCreator's CreateChromeWindow 
+	(this is gtk only as far as I can tell, windows does not 
+	need this, and xlib toolkit probably doesn't, either).
+
+	* BrowserWindow.h: normalize includes and variable naming, 
+	add extra Navigate overload and uri 
+	getters/setters.
+	
+	* gtkWidget.cpp/h: Inherit it from window so it can be
+	self-suficient. Add a new window signal (not used yet).
+	Add a new constructor so it can also use a normal gtk window
+	as parent instead of a XID.
+	
+	* Widget.cpp/h: Add initialization of AppShell. This is 
+	absolutely required for the browser widget to work on 
+	linux, and is not mentioned *anywhere*. <grrrr>
+	Add thread support on linux/gtk (this gtk widget code
+	should go somewhere else...)
+	
+	* xulbrowser.cpp/h: Add thread to run the gtk main loop, 
+	and reroute all requests on linux/gtk to that thread so 
+	that things actually *work*.
+	New params class to help pass parameters to the gtk gui
+	thread.
+	
+2007-06-22 Andreia Gaita <avidigal@novell.com>
+
+	* gtkWidget.cpp, gtkWidget.h: a custom gtk widget
+	to feed to mozilla (just on linux). It takes
+	a native window handle on construction, so
+	it bootstraps onto an existing X window instead
+	of requiring a top level gtk window.
+	
+	* Change browser init sequence on linux to call
+	the gtk_main loop, catch the expose event on the
+	widget and create the browser there, raising
+	an OnWidgetLoaded event when done. On Windows, do
+	everything normal but also raise the OnWidgetLoaded
+	event.
+	The OnWidgetLoaded signals that initialization is done.
+	Start catching events on the browser (at least on windows,
+	still no luck getting it to show up on linux)
+
+2007-06-18	Andreia Gaita	<avidigal@novell.com>
+
+	* initial checkin.
