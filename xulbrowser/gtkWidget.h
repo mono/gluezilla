@@ -95,13 +95,13 @@ extern guint native_embed_widget_signals[EMBED_LAST_SIGNAL];
 }
 #endif
 
-// --- xulbrowser gtk definitions -- //
+// --- gluezilla gtk definitions -- //
 
 void * gtk_startup (gpointer data);
 gboolean gtk_init_done (gpointer data);
 gboolean gtk_shutdown (gpointer data);
 
-// --- end of xulbrowser gtk definitions -- //
+// --- end of gluezilla gtk definitions -- //
 
 
 

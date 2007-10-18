@@ -16,7 +16,7 @@
 #define MAX_PATH PATH_MAX 
 #endif
 
-#include "xulbrowser.h"
+#include "gluezilla.h"
 #include "BrowserWindow.h"
 
 #ifdef DEBUG

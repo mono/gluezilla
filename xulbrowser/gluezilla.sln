@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xulbrowser", "xulbrowser.vcproj", "{56A171F9-9FBE-4859-9EA0-DC7890E1998A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gluezilla", "gluezilla.vcproj", "{56A171F9-9FBE-4859-9EA0-DC7890E1998A}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Mozilla", "..\Mono.Moz
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xuldotnet", "..\tests\browser\xuldotnet.csproj", "{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "browsertest", "..\tests\browser\browsertest.csproj", "{BBC2EABC-DDFC-4A9F-A7EE-41A512BB1FA8}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

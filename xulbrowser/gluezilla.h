@@ -1,4 +1,4 @@
-/* xulbrowser.h: external interface and helpers
+/* gluezilla.h: external interface and helpers
  *
  * Author:
  *	Andreia Gaita  <avidigal@novell.com>
@@ -184,36 +184,36 @@ extern "C"
 	// Function Exports
 
 	// initialization
-	NS_EXPORT_(void) xulbrowser_debug_startup ();
+	NS_EXPORT_(void) gluezilla_debug_startup ();
 	
-	NS_EXPORT_(Handle *) xulbrowser_init (CallbackBin *events, const char * startDir);
-	NS_EXPORT_(int) xulbrowser_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height);
+	NS_EXPORT_(Handle *) gluezilla_init (CallbackBin *events, const char * startDir);
+	NS_EXPORT_(int) gluezilla_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height);
 
 	// layout
-	NS_EXPORT_(int) xulbrowser_focus (Handle *instance, FocusOption focus);
-	NS_EXPORT_(int) xulbrowser_activate (Handle *instance);
-	NS_EXPORT_(int) xulbrowser_deactivate (Handle *instance);
-	NS_EXPORT_(int) xulbrowser_resize (Handle *instance, PRUint32 width, PRUint32 height);
+	NS_EXPORT_(int) gluezilla_focus (Handle *instance, FocusOption focus);
+	NS_EXPORT_(int) gluezilla_activate (Handle *instance);
+	NS_EXPORT_(int) gluezilla_deactivate (Handle *instance);
+	NS_EXPORT_(int) gluezilla_resize (Handle *instance, PRUint32 width, PRUint32 height);
 
 	// Navigation
-	NS_EXPORT_(int) xulbrowser_navigate (Handle *instance, const char * uri);
-	NS_EXPORT_(PRBool) xulbrowser_forward (Handle *instance);
-	NS_EXPORT_(PRBool) xulbrowser_back (Handle *instance);
-	NS_EXPORT_(int) xulbrowser_home (Handle *instance);
-	NS_EXPORT_(int) xulbrowser_stop (Handle *instance);
-	NS_EXPORT_(int) xulbrowser_reload (Handle *instance, ReloadOption option);
+	NS_EXPORT_(int) gluezilla_navigate (Handle *instance, const char * uri);
+	NS_EXPORT_(PRBool) gluezilla_forward (Handle *instance);
+	NS_EXPORT_(PRBool) gluezilla_back (Handle *instance);
+	NS_EXPORT_(int) gluezilla_home (Handle *instance);
+	NS_EXPORT_(int) gluezilla_stop (Handle *instance);
+	NS_EXPORT_(int) gluezilla_reload (Handle *instance, ReloadOption option);
 
 	// shutdown
-	NS_EXPORT_(int) xulbrowser_shutdown (Handle *instance);
+	NS_EXPORT_(int) gluezilla_shutdown (Handle *instance);
 
 	// DOM
-	NS_EXPORT_(void*) xulbrowser_getDomDocument (Handle *instance);
+	NS_EXPORT_(void*) gluezilla_getDomDocument (Handle *instance);
 
 	// string helper methods
-	NS_EXPORT_(nsString*) xulbrowser_stringInit ();
-	NS_EXPORT_(nsresult) xulbrowser_stringFinish (nsString * string);
-	NS_EXPORT_(PRUnichar*) xulbrowser_stringGet(nsString & str);
-	NS_EXPORT_(void) xulbrowser_stringSet(nsString & str, PRUnichar * text);
+	NS_EXPORT_(nsString*) gluezilla_stringInit ();
+	NS_EXPORT_(nsresult) gluezilla_stringFinish (nsString * string);
+	NS_EXPORT_(PRUnichar*) gluezilla_stringGet(nsString & str);
+	NS_EXPORT_(void) gluezilla_stringSet(nsString & str, PRUnichar * text);
 
 
 

@@ -2,7 +2,7 @@ AC_INIT(README)
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(xulbrowser,0.1)
+AM_INIT_AUTOMAKE(gluezilla,0.1)
 AM_MAINTAINER_MODE
 AC_PROG_CXX
 AC_HEADER_STDC
@@ -123,29 +123,28 @@ XPCOM_PKGS="$mozilla_xpcom"
 NSPR_PKGS="$mozilla_nspr"
 
 if test "x${local}" != xno ; then
-	XULBROWSER_CFLAGS=`pkg-config --cflags gtk+-2.0 $NSPR_PKGS`
-	XULBROWSER_CFLAGS="${XULBROWSER_CFLAGS} -I../build/include"
+	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_CFLAGS="${GLUEZILLA_CFLAGS} -I../build/include"
 	
-	XULBROWSER_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
 	
-	#XULBROWSER_LIBS="${XULBROWSER_LIBS} -L/code/mozilla/2.0.0.4/tag/firefox-2.0.0.4/mozilla/obj-xulrunner-gtk2/dist/sdk/lib"
-	XULBROWSER_LIBS="${EMBED_LIBS} -L../build/lib"
+	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L../build/lib"
 else
-	XULBROWSER_CFLAGS=`pkg-config --cflags gtk+-2.0 $XPCOM_PKGS`
-	XULBROWSER_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 $XPCOM_PKGS`
+	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
 	XULLIBDIR=`pkg-config --variable=libdir $XPCOM_PKGS`
-	XULBROWSER_LIBS="${XULBROWSER_LIBS} -L${XULLIBDIR}"
+	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L${XULLIBDIR}"
 fi
 
-XULBROWSER_CFLAGS="-DDEBUG -DFORCE_PR_LOG -DXPCOM_GLUE -fno-rtti ${XULBROWSER_CFLAGS}"
-XULBROWSER_LIBS="${XULBROWSER_LIBS} -lxpcomglue"
+GLUEZILLA_CFLAGS="-DDEBUG -DFORCE_PR_LOG -DXPCOM_GLUE -fno-rtti ${GLUEZILLA_CFLAGS}"
+GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -lxpcomglue"
 
 
-AC_SUBST(XULBROWSER_CFLAGS)
-AC_SUBST(XULBROWSER_LIBS)
+AC_SUBST(GLUEZILLA_CFLAGS)
+AC_SUBST(GLUEZILLA_LIBS)
 
 AC_OUTPUT([
 Makefile
-xulbrowser/Makefile
+src/Makefile
 tests/browser/Makefile
 ])

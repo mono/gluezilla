@@ -1,4 +1,4 @@
-/* xulbrowser.cpp: external interface
+/* gluezilla.cpp: external interface
  *
  * Author:
  *	Andreia Gaita  <avidigal@novell.com>
@@ -9,7 +9,7 @@
  * 
  */
 
-#include "xulbrowser.h"
+#include "gluezilla.h"
 #include "Widget.h"
 
 #ifdef NS_UNIX
@@ -20,12 +20,12 @@ GAsyncQueue *queueout;
 #endif
 
 NS_METHOD_(void)
-xulbrowser_debug_startup ()
+gluezilla_debug_startup ()
 {
 }
 
 NS_METHOD_(Handle*)
-xulbrowser_init (CallbackBin *events, const char * startDir)
+gluezilla_init (CallbackBin *events, const char * startDir)
 {
 #ifdef NS_UNIX
 	g_type_init();	
@@ -52,7 +52,7 @@ xulbrowser_init (CallbackBin *events, const char * startDir)
 }
 
 NS_METHOD_(int)
-xulbrowser_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height)
+gluezilla_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	Handle * handle = hwnd;
@@ -73,7 +73,7 @@ xulbrowser_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, P
 /*******************
 Layout
 *******************/
-NS_METHOD_(int) xulbrowser_focus (Handle *instance, FocusOption focus)
+NS_METHOD_(int) gluezilla_focus (Handle *instance, FocusOption focus)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 
@@ -88,7 +88,7 @@ NS_METHOD_(int) xulbrowser_focus (Handle *instance, FocusOption focus)
 	return result;
 }
 
-NS_METHOD_(int) xulbrowser_activate (Handle *instance)
+NS_METHOD_(int) gluezilla_activate (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 
@@ -102,7 +102,7 @@ NS_METHOD_(int) xulbrowser_activate (Handle *instance)
 	return result;
 }
 
-NS_METHOD_(int) xulbrowser_deactivate (Handle *instance)
+NS_METHOD_(int) gluezilla_deactivate (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 
@@ -116,7 +116,7 @@ NS_METHOD_(int) xulbrowser_deactivate (Handle *instance)
 	return result;
 }
 
-NS_METHOD_(int) xulbrowser_resize (Handle *instance, PRUint32 width, PRUint32 height)
+NS_METHOD_(int) gluezilla_resize (Handle *instance, PRUint32 width, PRUint32 height)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 
@@ -136,7 +136,7 @@ NS_METHOD_(int) xulbrowser_resize (Handle *instance, PRUint32 width, PRUint32 he
 Navigation
 *******************/
 NS_METHOD_(int)
-xulbrowser_navigate (Handle *instance, const char * uri)
+gluezilla_navigate (Handle *instance, const char * uri)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -152,7 +152,7 @@ xulbrowser_navigate (Handle *instance, const char * uri)
 }
 
 NS_METHOD_(PRBool)
-xulbrowser_forward (Handle *instance)
+gluezilla_forward (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -167,7 +167,7 @@ xulbrowser_forward (Handle *instance)
 }
 
 NS_METHOD_(PRBool)
-xulbrowser_back (Handle *instance)
+gluezilla_back (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -182,7 +182,7 @@ xulbrowser_back (Handle *instance)
 }
 
 NS_METHOD_(int)
-xulbrowser_home (Handle *instance)
+gluezilla_home (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -197,7 +197,7 @@ xulbrowser_home (Handle *instance)
 }
 
 NS_METHOD_(int)
-xulbrowser_stop (Handle *instance)
+gluezilla_stop (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -212,7 +212,7 @@ xulbrowser_stop (Handle *instance)
 }
 
 NS_METHOD_(int)
-xulbrowser_reload (Handle *instance, ReloadOption option)
+gluezilla_reload (Handle *instance, ReloadOption option)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	
@@ -228,7 +228,7 @@ xulbrowser_reload (Handle *instance, ReloadOption option)
 }
 
 NS_METHOD_(int)
-xulbrowser_shutdown (Handle *instance)
+gluezilla_shutdown (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 
@@ -244,7 +244,7 @@ xulbrowser_shutdown (Handle *instance)
 
 
 NS_METHOD_(void*)
-xulbrowser_getDomDocument (Handle *instance)
+gluezilla_getDomDocument (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	nsCOMPtr<nsIDOMWindow> domWindow;
@@ -257,7 +257,7 @@ xulbrowser_getDomDocument (Handle *instance)
 }
 
 NS_METHOD_(void)
-xulbrowser_setString (Handle *instance, nsString & ret)
+gluezilla_setString (Handle *instance, nsString & ret)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
 	nsCOMPtr<nsIDOMWindow> domWindow;
@@ -274,13 +274,13 @@ xulbrowser_setString (Handle *instance, nsString & ret)
 }
 
 NS_METHOD_(nsString *)
-xulbrowser_stringInit()
+gluezilla_stringInit()
 {
 	return new nsString ();
 }
 
 NS_METHOD_(nsresult)
-xulbrowser_stringFinish(nsString * string)
+gluezilla_stringFinish(nsString * string)
 {
 	NS_StringContainerFinish (reinterpret_cast<nsStringContainer&> (*string));
 	delete string;
@@ -288,13 +288,13 @@ xulbrowser_stringFinish(nsString * string)
 }
 
 NS_METHOD_(PRUnichar*)
-xulbrowser_stringGet(nsString & str)
+gluezilla_stringGet(nsString & str)
 {
 	return (PRUnichar *)str.get ();
 }
 
 NS_METHOD_(void)
-xulbrowser_stringSet(nsString & str, PRUnichar * text)
+gluezilla_stringSet(nsString & str, PRUnichar * text)
 {
 	str.Assign (text);
 }

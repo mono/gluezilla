@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="xulbrowser"
+	Name="gluezilla"
 	ProjectGUID="{56A171F9-9FBE-4859-9EA0-DC7890E19980}"
 	Keyword="MakeFileProj"
 	>
@@ -66,7 +66,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="embed_base_s.lib xpcomglue.lib"
-				OutputFile="$(OutDir)/xulbrowser.dll"
+				OutputFile="$(OutDir)/gluezilla.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;D:\linux\apps\mozilla-src\mozilla-2.0.0.4\mozilla\obj-xulrunner\dist\lib&quot;"
 				IgnoreDefaultLibraryNames="libcmtd"
@@ -162,7 +162,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\xulbrowser.cpp"
+				RelativePath=".\gluezilla.cpp"
 				>
 			</File>
 		</Filter>
@@ -212,7 +212,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\xulbrowser.h"
+				RelativePath=".\gluezilla.h"
 				>
 			</File>
 		</Filter>

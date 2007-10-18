@@ -1,1 +1,1 @@
-SUBDIRS = xulbrowser tests/browser
+SUBDIRS = src tests/browser

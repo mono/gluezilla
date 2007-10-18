@@ -16,9 +16,9 @@ test_build_sources = $(addprefix $(srcdir)/, $(test_sources))
 test_build_sources += $(test_generated_sources)
 
 test.exe: $(test_build_sources)
-	cp ../../xulbrowser/.libs/libxulbrowser.* .
+	cp ../../gluezilla/.libs/libgluezilla.* .
 	gmcs -debug -pkg:dotnet -r:Mono.Mozilla.dll -target:exe -out:$@ $(test_build_sources)
 
 run: test.exe
-	cp ../../xulbrowser/.libs/libxulbrowser.* .
+	cp ../../gluezilla/.libs/libgluezilla.* .
 	mono --debug test.exe

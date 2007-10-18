@@ -1,10 +1,7 @@
 A simple library to embed Gecko (xulrunner) for the Mono Winforms
 WebControl.
 
-The Mono.Mozilla and xulbrowser are the current working directories.
-
-xulbrowser - c/c++ library bridge for xulrunner
-Mono.Mozilla - Managed wrapper
+gluezilla - c glue for xulrunner
 tests/browser - test app
 
 Building
@@ -14,17 +11,24 @@ Building
 	and the way that it has been packaged and its APIs differ from
 	one version to another you will need to tune your setup
 	according to your OS.
+	
+	The recommended version of the Mozilla engine is >= 1.8
 
 
-Platform: SUSE Linux Enterprise 10
-==================================
+====================================
+Using your distro's mozilla packages
+Example Platform: openSUSE 10.2
+====================================
 
 	Before starting, make sure you install the 
 	following packages and any dependencies they
 	may have:
 
+		mozilla-nss-devel
 		mozilla-nspr-devel
-		mozilla-xulrunner-devel	
+		mozilla-xulrunner181
+		mozilla-xulrunner181-devel	
+
 
 	Invoke configure like this:
 
@@ -33,6 +37,44 @@ Platform: SUSE Linux Enterprise 10
 	The --enable-optimize flag will enable -O2, if =no it will use -g3
 	instead.
 
+
+=====================================================
+Using the Mozilla packages instead of distro packages
+=====================================================
+
+	If for some reason you have problems installing the xulrunner packages, 
+	you can use the mozilla-distributed ones to build.	Inside the build 
+	directory there are some scripts to help set up a local build.
+	
+	1) Obtain the xulrunner runtime and sdk from Mozilla. You can either
+	download directly, or:
+	
+		* go to the build/ directory
+		* run "get-gecko-sdk.sh"
+	
+		This will download and untar the packages for you.
+	
+	
+	2) Run "make". This will create the proper directories with the contents of
+	the sdk plus some extra headers that are needed.
+	
+	
+	3) Go to xulrunner/ and run:
+		
+		./xulrunner --register-user
+		
+		This will register the runtime for your user. You can use --register-global
+		to register this runtime for all users, instead
+		
+			
+	4) Now you can build gluezilla. Invoke configure like this:
+	
+		./autogen.sh --enable-local=yes [--enable-optimize=yes]
+
+		The --enable-optimize flag will enable -O2, if =no it will use -g3
+		instead.
+
+
 Testing
 =======
 
@@ -40,19 +82,14 @@ Testing
 
 		cd tests/browser
 		
-	Before running the test app, you will need the standard xulrunner
-	folders here:
+	Before running the test app, you will need to create the following directory
+	tree where the test app is:
 	
-		chrome/
-		components/
-		defaults/
-		greprefs/
-		plugins/
-		res/
+	Cache
+	components
+	Profiles
+	Profiles/profile
 		
-	You can copy these from build/xulrunner. Wherever you copy them from,
-	remove any components/*.dat files
-	
 	Then run
 	
 		mono test.exe	

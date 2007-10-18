@@ -9,7 +9,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "xuldotnet"
+                AssemblyName = "browsertest"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -17,8 +17,8 @@
                 DelaySign = "false"
                 OutputType = "WinExe"
                 PreBuildEvent = ""
-                PostBuildEvent = "copy $(TargetPath) $(ProjectDir)..\..\xulbrowser&#xd;&#xa;copy $(TargetDir)Mono.Mozilla.dll $(ProjectDir)..\..\xulbrowser"
-                RootNamespace = "xuldotnet"
+                PostBuildEvent = "copy $(TargetPath) $(ProjectDir)..\..\src&#xd;&#xa;copy $(TargetDir)Mono.Mozilla.dll $(ProjectDir)..\..\src"
+                RootNamespace = "browsertest"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >

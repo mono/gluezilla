@@ -18,7 +18,7 @@
 
 static gboolean gtk_invoke (gpointer data);
 
-// from xulbrowser.cpp
+// from gluezilla.cpp
 extern GAsyncQueue *queueout;
 #endif	
 

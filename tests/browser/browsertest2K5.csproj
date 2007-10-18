@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>xuldotnet</AssemblyName>
+    <AssemblyName>browsertest</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -18,7 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>xuldotnet</RootNamespace>
+    <RootNamespace>browsertest</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -102,8 +102,8 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(ProjectDir)$(OutDir)*.exe $(ProjectDir)..\..\xulbrowser
-copy $(ProjectDir)$(OutDir)*.dll $(ProjectDir)..\..\xulbrowser
+    <PostBuildEvent>copy $(ProjectDir)$(OutDir)*.exe $(ProjectDir)..\..\src
+copy $(ProjectDir)$(OutDir)*.dll $(ProjectDir)..\..\src
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

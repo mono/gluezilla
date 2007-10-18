@@ -2,11 +2,12 @@ AM_CXXFLAGS = @autoconf_default_CXXFLAGS@
 
 #bin_PROGRAMS = demo
 
-lib_LTLIBRARIES = libxulbrowser.la
+lib_LTLIBRARIES = libgluezilla.la
 
-INCLUDES = $(XULBROWSER_CFLAGS)
+INCLUDES = $(GLUEZILLA_CFLAGS)
 
-libxulbrowser_la_SOURCES = 	\
+libgluezilla_la_SOURCES = 	\
+	interfaces.h \
 	SecurityWarningsDialogs.cpp	\
 	SecurityWarningsDialogs.h	\
 	PromptService.cpp	\
@@ -19,10 +20,10 @@ libxulbrowser_la_SOURCES = 	\
 	Widget.h	\
 	gtkWidget.cpp	\
 	gtkWidget.h	\
-	xulbrowser.cpp	\
-	xulbrowser.h
+	gluezilla.cpp	\
+	gluezilla.h
 
-libxulbrowser_la_LIBADD = $(XULBROWSER_LIBS)
+libgluezilla_la_LIBADD = $(GLUEZILLA_LIBS)
 
 debug:
 	LD_LIBRARY_PATH=.libs gdb 
