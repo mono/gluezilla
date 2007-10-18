@@ -1,3 +1,8 @@
+2007-10-18 Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am: fix make distcheck
+	Only add 'test' target to run tests
+
 2007-08-19 Andreia Gaita <avidigal@novell.com>
 
 	* Use GAC'd Mono.Mozilla, remove local WebBrowser

@@ -1,3 +1,11 @@
+2007-10-18  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am:
+	* README:
+	* configure.ac:
+	Enable test in subdirs again
+	Fix make distcheck
+	Add mozilla checks back in
 
 Mon Aug 20 19:44:12 CEST 2007 Paolo Molaro <lupus@ximian.com>
 
