@@ -47,6 +47,7 @@ class Widget
 
 			// layout
 			delegates["focus"].bind (this, &Widget::Focus);
+			delegates["blur"].bind (this, &Widget::Blur);
 			delegates["activate"].bind (this, &Widget::Activate);
 			delegates["deactivate"].bind (this, &Widget::Deactivate);
 			delegates["resize"].bind (this, &Widget::Resize);
@@ -89,6 +90,9 @@ class Widget
 		nsresult Focus (Params * params) {
 			return this->Focus (params->focus);
 		}
+		nsresult Blur (Params * params) {
+			return this->Blur ();
+		}
 		nsresult Activate (Params * params) {
 			return this->Activate ();
 		}
@@ -129,6 +133,7 @@ class Widget
 
 		// Layout
 		nsresult Focus (FocusOption focus);
+		nsresult Blur ();
 		nsresult Activate ();
 		nsresult Deactivate ();
 		nsresult Resize (PRUint32 width, PRUint32 height);

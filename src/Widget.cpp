@@ -230,6 +230,13 @@ Widget::Focus (FocusOption focus)
 	return NS_OK;
 }
 
+nsresult
+Widget::Blur ()
+{
+	SHOUT("Widget::Blur!\n");
+	return NS_OK;
+}
+
 nsresult 
 Widget::Activate ()
 {

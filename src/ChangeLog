@@ -1,3 +1,8 @@
+2007-10-30  Andreia Gaita  <avidigal@novell.com>
+
+	gluezilla.*, Widget.*: add blur entry point to catch
+	when the webbrowser control loses focus
+
 2007-10-18  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile.am: Add missing headers to EXTRA_DIST

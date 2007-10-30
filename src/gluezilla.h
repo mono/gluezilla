@@ -191,6 +191,7 @@ extern "C"
 
 	// layout
 	NS_EXPORT_(int) gluezilla_focus (Handle *instance, FocusOption focus);
+	NS_EXPORT_(int) gluezilla_blur (Handle *instance);
 	NS_EXPORT_(int) gluezilla_activate (Handle *instance);
 	NS_EXPORT_(int) gluezilla_deactivate (Handle *instance);
 	NS_EXPORT_(int) gluezilla_resize (Handle *instance, PRUint32 width, PRUint32 height);

@@ -88,6 +88,20 @@ NS_METHOD_(int) gluezilla_focus (Handle *instance, FocusOption focus)
 	return result;
 }
 
+NS_METHOD_(int) gluezilla_blur (Handle *instance)
+{
+	Widget *widget = reinterpret_cast<Widget *> (instance);
+
+	Params * p = new Params ();
+	p->name = "blur";
+	p->instance = widget;
+
+	nsresult result = widget->BeginInvoke (p);
+	if (p)
+		delete (p);
+	return result;
+}
+
 NS_METHOD_(int) gluezilla_activate (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
