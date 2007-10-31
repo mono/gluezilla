@@ -323,7 +323,7 @@ gtk_startup (gpointer data)
 	int argc = 0;
 	char **argv=NULL;
 	gtk_init(&argc, &argv);
-	gdk_window_set_debug_updates (TRUE);	
+	//gdk_window_set_debug_updates (TRUE);	
 	g_idle_add (gtk_init_done, NULL);
 	gtk_main();
 	gdk_threads_leave ();
