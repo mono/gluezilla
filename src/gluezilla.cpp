@@ -25,7 +25,7 @@ gluezilla_debug_startup ()
 }
 
 NS_METHOD_(Handle*)
-gluezilla_init (CallbackBin *events, const char * startDir)
+gluezilla_init (CallbackBin *events, const char * startDir, const char * dataDir)
 {
 #ifdef NS_UNIX
 	g_type_init();	
@@ -38,7 +38,7 @@ gluezilla_init (CallbackBin *events, const char * startDir)
 	g_async_queue_pop (queueout);
 #endif
 
-	Widget *widget = new Widget (strdup(startDir));
+	Widget *widget = new Widget (strdup(startDir), strdup(dataDir));
 
 	Params * p = new Params ();
 	p->name = "init";

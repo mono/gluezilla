@@ -75,9 +75,9 @@ Widget::GRE_Startup()
         XPCOMGlueShutdown();
         return NS_ERROR_OUT_OF_MEMORY;
     }
+	NS_ADDREF( provider );
 
     nsCOMPtr<nsIServiceManager> servMan;
-    NS_ADDREF( provider );
     rv = NS_InitXPCOM2(getter_AddRefs(servMan), nsnull, provider);
     NS_RELEASE(provider);
 

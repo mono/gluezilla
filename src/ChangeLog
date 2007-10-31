@@ -1,6 +1,13 @@
+2007-10-31  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.*,Widget.h: Receive user data dir to store local data.
+	* LocationProvider.cpp: Use the user data dir for component and xpti
+	registry. Use the mozilla directories to load plugins and other shared
+	mozilla things. No need to use local directories anymore.
+
 2007-10-30  Andreia Gaita  <avidigal@novell.com>
 
-	gluezilla.*, Widget.*: add blur entry point to catch
+	* gluezilla.*, Widget.*: add blur entry point to catch
 	when the webbrowser control loses focus
 
 2007-10-18  Wade Berrier  <wberrier@novell.com>

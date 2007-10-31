@@ -186,7 +186,7 @@ extern "C"
 	// initialization
 	NS_EXPORT_(void) gluezilla_debug_startup ();
 	
-	NS_EXPORT_(Handle *) gluezilla_init (CallbackBin *events, const char * startDir);
+	NS_EXPORT_(Handle *) gluezilla_init (CallbackBin *events, const char * startDir, const char * dataDir);
 	NS_EXPORT_(int) gluezilla_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height);
 
 	// layout

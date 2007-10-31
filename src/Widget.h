@@ -35,9 +35,10 @@ typedef FastDelegate1<Params*, nsresult> WidgetDelegate;
 class Widget 
 {
 	public:
-		Widget (const char * startDir)
+		Widget (const char * startDir, const char * dataDir)
 		{
 			this->startDir = startDir;
+			this->dataDir = dataDir;
 			// delegate initialization
 
 			// initialization and shutdown
@@ -204,10 +205,12 @@ class Widget
 
 	public:
 		const char * startDir;
-		PRBool                        isDestroyed;
-		PRBool                        isChrome;
-		PRBool                        chromeLoaded;
-		PRUint32                      chromeMask;
+		const char * dataDir;
+
+		PRBool		isDestroyed;
+		PRBool		isChrome;
+		PRBool		chromeLoaded;
+		PRUint32	chromeMask;
 
 		CallbackBin	*events;
 

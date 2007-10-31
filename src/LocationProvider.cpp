@@ -21,6 +21,15 @@
 #define PLUGINS_DIR_NAME            nsEmbedCString("plugins")
 #define SEARCH_DIR_NAME             nsEmbedCString("searchplugins")
 #define COMPONENTS_DIR_NAME         nsEmbedCString("components")
+#if defined(XP_MAC)
+#define COMPONENT_REGISTRY_NAME NS_LITERAL_CSTRING("Component Registry")
+#define COMPONENT_DIRECTORY     NS_LITERAL_CSTRING("Components")
+#else
+#define COMPONENT_REGISTRY_NAME NS_LITERAL_CSTRING("compreg.dat")
+#define COMPONENT_DIRECTORY     NS_LITERAL_CSTRING("components")
+#endif 
+
+#define XPTI_REGISTRY_NAME      NS_LITERAL_CSTRING("xpti.dat")
 
 NS_IMPL_ISUPPORTS1(LocationProvider, nsIDirectoryServiceProvider)
 
@@ -44,8 +53,6 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
     *_retval = nsnull;
     *persistent = PR_TRUE;
 
-
-//	NS_XPCOM_COMPONENT_REGISTRY_FILE
 
     if (strcmp(prop, NS_GRE_DIR) == 0)
 		rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
@@ -78,14 +85,22 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
     else if (strcmp(prop, NS_APP_USER_PROFILE_50_DIR) == 0 ||
 			 strcmp(prop, NS_APP_PREFS_50_DIR) == 0)
 	{
-		nsEmbedCString file(widget->startDir);
-		rv = NS_NewNativeLocalFile(file, PR_TRUE, getter_AddRefs(localFile));
 
-        if (NS_SUCCEEDED(rv)) {
-            rv = localFile->AppendRelativeNativePath(PROFILE_ROOT_DIR_NAME);
-            if (NS_SUCCEEDED(rv))
-                rv = localFile->AppendRelativeNativePath(DEFAULTS_PROFILE_DIR_NAME);
-        }
+        nsCOMPtr<nsIProperties>
+          directoryService(do_GetService(NS_DIRECTORY_SERVICE_CONTRACTID, &rv));
+        if (NS_FAILED(rv))
+            return rv;
+
+        rv = directoryService->Get(NS_APP_USER_PROFILES_ROOT_DIR, NS_GET_IID(nsIFile), getter_AddRefs(localFile));
+		
+//		nsEmbedCString file(widget->startDir);
+//		rv = NS_NewNativeLocalFile(file, PR_TRUE, getter_AddRefs(localFile));
+
+//      if (NS_SUCCEEDED(rv)) {
+//          rv = localFile->AppendRelativeNativePath(PROFILE_ROOT_DIR_NAME);
+//          if (NS_SUCCEEDED(rv))
+//              rv = localFile->AppendRelativeNativePath(DEFAULTS_PROFILE_DIR_NAME);
+//      }
     }
     else if (strcmp(prop, NS_APP_RES_DIR) == 0)
     {
@@ -99,30 +114,59 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(CHROME_DIR_NAME);
     }
-    else if (strcmp(prop, NS_APP_PLUGINS_DIR) == 0)
-    {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
-        if (NS_SUCCEEDED(rv))
-            rv = localFile->AppendRelativeNativePath(PLUGINS_DIR_NAME);
-    }
-    else if (strcmp(prop, NS_APP_SEARCH_DIR) == 0)
-    {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
-        if (NS_SUCCEEDED(rv))
-            rv = localFile->AppendRelativeNativePath(SEARCH_DIR_NAME);
-    }
+    //else if (strcmp(prop, NS_APP_PLUGINS_DIR) == 0)
+    //{
+    //    rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+    //    if (NS_SUCCEEDED(rv))
+    //        rv = localFile->AppendRelativeNativePath(PLUGINS_DIR_NAME);
+    //}
+    //else if (strcmp(prop, NS_APP_SEARCH_DIR) == 0)
+    //{
+    //    rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+    //    if (NS_SUCCEEDED(rv))
+    //        rv = localFile->AppendRelativeNativePath(SEARCH_DIR_NAME);
+    //}
 	else if (strcmp(prop, NS_GRE_COMPONENT_DIR) == 0 ||
 		strcmp(prop, NS_XPCOM_COMPONENT_DIR) == 0)
-		//||
-		//strcmp(prop, NS_XPCOM_COMPONENT_REGISTRY_FILE) == 0 ||
-		//strcmp(prop, NS_XPCOM_XPTI_REGISTRY_FILE) == 0)
 	{
 		rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(COMPONENTS_DIR_NAME);
 	}
-
-	
+	else if (strcmp (prop, NS_XPCOM_COMPONENT_REGISTRY_FILE) == 0)
+	{
+		nsEmbedCString file(widget->dataDir);
+		rv = NS_NewNativeLocalFile(file, PR_TRUE, getter_AddRefs(localFile));
+		if (NS_SUCCEEDED(rv))
+		{
+			PRBool exists;
+			rv = localFile->AppendNative(COMPONENT_DIRECTORY);
+			if (NS_FAILED(rv)) return rv;
+			rv = localFile->Exists (&exists);
+			if (NS_FAILED(rv)) return rv;
+			if (!exists)
+				rv = localFile->Create(nsIFile::DIRECTORY_TYPE, 0700);
+			if (NS_FAILED(rv)) return rv;
+	        rv = localFile->AppendNative(COMPONENT_REGISTRY_NAME);
+		}
+	}
+	else if (strcmp(prop, NS_XPCOM_XPTI_REGISTRY_FILE) == 0)
+	{
+		nsEmbedCString file(widget->dataDir);
+		rv = NS_NewNativeLocalFile(file, PR_TRUE, getter_AddRefs(localFile));
+		if (NS_SUCCEEDED(rv))
+		{
+			PRBool exists;
+			rv = localFile->AppendNative(COMPONENT_DIRECTORY);
+			if (NS_FAILED(rv)) return rv;
+			rv = localFile->Exists (&exists);
+			if (NS_FAILED(rv)) return rv;
+			if (!exists)
+				rv = localFile->Create(nsIFile::DIRECTORY_TYPE, 0700);
+			if (NS_FAILED(rv)) return rv;
+	        rv = localFile->AppendNative(XPTI_REGISTRY_NAME);           
+		}
+	}
 	
     if (localFile && NS_SUCCEEDED(rv))
         return localFile->QueryInterface(NS_GET_IID(nsIFile), (void**)_retval);
