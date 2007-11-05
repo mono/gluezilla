@@ -33,4 +33,7 @@ protected:
 
 };
 
+
+char const * GetAvailableRuntime ();
+nsresult GetAvailableRuntime(nsILocalFile* *_retval);
 #endif

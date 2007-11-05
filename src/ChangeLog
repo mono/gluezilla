@@ -1,3 +1,11 @@
+2007-11-05  Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.*, Widget.cpp: GRE_GetXPComPath() searches for a 
+	runtime with a fixed version equal to the one it was built against,
+	so only use it to search for a local runtime, and if it fails, use
+	GRE_GetPathWithProperties() to get a runtime with a version >= 1.8,
+	independently of whatever version it was initially built with.
+
 2007-10-31  Andreia Gaita  <avidigal@novell.com>
 
 	* gluezilla.*,Widget.h: Receive user data dir to store local data.

@@ -55,17 +55,17 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
 
 
     if (strcmp(prop, NS_GRE_DIR) == 0)
-		rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+		rv = GetAvailableRuntime (getter_AddRefs(localFile));
 
     else if (strcmp(prop, NS_APP_DEFAULTS_50_DIR) == 0)
     {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+        rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(DEFAULTS_DIR_NAME);
     }
     else if (strcmp(prop, NS_APP_PREF_DEFAULTS_50_DIR) == 0)
     {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+        rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv)) {
             rv = localFile->AppendRelativeNativePath(DEFAULTS_DIR_NAME);
             if (NS_SUCCEEDED(rv))
@@ -75,7 +75,7 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
     else if (strcmp(prop, NS_APP_PROFILE_DEFAULTS_NLOC_50_DIR) == 0 ||
              strcmp(prop, NS_APP_PROFILE_DEFAULTS_50_DIR) == 0)
 	{
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+        rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv)) {
             rv = localFile->AppendRelativeNativePath(DEFAULTS_DIR_NAME);
             if (NS_SUCCEEDED(rv))
@@ -104,32 +104,32 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
     }
     else if (strcmp(prop, NS_APP_RES_DIR) == 0)
     {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+        rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(RES_DIR_NAME);
     }
     else if (strcmp(prop, NS_APP_CHROME_DIR) == 0)
     {
-        rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+        rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(CHROME_DIR_NAME);
     }
     //else if (strcmp(prop, NS_APP_PLUGINS_DIR) == 0)
     //{
-    //    rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+    //    rv = GetAvailableRuntime (getter_AddRefs(localFile));
     //    if (NS_SUCCEEDED(rv))
     //        rv = localFile->AppendRelativeNativePath(PLUGINS_DIR_NAME);
     //}
     //else if (strcmp(prop, NS_APP_SEARCH_DIR) == 0)
     //{
-    //    rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+    //    rv = GetAvailableRuntime (getter_AddRefs(localFile));
     //    if (NS_SUCCEEDED(rv))
     //        rv = localFile->AppendRelativeNativePath(SEARCH_DIR_NAME);
     //}
 	else if (strcmp(prop, NS_GRE_COMPONENT_DIR) == 0 ||
 		strcmp(prop, NS_XPCOM_COMPONENT_DIR) == 0)
 	{
-		rv = GRE_GetGREDirectory(getter_AddRefs(localFile));
+		rv = GetAvailableRuntime (getter_AddRefs(localFile));
         if (NS_SUCCEEDED(rv))
             rv = localFile->AppendRelativeNativePath(COMPONENTS_DIR_NAME);
 	}
@@ -172,4 +172,60 @@ LocationProvider::GetFile(const char *prop, PRBool *persistent, nsIFile **_retva
         return localFile->QueryInterface(NS_GET_IID(nsIFile), (void**)_retval);
         
     return rv;
+}
+
+static char runtimePath[MAX_PATH] = "";
+
+char const * GetAvailableRuntime ()
+{
+	// we've already done this...
+	if (*runtimePath)
+		return runtimePath;
+
+	const char* xpcomLocation = GRE_GetXPCOMPath();
+	if (xpcomLocation)
+	{
+		strcpy(runtimePath, xpcomLocation);
+		return runtimePath;
+	}
+
+	static const GREVersionRange version = {
+	"1.8", PR_TRUE,
+	"9.9", PR_TRUE
+	};
+
+	GRE_GetGREPathWithProperties(&version, 1,
+							   nsnull, 0,
+							   runtimePath, MAX_PATH);
+	if (*runtimePath)
+		return runtimePath;
+
+	return nsnull;
+}
+
+nsresult GetAvailableRuntime(nsILocalFile* *_retval)
+{
+  NS_ENSURE_ARG_POINTER(_retval);
+  nsresult rv = NS_ERROR_FAILURE;
+
+  // Get the path of the GRE which is compatible with our embedding application
+  // from the registry
+
+  const char *pGREDir = GetAvailableRuntime ();
+  if(!pGREDir)
+    return NS_ERROR_FAILURE;
+
+  nsCOMPtr<nsILocalFile> xpcomPath;
+  nsEmbedCString leaf(pGREDir);
+  rv = NS_NewNativeLocalFile(leaf, PR_TRUE, getter_AddRefs(xpcomPath));
+
+  if (NS_FAILED(rv))
+    return rv;
+
+  nsCOMPtr<nsIFile> directory;
+  rv = xpcomPath->GetParent(getter_AddRefs(directory));
+  if (NS_FAILED(rv))
+    return rv;
+
+  return CallQueryInterface(directory, _retval);
 }

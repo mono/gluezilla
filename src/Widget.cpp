@@ -59,7 +59,13 @@ static gboolean gtk_invoke (gpointer data)
 nsresult
 Widget::GRE_Startup()
 {
-    const char* xpcomLocation = GRE_GetXPCOMPath();
+	const char* xpcomLocation = GetAvailableRuntime ();
+
+	if (!xpcomLocation)
+	{
+        SHOUT("No Available runtime!");
+        return -1;
+	}
 
     // Startup the XPCOM Glue that links us up with XPCOM.
     nsresult rv = XPCOMGlueStartup(xpcomLocation);
@@ -100,11 +106,17 @@ Widget::Load (CallbackBin *events)
 	{
 		nsresult rv;
 		rv = this->GRE_Startup ();
-		NS_ENSURE_SUCCESS(rv, rv); 
+		if (!NS_SUCCEEDED(rv)) {
+			SHOUT("Failed to startup!\n");
+			return -1;
+		}
 
 		nsCOMPtr<nsILocalFile> gre;
-		rv = GRE_GetGREDirectory(getter_AddRefs(gre));
-		NS_ENSURE_SUCCESS(rv, rv); 
+		rv = GetAvailableRuntime (getter_AddRefs(gre));
+		if (!NS_SUCCEEDED(rv)) {
+			SHOUT("Failed to find a runtime to run on!\n");
+			return -1;
+		}
 
 		//nsDynamicFunctionLoad xreFunctions[] = {
 		//  {"XRE_InitEmbedding", (NSFuncPtr*) &XRE_InitEmbedding},
