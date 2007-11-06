@@ -270,6 +270,13 @@ gluezilla_getDomDocument (Handle *instance)
 	return htmlDoc;	
 }
 
+NS_METHOD_(void*)
+gluezilla_getWebNavigation (Handle *instance)
+{
+	Widget *widget = reinterpret_cast<Widget *> (instance);
+	return widget->browserWindow->getWebNavigation ();
+}
+
 NS_METHOD_(void)
 gluezilla_setString (Handle *instance, nsString & ret)
 {
@@ -317,7 +324,7 @@ gluezilla_stringSet(nsString & str, PRUnichar * text)
 void *
 gtk_startup (gpointer data)
 {
-	g_print ("wakeup_gtk %p starting...\n", g_thread_self ());
+	PRINT2 ("wakeup_gtk %p starting...\n", g_thread_self ());
 	gdk_threads_enter ();	
 
 	int argc = 0;
@@ -334,7 +341,7 @@ gtk_startup (gpointer data)
 gboolean
 gtk_init_done (gpointer data)
 {
-	g_print ("callback_initdone %p \n", g_thread_self ());	
+	PRINT2 ("callback_initdone %p \n", g_thread_self ());	
 	int p = 1;
 	g_async_queue_push (queueout, &p);
 }
@@ -342,7 +349,7 @@ gtk_init_done (gpointer data)
 gboolean
 gtk_shutdown (gpointer data)
 {
-	g_print ("gtk_shutdown %p \n", g_thread_self ());	
+	PRINT2 ("gtk_shutdown %p \n", g_thread_self ());	
 	gtk_exit (0);
 	//gdk_threads_enter ();	
 	//while (gtk_main_level () != 0)

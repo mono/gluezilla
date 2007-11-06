@@ -33,7 +33,7 @@ G_DEFINE_TYPE (NativeEmbedWidget, native_embed_widget, GTK_TYPE_WINDOW)
 static void
 native_embed_widget_class_init(NativeEmbedWidgetClass *klass)
 {
-	g_print("native_embed_widget_class_init\n");
+	PRINT("native_embed_widget_class_init\n");
 	GtkWidgetClass *widget_class;
 	GtkObjectClass     *object_class;
 
@@ -65,7 +65,7 @@ native_embed_widget_class_init(NativeEmbedWidgetClass *klass)
 static gboolean
 native_embed_widget_expose(GtkWidget *widget, GdkEventExpose *event)
 {
-	g_print("native_embed_widget_expose\n");
+	PRINT("native_embed_widget_expose\n");
 
 /*
 	gdk_draw_line (widget->window, 
@@ -78,7 +78,7 @@ native_embed_widget_expose(GtkWidget *widget, GdkEventExpose *event)
 static void
 native_embed_widget_init(NativeEmbedWidget *embed)
 {
-	g_print("native_embed_widget_init\n");
+	PRINT("native_embed_widget_init\n");
 	/*
 //	gtk_widget_set_name(GTK_WIDGET(embed), "gtkmozembed");
 #ifdef MOZ_WIDGET_GTK2
@@ -95,7 +95,7 @@ GtkWidget *
 native_embed_widget_new()
 {
 	
-	g_print("native_embed_widget_new\n");
+	PRINT("native_embed_widget_new\n");
 	NativeEmbedWidget * embed_widget = (NativeEmbedWidget *)g_object_new (GTK_TYPE_NATIVE_EMBED, NULL);
 
 	return GTK_WIDGET(embed_widget);
@@ -104,7 +104,7 @@ native_embed_widget_new()
 GtkWidget *
 native_embed_widget_foreign_new(GdkNativeWindow parent_id)
 {
-	g_print("native_embed_widget_new\n");
+	PRINT("native_embed_widget_new\n");
 	NativeEmbedWidget * embed_widget = (NativeEmbedWidget *)g_object_new (GTK_TYPE_NATIVE_EMBED, NULL);
 
 	embed_widget->parent_window = gdk_window_lookup_for_display (gdk_display_get_default (), parent_id);
@@ -118,7 +118,7 @@ native_embed_widget_foreign_new(GdkNativeWindow parent_id)
 static void
 native_embed_widget_destroy(GtkObject *object)
 {
-	g_print("native_embed_widget_destroy\n");
+	PRINT("native_embed_widget_destroy\n");
 	g_return_if_fail(object != NULL);
 	g_return_if_fail(GTK_IS_NATIVE_EMBED(object));
 	
@@ -130,7 +130,7 @@ native_embed_widget_destroy(GtkObject *object)
 static void
 native_embed_widget_realize(GtkWidget *widget)
 {
-	g_print("native_embed_widget_realize\n");
+	PRINT("native_embed_widget_realize\n");
 
 	GtkWindow *window;
 	NativeEmbedWidget *embed_widget;
@@ -201,7 +201,7 @@ native_embed_widget_realize(GtkWidget *widget)
 static void
 native_embed_widget_unrealize(GtkWidget *widget)
 {
-	g_print("native_embed_widget_unrealize\n");
+	PRINT("native_embed_widget_unrealize\n");
 	NativeEmbedWidget *embed_widget;
 
 	g_return_if_fail(widget != NULL);
@@ -232,7 +232,7 @@ native_embed_widget_hide (GtkWidget *widget)
 static void
 native_embed_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 {
-	g_print("native_embed_widget_size_allocate\n");
+	PRINT("native_embed_widget_size_allocate\n");
 	g_return_if_fail(widget != NULL);
 	g_return_if_fail(GTK_IS_NATIVE_EMBED(widget));
 
@@ -240,7 +240,7 @@ native_embed_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 
 	widget->allocation = *allocation;
 
-	g_print ("is realized=%d\n", GTK_WIDGET_REALIZED (widget));
+	PRINT2 ("is realized=%d\n", GTK_WIDGET_REALIZED (widget));
 	
 	if (GTK_WIDGET_REALIZED (widget))
 		gdk_window_move_resize (widget->window,
@@ -251,14 +251,14 @@ native_embed_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 	
 	if (bin->child && GTK_WIDGET_VISIBLE (bin->child))
 	{
-		g_print ("is visible \n");
+		PRINT ("is visible \n");
 		GtkAllocation child_allocation;
 	
 		child_allocation.x = child_allocation.y = GTK_CONTAINER (widget)->border_width;
 		child_allocation.width = MAX (1, (gint)allocation->width - child_allocation.x * 2);
 		child_allocation.height = MAX (1, (gint)allocation->height - child_allocation.y * 2);
 		
-		g_print ("is visible %d %d\n", child_allocation.width, child_allocation.height);
+		PRINT3 ("is visible %d %d\n", child_allocation.width, child_allocation.height);
 		gtk_widget_size_allocate (bin->child, &child_allocation);
 	}
 }
@@ -266,7 +266,7 @@ native_embed_widget_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
 static void
 native_embed_widget_map(GtkWidget *widget)
 {
-	g_print("native_embed_widget_map\n");
+	PRINT("native_embed_widget_map\n");
 
 	g_return_if_fail(widget != NULL);
 	g_return_if_fail(GTK_IS_NATIVE_EMBED(widget));
@@ -286,7 +286,7 @@ native_embed_widget_map(GtkWidget *widget)
 static void
 native_embed_widget_unmap(GtkWidget *widget)
 {
-	g_print("native_embed_widget_unmap\n");
+	PRINT("native_embed_widget_unmap\n");
 	g_return_if_fail(widget != NULL);
 	g_return_if_fail(GTK_IS_NATIVE_EMBED(widget));
 

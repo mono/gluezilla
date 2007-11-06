@@ -1,3 +1,9 @@
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
+	* Disable debug messages when enable-optimize=yes (non-debug build)
+	* gluezilla.*: add access to the WebNavigation object, for future 
+			direct interface access
+
 2007-11-05  Andreia Gaita <avidigal@novell.com>
 
 	* LocationProvider.*, Widget.cpp: GRE_GetXPComPath() searches for a 

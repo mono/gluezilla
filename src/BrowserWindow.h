@@ -74,18 +74,17 @@ class BrowserWindow :
 	// getters / setters
 	Handle * getNativeWin () { return this->nativeMozWidget;}
 
-	void setParent( Widget* owner ) { this->owner = owner; };
-	Widget * getParent(  ) { return this->owner; };
+	void setParent (Widget* owner) { this->owner = owner; };
+	Widget * getParent () { return this->owner; };
 
-	void setUri( nsString uri ) { this->uri = uri; };
-	nsString getUri(  ) { return this->uri; };
+	void setUri (nsString uri) { this->uri = uri; };
+	nsString getUri () { return this->uri; };
+
+	nsCOMPtr<nsIWebNavigation> getWebNavigation () { return this->webNav; }
 
 	Widget * owner;
 	nsCOMPtr<nsIWebBrowser> 	webBrowser;
 private:
-
-	
-
 	
 	nsCOMPtr<nsIBaseWindow> 	baseWindow;
 	nsCOMPtr<nsIWebNavigation> 	webNav;

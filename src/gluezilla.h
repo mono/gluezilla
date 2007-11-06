@@ -21,6 +21,25 @@
 #define STDCALL 
 #endif
 
+#ifdef NS_UNIX
+	#ifdef DEBUG
+		#define PRINT(str)	\
+			g_print(str)
+		#define PRINT2(str, str1)	\
+			g_print(str, str1)
+		#define PRINT3(str, str1, str2)	\
+			g_print(str, str1, str2)
+	#else
+		#define PRINT(str)
+		#define PRINT2(str, str1)
+		#define PRINT3(str, str1, str2)
+	#endif
+#else //TODO: define these for non-unix
+	#define PRINT(str)
+	#define PRINT2(str, str1)
+	#define PRINT3(str, str1, str2)
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -209,6 +228,7 @@ extern "C"
 
 	// DOM
 	NS_EXPORT_(void*) gluezilla_getDomDocument (Handle *instance);
+	NS_EXPORT_(void*) gluezilla_getWebNavigation (Handle *instance);
 
 	// string helper methods
 	NS_EXPORT_(nsString*) gluezilla_stringInit ();

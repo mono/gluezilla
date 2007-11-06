@@ -194,18 +194,16 @@ nsresult BrowserWindow::Resize (PRUint32 width, PRUint32 height)
 // Navigate
 nsresult BrowserWindow::Navigate (nsString uri)
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Navigate\n");
-#endif
+	PRINT("BrowserWindow::Navigate\n");
+
 	this->uri = uri;
 	return this->Navigate ();
 }
 
 nsresult BrowserWindow::Navigate ()
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Navigate2\n");
-#endif
+	PRINT("BrowserWindow::Navigate2\n");
+
 	if (webNav)
 	{
 		if (uri.Length())
@@ -223,9 +221,8 @@ nsresult BrowserWindow::Navigate ()
 nsresult 
 BrowserWindow::Forward ()
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Forward\n");
-#endif
+	PRINT("BrowserWindow::Forward\n");
+
 	if (webNav)
 	{
 		PRBool canGoForward = PR_FALSE;
@@ -240,9 +237,8 @@ BrowserWindow::Forward ()
 nsresult 
 BrowserWindow::Back ()
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Back\n");
-#endif
+	PRINT("BrowserWindow::Back\n");
+
 	if (webNav)
 	{
 		PRBool canGoBack = PR_FALSE;
@@ -257,9 +253,8 @@ BrowserWindow::Back ()
 nsresult 
 BrowserWindow::Home ()
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Forward\n");
-#endif
+	PRINT("BrowserWindow::Forward\n");
+
 	//if (webNav)
 	//{
 	//	return webNav-> ();
@@ -269,9 +264,8 @@ BrowserWindow::Home ()
 
 nsresult BrowserWindow::Stop ()
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Stop\n");
-#endif
+	PRINT("BrowserWindow::Stop\n");
+
 	if (webNav)
 	{
 		return webNav->Stop (nsIWebNavigation::STOP_ALL);
@@ -281,9 +275,8 @@ nsresult BrowserWindow::Stop ()
 
 nsresult BrowserWindow::Reload (ReloadOption option)
 {
-#ifdef NS_UNIX
-	g_print("BrowserWindow::Reload\n");
-#endif
+	PRINT("BrowserWindow::Reload\n");
+
 	if (webNav)
 	{
 		switch (option)
@@ -463,7 +456,7 @@ BrowserWindow::CreateChromeWindow(
 
 
 #ifdef NS_UNIX
-	g_print("BrowserWindow::CreateChromeWindow\n");
+	PRINT("BrowserWindow::CreateChromeWindow\n");
 	NS_ENSURE_ARG_POINTER(_retval);
 
 	NativeEmbedWidget *newEmbed = nsnull;

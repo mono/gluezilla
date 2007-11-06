@@ -17,6 +17,20 @@
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkx.h>
 
+#ifdef DEBUG
+#define PRINT(str)	\
+	g_print(str)
+#define PRINT2(str, str1)	\
+	g_print(str, str1)
+#define PRINT3(str, str1, str2)	\
+	g_print(str, str1, str2)
+#else
+#define PRINT(str)
+#define PRINT2(str, str1)
+#define PRINT3(str, str1, str2)
+#endif
+
+
 #ifdef __cplusplus
 extern "C"
 {
