@@ -1,3 +1,7 @@
+2007-11-06 Andreia Gaita <avidigal@novell.com>
+
+	* configure.ac: disable debug flags when enable_optimize=yes
+
 2007-10-18  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile.am:
