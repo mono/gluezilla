@@ -2,52 +2,101 @@
   Building on Windows with the Mozilla packages
 =====================================================
 
-You'll need:
-
-* VS C++ 2003 or VS C++ 2005 or equivalent Platform SDK with C++ compiler
-
-* The latest XulRunner SDK - anything 1.8+ will do. Download it from:
-http://ftp-mozilla.netscape.com/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/sdk/xulrunner-1.8.1.3.en-US.win32.sdk.zip
-
-* glib-1.2.dll and libIDL-0.6.dll:
-http://ftp.mozilla.org/pub/mozilla.org/mozilla/source/wintools.zip
+	You'll need:
+	
+	* VS C++ 2005 or equivalent Platform SDK with C++ compiler
+	
+	* The latest XulRunner SDK - anything 1.8+ will do. Download it from:
+	http://ftp-mozilla.netscape.com/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/sdk/xulrunner-1.8.1.3.en-US.win32.sdk.zip
+	
+	* glib-1.2.dll and libIDL-0.6.dll:
+	http://ftp.mozilla.org/pub/mozilla.org/mozilla/source/wintools.zip
 
 
 ==========================================
-		Preparing the SDK
+	Preparing the SDK
 ==========================================
 
-1. Download the XulRunner SDK and unzip it in this directory. It will create a 
-	directory called "gecko-sdk-1.8.1.3"
-
-2. Copy the "xpidl.exe" file from "gecko-sdk-1.8.1.3\bin" and put it in the
-	current directory (build\).
-
-3. Download the wintools.zip file, and extract glib-1.2.dll and libIDL-0.6.dll
-	They are inside buildtools\windows\bin. Put them in the current directory (build\)
+	1. Download the XulRunner SDK and unzip it in this directory. It will create a 
+		directory called "gecko-sdk-1.8.1.3"
 	
-4. Open a command prompt, and type
-
-	make.cmd gecko-sdk-1.8.1.3
+	2. Copy the "xpidl.exe" file from "gecko-sdk-1.8.1.3\bin" and put it in the
+		current directory (build\).
 	
-	This will create three new directories:
+	3. Download the wintools.zip file, and extract glib-1.2.dll and libIDL-0.6.dll
+		They are inside buildtools\windows\bin. Put them in the current directory (build\)
+		
+	4. Open a command prompt, and type
 	
-	idl\
-	include\
-	lib\
+		make.cmd gecko-sdk-1.8.1.3
+		
+		This will create three new directories:
+		
+		idl\
+		include\
+		lib\
 		
 
 ==========================================
-		Building
+				Building
 ==========================================
 
-...
 
+Setting up the VS environment
+=============================
+
+	Setup the Visual Studio environment on a command prompt by doing one of the following:
+		
+		*	Open the Visual Studio 2005 Command Prompt, from the Microsoft Visual Studio 2005 / 
+			Visual Studio Tools menu in the Start Menu
+		
+		*	or open a normal command prompt, and run the "vcvarsall.bat" batch file, which is
+			located inside the VC\ directory on your Visual Studio installation (or Platform SDK, 
+			if you're using it instead)
+		
+		
+	
+Building from the windows command prompt
+========================================
+	
+		Go to the gluezilla\src directory, and run the following for a debug build
+		
+			nmake /f windows.mak CFG="Debug" all
+		
+		for a release build, the command is
+		
+			nmake /f windows.mak CFG="Release" all
+	
+	
+Building from the cygwin shell
+==============================
+	
+		Open cygwin from the command prompt where you previously setup the environment described above
+		by running:
+		
+			[path\to\cygwin]\cygwin.bat
+	
+		Go to the gluezilla/src directory, and run the following for a debug build
+		
+			nmake /f windows.mak CFG="Debug" all
+		
+		for a release build, the command is
+		
+			nmake /f windows.mak CFG="Release" all
+	
 
 ==========================================
-		After building
+	After building
 ==========================================
 
-To run it (but not to build), you will need the XulRunner runtime:
-http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/win32/xulrunner-1.8.1.3.en-US.win32.zip
-
+	To run an application that uses the WebBrowser control (and therefore gluezilla), you will need 
+	the XulRunner runtime. Download it from:
+	
+	http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/win32/xulrunner-1.8.1.3.en-US.win32.zip
+	
+	Unzip the XulRunner runtime, then go there and run
+	
+		xulrunner --register-user
+		
+	This will register the runtime for your user. You can use --register-global
+	to register this runtime for all users, instead

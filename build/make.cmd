@@ -5,7 +5,7 @@ md include\docshell
 md include\dom
 md lib
 copy %1\idl\*.idl idl
-copy %1\include\*.h include
+xcopy %1\include\* include /e
 copy %1\lib\* lib
 copy idl_extras\* idl
 xcopy  /E include_extras\* include

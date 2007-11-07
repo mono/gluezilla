@@ -1,5 +1,10 @@
 2007-11-06  Andreia Gaita <avidigal@novell.com>
 
+	* README.win32: update instructions to include bulding with cygwin on windows
+	* make.cmd: fix copy
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
 	* README.win32: instructions on how to setup up the sdk for building
 
 2007-09-26 Andreia Gaita <avidigal@novell.com>
