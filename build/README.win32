@@ -1,9 +1,53 @@
-If you want to run make here to extract the headers from the idl files
-on windows, you will need to add in this directory the following dlls:
+=====================================================
+  Building on Windows with the Mozilla packages
+=====================================================
 
-* glib-1.2.dll
-* libIDL-0.6.dll
+You'll need:
 
-These files are part of Mozilla's build tools for Windows:
+* VS C++ 2003 or VS C++ 2005 or equivalent Platform SDK with C++ compiler
 
+* The latest XulRunner SDK - anything 1.8+ will do. Download it from:
+http://ftp-mozilla.netscape.com/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/sdk/xulrunner-1.8.1.3.en-US.win32.sdk.zip
+
+* glib-1.2.dll and libIDL-0.6.dll:
 http://ftp.mozilla.org/pub/mozilla.org/mozilla/source/wintools.zip
+
+
+==========================================
+		Preparing the SDK
+==========================================
+
+1. Download the XulRunner SDK and unzip it in this directory. It will create a 
+	directory called "gecko-sdk-1.8.1.3"
+
+2. Copy the "xpidl.exe" file from "gecko-sdk-1.8.1.3\bin" and put it in the
+	current directory (build\).
+
+3. Download the wintools.zip file, and extract glib-1.2.dll and libIDL-0.6.dll
+	They are inside buildtools\windows\bin. Put them in the current directory (build\)
+	
+4. Open a command prompt, and type
+
+	make.cmd gecko-sdk-1.8.1.3
+	
+	This will create three new directories:
+	
+	idl\
+	include\
+	lib\
+		
+
+==========================================
+		Building
+==========================================
+
+...
+
+
+==========================================
+		After building
+==========================================
+
+To run it (but not to build), you will need the XulRunner runtime:
+http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.1.3/contrib/win32/xulrunner-1.8.1.3.en-US.win32.zip
+
