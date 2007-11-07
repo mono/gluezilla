@@ -1,5 +1,10 @@
 2007-11-06  Andreia Gaita <avidigal@novell.com>
 
+	* windows.mak: windows makefile for command line building with nmake
+	* gluezilla2k5.vcproj: add release configuration, finetune settings
+
+2007-11-06  Andreia Gaita <avidigal@novell.com>
+
 	* Disable debug messages when enable-optimize=yes (non-debug build)
 	* gluezilla.*: add access to the WebNavigation object, for future 
 			direct interface access

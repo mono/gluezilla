@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="gluezilla"
 	ProjectGUID="{56A171F9-9FBE-4859-9EA0-DC7890E19980}"
+	RootNamespace="gluezilla"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>
@@ -40,19 +41,23 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\linux\apps\mozilla-build\msys\local\include\xulrunner-1.8.1.4&quot;;&quot;D:\linux\apps\mozilla-build\msys\local\include\xulrunner-1.8.1.4\xpcom&quot;;&quot;D:\linux\apps\mozilla-build\msys\local\include\xulrunner-1.8.1.4\string&quot;;&quot;D:\linux\apps\mozilla-build\msys\local\include\xulrunner-1.8.1.4\nspr&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;XPCOM_GLUE;XPCOM_GLUE_USE_NSPR"
+				AdditionalIncludeDirectories="..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
+				PreprocessorDefinitions="XPCOM_GLUE;DEBUG;NO_BUILD_REFCNT_LOGGING"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="true"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
 				DisableLanguageExtensions="false"
+				ObjectFile="$(IntDir)\obj\"
+				ProgramDataBaseFileName="$(IntDir)\obj\"
 				BrowseInformation="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
+				DisableSpecificWarnings="4005;4996"
+				ErrorReporting="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -65,14 +70,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="embed_base_s.lib xpcomglue.lib"
+				AdditionalDependencies="xpcomglue.lib"
 				OutputFile="$(OutDir)/gluezilla.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;D:\linux\apps\mozilla-src\mozilla-2.0.0.4\mozilla\obj-xulrunner\dist\lib&quot;"
-				IgnoreDefaultLibraryNames="libcmtd"
+				AdditionalLibraryDirectories="..\build\lib"
+				IgnoreDefaultLibraryNames="MSVCRT"
 				GenerateDebugInformation="true"
-				SubSystem="2"
-				TargetMachine="1"
+				SubSystem="0"
+				TargetMachine="0"
+				ErrorReporting="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -101,23 +107,74 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
-			ConfigurationType="0"
+			OutputDirectory=".\"
+			IntermediateDirectory=".\"
+			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			>
 			<Tool
-				Name="VCNMakeTool"
-				BuildCommandLine=""
-				ReBuildCommandLine=""
-				CleanCommandLine=""
-				Output="xulembed-dll.exe"
-				PreprocessorDefinitions=""
-				IncludeSearchPath=""
-				ForcedIncludes=""
-				AssemblySearchPath=""
-				ForcedUsingAssemblies=""
-				CompileAsManaged=""
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
+				PreprocessorDefinitions="XPCOM_GLUE;NO_BUILD_REFCNT_LOGGING"
+				RuntimeLibrary="2"
+				ObjectFile="$(IntDir)\obj\"
+				ProgramDataBaseFileName="$(IntDir)\obj\"
+				DisableSpecificWarnings="4005;4996"
+				ErrorReporting="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="xpcomglue.lib advapi32.lib"
+				AdditionalLibraryDirectories="..\build\lib"
+				ErrorReporting="0"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 	</Configurations>
@@ -134,10 +191,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gluezilla.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\gtkWidget.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -161,10 +230,6 @@
 				RelativePath=".\Widget.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\gluezilla.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -180,10 +245,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\gluezilla.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gtkWidget.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -209,10 +286,6 @@
 			</File>
 			<File
 				RelativePath=".\Widget.h"
-				>
-			</File>
-			<File
-				RelativePath=".\gluezilla.h"
 				>
 			</File>
 		</Filter>
