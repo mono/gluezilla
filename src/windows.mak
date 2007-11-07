@@ -30,7 +30,7 @@ cdebug=/Od /D "DEBUG" /D "_MBCS" /RTC1 /RTCc /MDd /Gy /W3 /ZI
 cdebug=/O2 /MD
 !ENDIF 
 
-link=link.exe
+link="$(VCINSTALLDIR)\bin\link.exe"
 lflags=/NOLOGO /MANIFEST /MANIFESTFILE:".\\gluezilla.dll.intermediate.manifest" /LIBPATH:../build/lib /DLL xpcomglue.lib 
 
 !IF  "$(CFG)" == "Debug"
