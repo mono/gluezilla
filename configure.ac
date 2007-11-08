@@ -92,7 +92,7 @@ AC_ARG_ENABLE([optimize],
 				*) AC_MSG_ERROR(bad value ${enableval} for --enable-optimize) ;;
 			esac
 		],
-		[optimize=no])
+		[optimize=yes])
 
 
 dnl Remember if the user explicity set CXXFLAGS
