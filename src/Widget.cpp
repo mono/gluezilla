@@ -456,6 +456,19 @@ Widget::EventCreateNewWindow ()
 	return events->OnCreateNewWindow ();
 }
 
+void 
+Widget::EventStateChange (PRUint32 state, PRInt32 status)
+{
+	events->OnStateChange (state, status);
+}
+
+void 
+Widget::EventLocationChanged (const char * uri)
+{
+	events->OnLocationChanged (uri);
+}
+
+
 void
 Widget::EventGeneric (nsString type)
 {

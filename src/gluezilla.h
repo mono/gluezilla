@@ -130,7 +130,6 @@ extern "C"
 	{
 		void (STDCALL *OnWidgetLoaded)		();
 
-		void (STDCALL *GetControlSize)		(SizeInfo *sz);
 		void (STDCALL *OnJSStatus)			(void);
 		void (STDCALL *OnLinkStatus)		(void);
 		void (STDCALL *OnDestroyBrowser)	(void);
@@ -143,10 +142,10 @@ extern "C"
 		void (STDCALL *OnStateNetStart)		(void);
 		void (STDCALL *OnStateNetStop)		(void);
 		void (STDCALL *OnStateSpecial)		(PRUint32 stateFlags, PRInt32 status);
-		void (STDCALL *OnStateChange)		(const char *uriString, PRInt32 status, PRUint32 stateFlags);
+		void (STDCALL *OnStateChange)		(PRInt32 status, PRUint32 stateFlags);
 		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnProgressAll)		(const char *uriString, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void (STDCALL *OnLocationChanged)	(void);
+		void (STDCALL *OnLocationChanged)	(const char * url);
 		void (STDCALL *OnStatusChange)		(const char *message, PRInt32 status);
 		void (STDCALL *OnSecurityChange)	(PRUint32 state);
 		void (STDCALL *OnVisibility)		(PRBool val);

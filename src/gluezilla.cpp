@@ -266,15 +266,17 @@ gluezilla_getDomDocument (Handle *instance)
 	widget->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
 	nsCOMPtr<nsIDOMDocument> domDoc;
 	domWindow->GetDocument (getter_AddRefs(domDoc));
-	nsCOMPtr<nsIDOMHTMLDocument> htmlDoc = do_QueryInterface( domDoc );
+	nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));
 	return htmlDoc;	
+
 }
 
 NS_METHOD_(void*)
 gluezilla_getWebNavigation (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
-	return widget->browserWindow->getWebNavigation ();
+	nsCOMPtr<nsIWebNavigation> webNav (do_QueryInterface (widget->browserWindow->webBrowser));
+	return webNav;
 }
 
 NS_METHOD_(void)

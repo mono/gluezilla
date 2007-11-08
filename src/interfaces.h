@@ -76,6 +76,7 @@
 // dom
 #include "nsIDOMHTMLDocument.h"
 #include "nsIDOMDocument.h"
+#include <nsIURI.h>
 
 /* XRE API */
 //#include "xulapp/nsXULAppAPI.h" 

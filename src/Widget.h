@@ -124,6 +124,7 @@ class Widget
 		nsresult Reload (Params * params) {
 			return this->Reload (params->option);
 		}
+
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
@@ -156,7 +157,6 @@ class Widget
 		// Events
 		void EventOnWidgetLoaded	();
 
-		void GetControlSize			(SizeInfo *sz);
 		void EventJSStatus			(void);
 		void EventLinkStatus		(void);
 		void EventDestroyBrowser	(void);
@@ -169,10 +169,10 @@ class Widget
 		void EventStateNetStart		(void);
 		void EventStateNetStop		(void);
 		void EventStateSpecial		(PRUint32 stateFlags, PRInt32 status);
-		void EventStateChange		(const char *uriString, PRUint32 stateFlags, PRInt32 status);
+		void EventStateChange		(PRUint32 stateFlags, PRInt32 status);
 		void EventProgress			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void EventProgressAll		(const char *uriString, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void EventLocationChanged	(void);
+		void EventLocationChanged	(const char * url);
 		void EventStatusChange		(PRInt32 status, const char *message);
 		void EventSecurityChange	(PRUint32 state);
 		void EventVisibility		(PRBool val);
@@ -215,6 +215,8 @@ class Widget
 		CallbackBin	*events;
 
 		BrowserWindow *browserWindow;
+		nsIDOMHTMLDocument * document;
+		nsIWebNavigation * webNav;
 	private:
 		nsresult GRE_Startup ();
 		

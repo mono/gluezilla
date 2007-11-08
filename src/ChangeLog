@@ -1,3 +1,12 @@
+2007-11-08  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp: When loading, invoke events on the managed side
+	so it can track progress and url changes.
+	* gluezilla.h, Widget.h: remove unneeded events, fix parameters.
+	* interfaces.h: add nsIURI interface, OnLocationChanged needs it
+	* Widget.cpp: add StateChange and LocationChange implementations to
+	call up to the managed side.
+
 2007-11-06  Andreia Gaita <avidigal@novell.com>
 
 	* windows.mak: windows makefile for command line building with nmake

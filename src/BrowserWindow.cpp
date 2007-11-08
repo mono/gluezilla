@@ -497,10 +497,13 @@ BrowserWindow::CreateChromeWindow(
 /* void onStateChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in unsigned long aStateFlags, in nsresult aStatus); */
 NS_IMETHODIMP 
 BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
-										   PRUint32 progressStateFlags, nsresult status)
-{
-	bool netstop = ( progressStateFlags & STATE_STOP ) && ( progressStateFlags & STATE_IS_NETWORK ) && ( status == NS_OK );
-	bool windowstop = ( progressStateFlags & STATE_STOP ) && ( progressStateFlags & STATE_IS_WINDOW ) && ( status == NS_OK );
+										   PRUint32 state, nsresult status)
+{	
+
+	owner->EventStateChange(status, state);
+	
+	bool netstop = ( state & STATE_STOP ) && ( state & STATE_IS_NETWORK ) && ( status == NS_OK );
+	bool windowstop = ( state & STATE_STOP ) && ( state & STATE_IS_WINDOW ) && ( status == NS_OK );
 	
 	if (netstop)
 	{
@@ -650,9 +653,12 @@ BrowserWindow::OnProgressChange(nsIWebProgress *aWebProgress, nsIRequest *aReque
 
 /* void onLocationChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in nsIURI aLocation); */
 NS_IMETHODIMP 
-BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsIURI *aLocation)
+BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsIURI *location)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+	nsCString url;
+	location->GetSpec (url);
+    owner->EventLocationChanged(url.BeginReading ());
+	return NS_OK;
 }
 
 /* void onStatusChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in nsresult aStatus, in wstring aMessage); */
