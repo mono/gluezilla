@@ -500,7 +500,7 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 										   PRUint32 state, nsresult status)
 {	
 
-	owner->EventStateChange(status, state);
+//	owner->EventStateChange(status, state);
 	
 	bool netstop = ( state & STATE_STOP ) && ( state & STATE_IS_NETWORK ) && ( status == NS_OK );
 	bool windowstop = ( state & STATE_STOP ) && ( state & STATE_IS_WINDOW ) && ( status == NS_OK );
