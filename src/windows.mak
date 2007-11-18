@@ -27,17 +27,19 @@ cflags=/D "XPCOM_GLUE" /D "NO_BUILD_REFCNT_LOGGING" /D "_WINDLL" /FD /EHsc /Fo"$
 !IF  "$(CFG)" == "Debug"
 cdebug=/Od /D "DEBUG" /D "_MBCS" /RTC1 /RTCc /MDd /Gy /W3 /ZI 
 !ELSE 
-cdebug=/O2 /MD
+cdebug=/O2 /MT
 !ENDIF 
 
 link="$(VCINSTALLDIR)\bin\link.exe"
-lflags=/NOLOGO /MANIFEST /MANIFESTFILE:".\\gluezilla.dll.intermediate.manifest" /LIBPATH:../build/lib /DLL xpcomglue.lib 
+lflags=/LIBPATH:../build/lib /DLL xpcomglue.lib /NOLOGO /MANIFEST /MANIFESTFILE:".\\gluezilla.dll.intermediate.manifest" 
 
 !IF  "$(CFG)" == "Debug"
-ldebug=/NODEFAULTLIB:MSVCRT /DEBUG /PDB:"gluezilla.pdb"  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
+ldebug=/NODEFAULTLIB:msvcrt /DEBUG /PDB:"gluezilla.pdb"  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
 !ELSE 
-ldebug=/INCREMENTAL advapi32.lib
+ldebug=/DLL /NODEFAULTLIB:"libcmt" advapi32.lib
 !ENDIF 
+
+mt="$(VCINSTALLDIR)\bin\mt.exe"
 
 src= \
 	SecurityWarningsDialogs.cpp \
@@ -68,3 +70,4 @@ all : gluezilla.dll
 
 gluezilla.dll:: gluezilla.obj $(objs)
   $(link) $(ldebug) $(lflags) -out:gluezilla.dll $(objs)
+  $(mt) /outputresource:".\gluezilla.dll;#2" /manifest ".\gluezilla.dll.intermediate.manifest"

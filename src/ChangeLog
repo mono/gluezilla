@@ -1,3 +1,8 @@
+2007-11-18  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: embed manifest file in a release build so windows 
+	actually loads dependencies correctly
+
 2007-11-09  Andreia Gaita <avidigal@novell.com>
 
 	* BrowserWindow.cpp: Disable event calls on OnStateChange, it's unstable
