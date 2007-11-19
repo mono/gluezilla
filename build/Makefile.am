@@ -1,3 +1,5 @@
+EXTRA_DIST = make.cmd README.win32 ChangeLog
+
 GECKOSDK 	= ./gecko-sdk
 GECKOIDL 	= $(GECKOSDK)/idl
 GECKOBIN 	= $(GECKOSDK)/bin

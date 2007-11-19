@@ -1,1 +1,1 @@
-SUBDIRS = src tests/browser
+SUBDIRS = build src tests/browser

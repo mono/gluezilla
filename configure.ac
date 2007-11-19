@@ -148,6 +148,7 @@ AC_SUBST(GLUEZILLA_LIBS)
 
 AC_OUTPUT([
 Makefile
+build/Makefile
 src/Makefile
 tests/browser/Makefile
 ])
