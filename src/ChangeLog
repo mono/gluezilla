@@ -1,3 +1,7 @@
+2007-11-19  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile.am: include windows.mak in EXTRA_DIST
+
 2007-11-18  Andreia Gaita <avidigal@novell.com>
 
 	* windows.mak: embed manifest file in a release build so windows 
