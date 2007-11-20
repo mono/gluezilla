@@ -1,4 +1,4 @@
-EXTRA_DIST = make.cmd README.win32 ChangeLog
+EXTRA_DIST = make.cmd README.win32 ChangeLog idl_extras/* include_extras/widget/* include_extras/xpcom/*
 
 GECKOSDK 	= ./gecko-sdk
 GECKOIDL 	= $(GECKOSDK)/idl
