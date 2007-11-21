@@ -25,7 +25,7 @@ libgluezilla_la_SOURCES = 	\
 
 libgluezilla_la_LIBADD = $(GLUEZILLA_LIBS)
 
-EXTRA_DIST = FastDelegate.h
+EXTRA_DIST = FastDelegate.h windows.mak
 
 debug:
 	LD_LIBRARY_PATH=.libs gdb 

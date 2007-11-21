@@ -1,3 +1,8 @@
+2007-11-19  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: rename to Makefile.am, and add EXTRA_DIST
+	to include necessary bits for building on win32
+
 2007-11-06  Andreia Gaita <avidigal@novell.com>
 
 	* README.win32: update instructions to include bulding with cygwin on windows
