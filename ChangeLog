@@ -1,3 +1,7 @@
+2007-12-14  Andreia Gaita <avidigal@novell.com>
+
+	* configure.ac: add gthread for g_thread_init (doh)
+
 2007-11-19  Wade Berrier  <wberrier@novell.com>
 
 	* configure.ac:

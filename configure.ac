@@ -123,15 +123,15 @@ XPCOM_PKGS="$mozilla_xpcom"
 NSPR_PKGS="$mozilla_nspr"
 
 if test "x${local}" != xno ; then
-	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 gthread-2.0 $NSPR_PKGS`
 	GLUEZILLA_CFLAGS="${GLUEZILLA_CFLAGS} -I../build/include"
 	
-	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 gthread-2.0 $NSPR_PKGS`
 	
 	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L../build/lib"
 else
-	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 $XPCOM_PKGS`
-	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 $NSPR_PKGS`
+	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 gthread-2.0 $XPCOM_PKGS`
+	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 gthread-2.0 $NSPR_PKGS`
 	XULLIBDIR=`pkg-config --variable=libdir $XPCOM_PKGS`
 	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L${XULLIBDIR}"
 fi
