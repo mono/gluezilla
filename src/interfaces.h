@@ -78,6 +78,9 @@
 #include "nsIDOMDocument.h"
 #include <nsIURI.h>
 
+// proxying objects between threads - another non-frozen interface :/
+#include "xpcom/nsIProxyObjectManager.h"
+
 /* XRE API */
 //#include "xulapp/nsXULAppAPI.h" 
 

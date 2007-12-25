@@ -226,8 +226,8 @@ extern "C"
 	NS_EXPORT_(int) gluezilla_shutdown (Handle *instance);
 
 	// DOM
-	NS_EXPORT_(void*) gluezilla_getDomDocument (Handle *instance);
-	NS_EXPORT_(void*) gluezilla_getWebNavigation (Handle *instance);
+	NS_EXPORT_(nsIDOMHTMLDocument*) gluezilla_getDomDocument (Handle *instance);
+	NS_EXPORT_(nsIWebNavigation*) gluezilla_getWebNavigation (Handle *instance);
 
 	// string helper methods
 	NS_EXPORT_(nsString*) gluezilla_stringInit ();
@@ -235,6 +235,7 @@ extern "C"
 	NS_EXPORT_(PRUnichar*) gluezilla_stringGet(nsString & str);
 	NS_EXPORT_(void) gluezilla_stringSet(nsString & str, PRUnichar * text);
 
+	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager(Handle *instance);
 
 
 #ifdef __cplusplus
@@ -266,6 +267,13 @@ struct Params {
 		struct {
 			FocusOption focus;
 		};
+		struct {
+			nsIDOMHTMLDocument * document;
+		};
+		struct {
+			nsIWebNavigation * navigation;
+		};
+
 	};
 };
 

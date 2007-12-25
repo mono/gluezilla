@@ -257,26 +257,35 @@ gluezilla_shutdown (Handle *instance)
 }
 
 
-NS_METHOD_(void*)
+NS_METHOD_(nsIDOMHTMLDocument*)
 gluezilla_getDomDocument (Handle *instance)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);
-	nsCOMPtr<nsIDOMWindow> domWindow;
-	
-	widget->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
-	nsCOMPtr<nsIDOMDocument> domDoc;
-	domWindow->GetDocument (getter_AddRefs(domDoc));
-	nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));
-	return htmlDoc;	
 
+	Params * p = new Params ();
+	p->name = "getDocument";
+	p->instance = widget;
+
+	nsresult result = widget->BeginInvoke (p);
+	nsIDOMHTMLDocument * ret (p->document);
+	if (p)
+		delete (p);
+	return ret;
 }
 
-NS_METHOD_(void*)
+NS_METHOD_(nsIWebNavigation*)
 gluezilla_getWebNavigation (Handle *instance)
 {
-	Widget *widget = reinterpret_cast<Widget *> (instance);
-	nsCOMPtr<nsIWebNavigation> webNav (do_QueryInterface (widget->browserWindow->webBrowser));
-	return webNav;
+	Widget * widget = reinterpret_cast<Widget *> (instance);
+	Params * p = new Params ();
+	p->name = "getNavigation";
+	p->instance = widget;
+
+	nsresult result = widget->BeginInvoke (p);
+	nsIWebNavigation * ret (p->navigation);
+	if (p)
+		delete (p);
+	return ret;
 }
 
 NS_METHOD_(void)
@@ -321,6 +330,15 @@ gluezilla_stringSet(nsString & str, PRUnichar * text)
 {
 	str.Assign (text);
 }
+
+NS_METHOD_(nsIServiceManager*)
+gluezilla_getServiceManager(Handle *instance)
+{
+	nsCOMPtr<nsIServiceManager> servMan;
+	NS_GetServiceManager (getter_AddRefs (servMan));
+	return servMan;
+}
+
 
 #ifdef NS_UNIX
 void *

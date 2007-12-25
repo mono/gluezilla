@@ -296,6 +296,7 @@ Widget::Resize (PRUint32 width, PRUint32 height)
 #ifdef NS_UNIX
 	gtk_widget_set_usize(reinterpret_cast<GtkWidget*>(this->hwnd), width, height);
 #endif
+
 	return NS_ERROR_FAILURE;
 }
 
@@ -363,6 +364,60 @@ Widget::Reload (ReloadOption option)
 	return NS_ERROR_FAILURE;
 }
 
+// proxy getters
+
+nsresult
+Widget::GetProxyForDocument ()
+{
+	if (!this->document)
+	{
+		nsCOMPtr<nsIDOMWindow> domWindow;		
+		this->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
+		nsCOMPtr<nsIDOMDocument> domDoc;
+		domWindow->GetDocument (getter_AddRefs(domDoc));
+		nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));
+
+		nsresult rv;
+		nsIProxyObjectManager * proxyManager = nsnull;
+		rv = CallGetService (NS_XPCOMPROXY_CONTRACTID, &proxyManager);
+		if (NS_FAILED (rv)) return rv;
+		
+		rv = proxyManager->GetProxyForObject (nsnull, 
+											  nsIDOMHTMLDocument::GetIID(), 
+											  htmlDoc, 
+											  PROXY_SYNC | PROXY_ALWAYS, 
+											  getter_AddRefs (this->document));
+		// GetProxyForObject addrefs the document yet again, so let it go
+		NS_RELEASE (htmlDoc);
+	}
+	
+	return NS_OK;
+}
+
+nsresult
+Widget::GetProxyForNavigation ()
+{
+	if (!this->webNav)
+	{
+		nsCOMPtr<nsIWebNavigation> navigation (do_QueryInterface (this->browserWindow->webBrowser));
+
+		nsresult rv;
+		nsIProxyObjectManager * proxyManager = nsnull;
+		rv = CallGetService (NS_XPCOMPROXY_CONTRACTID, &proxyManager);
+		if (NS_FAILED (rv)) return rv;
+
+		rv = proxyManager->GetProxyForObject (nsnull, 
+											  nsIWebNavigation::GetIID(), 
+											  navigation, 
+											  PROXY_SYNC | PROXY_ALWAYS, 
+											  getter_AddRefs (this->webNav));
+		
+		// GetProxyForObject addrefs the navigation yet again, so let it go
+		NS_RELEASE (navigation);
+
+	}
+	return NS_OK;
+}
 // EVENTS
 
 PRBool

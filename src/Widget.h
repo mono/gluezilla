@@ -60,6 +60,9 @@ class Widget
 			delegates["home"].bind (this, &Widget::Home);
 			delegates["stop"].bind (this, &Widget::Stop);
 			delegates["reload"].bind (this, &Widget::Reload);
+			
+			delegates["getDocument"].bind (this, &Widget::GetDocument);
+			delegates["getNavigation"].bind (this, &Widget::GetNavigation);
 		}
 		~Widget() {
 			int a = 0;
@@ -125,6 +128,17 @@ class Widget
 			return this->Reload (params->option);
 		}
 
+		nsresult GetDocument (Params * params) {
+			this->GetProxyForDocument ();
+			params->document = this->document;
+			return NS_OK;
+		}
+
+		nsresult GetNavigation (Params * params) {
+			this->GetProxyForNavigation ();
+			params->navigation = this->webNav;
+			return NS_OK;
+		}
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
@@ -148,9 +162,11 @@ class Widget
 		nsresult Home ();
 		nsresult Stop ();
 		nsresult Reload (ReloadOption option);
-
-
+	
 		// getters
+		nsresult GetProxyForDocument ();
+		nsresult GetProxyForNavigation ();
+		
 		Handle * getHandle () { return this->hwnd;}
 
 
@@ -215,17 +231,13 @@ class Widget
 		CallbackBin	*events;
 
 		BrowserWindow *browserWindow;
-		nsIDOMHTMLDocument * document;
-		nsIWebNavigation * webNav;
+		nsCOMPtr<nsIDOMHTMLDocument> document;
+		nsCOMPtr<nsIWebNavigation> webNav;
 	private:
 		nsresult GRE_Startup ();
 		
-		//XRE_InitEmbeddingType XRE_InitEmbedding;
-		//XRE_TermEmbeddingType XRE_TermEmbedding;
 
 		std::map<const char*, WidgetDelegate> delegates;
-//		nsCOMPtr<nsIWebBrowser> gWebBrowser;
-
 		
 		static PRUint32 widgetCount;
 
@@ -236,7 +248,5 @@ class Widget
 	
 		// the appshell we have created
 		nsIAppShell *appShell;
-
-
 };
 #endif

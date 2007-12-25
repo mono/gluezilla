@@ -1,3 +1,9 @@
+2007-12-25  Andreia Gaita <avidigal@novell.com>
+	
+	* Wrap mozilla dom objects around proxies to allow winforms to call 
+	methods	accross threads (from the winforms ui thread to the main 
+	mozilla ui thread).
+
 2007-11-19  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile.am: include windows.mak in EXTRA_DIST
