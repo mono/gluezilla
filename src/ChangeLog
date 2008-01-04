@@ -1,3 +1,8 @@
+2008-01-04  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.cpp: fix calls between threads, now that we can actually
+	go through this from different places.
+
 2007-12-25  Andreia Gaita <avidigal@novell.com>
 	
 	* Wrap mozilla dom objects around proxies to allow winforms to call 

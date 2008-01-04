@@ -19,6 +19,7 @@
 static gboolean gtk_invoke (gpointer data);
 
 // from gluezilla.cpp
+extern GThread    *ui_thread_id;
 extern GAsyncQueue *queueout;
 #endif	
 
@@ -32,8 +33,14 @@ nsresult
 Widget::BeginInvoke (Params * params)
 {
 	#ifdef NS_UNIX
-	g_idle_add (gtk_invoke, params);
-	g_async_queue_pop (queueout);
+	GThread *thread = g_thread_self ();
+	if (thread != ui_thread_id) {
+		g_idle_add (gtk_invoke, params);
+		g_async_queue_pop (queueout);
+	} else {
+		EndInvoke (params);
+	}
+		
 	return NS_OK;
 	#else
 	return EndInvoke (params);
