@@ -63,6 +63,7 @@ class Widget
 			
 			delegates["getDocument"].bind (this, &Widget::GetDocument);
 			delegates["getNavigation"].bind (this, &Widget::GetNavigation);
+			delegates["getProxyForObject"].bind (this, &Widget::GetProxyForObject);
 		}
 		~Widget() {
 			int a = 0;
@@ -139,6 +140,14 @@ class Widget
 			params->navigation = this->webNav;
 			return NS_OK;
 		}
+
+		nsresult GetProxyForObject (Params * params) {
+			nsCOMPtr<nsISupports> result;
+			this->GetProxyForObject (params->iid, params->object, getter_AddRefs(result));
+
+			NS_ADDREF(params->result = result);
+			return NS_OK;
+		}
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
@@ -166,6 +175,7 @@ class Widget
 		// getters
 		nsresult GetProxyForDocument ();
 		nsresult GetProxyForNavigation ();
+		nsresult GetProxyForObject (REFNSIID iid, nsISupports *object, void **result);
 		
 		Handle * getHandle () { return this->hwnd;}
 

@@ -236,8 +236,9 @@ extern "C"
 	NS_EXPORT_(void) gluezilla_stringSet(nsString & str, PRUnichar * text);
 
 	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager(Handle *instance);
-
-
+	
+	NS_EXPORT_(void) gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object, nsISupports ** result);
+	
 #ifdef __cplusplus
 }
 #endif				/* __cplusplus */
@@ -272,6 +273,11 @@ struct Params {
 		};
 		struct {
 			nsIWebNavigation * navigation;
+		};
+		struct {
+			nsIID iid;
+			nsISupports * object;
+			nsISupports * result;
 		};
 
 	};

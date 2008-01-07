@@ -38,9 +38,8 @@ Widget::BeginInvoke (Params * params)
 		g_idle_add (gtk_invoke, params);
 		g_async_queue_pop (queueout);
 	} else {
-		EndInvoke (params);
+		return EndInvoke (params);
 	}
-		
 	return NS_OK;
 	#else
 	return EndInvoke (params);
@@ -374,6 +373,28 @@ Widget::Reload (ReloadOption option)
 // proxy getters
 
 nsresult
+Widget::GetProxyForObject (REFNSIID iid, nsISupports *object, void **result)
+{
+	nsresult rv;
+	nsIProxyObjectManager * proxyManager = nsnull;
+	rv = CallGetService (NS_XPCOMPROXY_CONTRACTID, &proxyManager);
+	if (NS_FAILED (rv)) return rv;
+	
+	rv = proxyManager->GetProxyForObject (nsnull, 
+										  iid, 
+										  object, 
+										  PROXY_SYNC | PROXY_ALWAYS, 
+										  result);
+	if (NS_FAILED (rv)) return rv;
+
+	// GetProxyForObject addrefs the object yet again, so let it go
+	// Note: The docs recommend releasing the object since the proxy refs it, 
+	// but I'm getting wrong refcounts if I do, so for now it's off
+	// NS_RELEASE (object);
+	return rv;
+}
+
+nsresult
 Widget::GetProxyForDocument ()
 {
 	if (!this->document)
@@ -382,20 +403,8 @@ Widget::GetProxyForDocument ()
 		this->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
 		nsCOMPtr<nsIDOMDocument> domDoc;
 		domWindow->GetDocument (getter_AddRefs(domDoc));
-		nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));
-
-		nsresult rv;
-		nsIProxyObjectManager * proxyManager = nsnull;
-		rv = CallGetService (NS_XPCOMPROXY_CONTRACTID, &proxyManager);
-		if (NS_FAILED (rv)) return rv;
-		
-		rv = proxyManager->GetProxyForObject (nsnull, 
-											  nsIDOMHTMLDocument::GetIID(), 
-											  htmlDoc, 
-											  PROXY_SYNC | PROXY_ALWAYS, 
-											  getter_AddRefs (this->document));
-		// GetProxyForObject addrefs the document yet again, so let it go
-		NS_RELEASE (htmlDoc);
+		nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));		
+		return GetProxyForObject (nsIDOMHTMLDocument::GetIID(), htmlDoc, getter_AddRefs (this->document));
 	}
 	
 	return NS_OK;
@@ -407,21 +416,7 @@ Widget::GetProxyForNavigation ()
 	if (!this->webNav)
 	{
 		nsCOMPtr<nsIWebNavigation> navigation (do_QueryInterface (this->browserWindow->webBrowser));
-
-		nsresult rv;
-		nsIProxyObjectManager * proxyManager = nsnull;
-		rv = CallGetService (NS_XPCOMPROXY_CONTRACTID, &proxyManager);
-		if (NS_FAILED (rv)) return rv;
-
-		rv = proxyManager->GetProxyForObject (nsnull, 
-											  nsIWebNavigation::GetIID(), 
-											  navigation, 
-											  PROXY_SYNC | PROXY_ALWAYS, 
-											  getter_AddRefs (this->webNav));
-		
-		// GetProxyForObject addrefs the navigation yet again, so let it go
-		NS_RELEASE (navigation);
-
+		return GetProxyForObject (nsIWebNavigation::GetIID(), navigation, getter_AddRefs (this->webNav));
 	}
 	return NS_OK;
 }

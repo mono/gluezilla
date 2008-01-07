@@ -1,3 +1,16 @@
+2008-01-06  Andreia Gaita <avidigal@novell.com>
+
+	* Widget.h, Widget.cpp, gluezilla.h, gluezilla.cpp: Add method to get
+	proxies for any object. It's not enough to use proxies for the top
+	document object, as any other object retrieved through it with xpcom
+	will not come proxied.
+
+	Note: interface marshalling will addref objects asap, which happens 
+	before we can proxy them properly, so the addrefs and releases will
+	happen on the wrong thread. Things only go wrong if the object is
+	manipulated on the wrong thread and if that forces a gui update, 
+	though, so it's not (too) bad.
+
 2008-01-04  Andreia Gaita <avidigal@novell.com>
 
 	* Widget.cpp: fix calls between threads, now that we can actually

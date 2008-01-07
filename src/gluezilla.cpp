@@ -339,6 +339,26 @@ gluezilla_getServiceManager(Handle *instance)
 	return servMan;
 }
 
+NS_METHOD_(void)
+gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object, nsISupports ** result)
+{
+	Widget *widget = reinterpret_cast<Widget *> (instance);
+
+	Params * p = new Params ();
+	p->name = "getProxyForObject";
+	p->instance = widget;
+	p->object = object;
+	p->iid = iid;
+
+	nsresult rv = widget->BeginInvoke (p);
+
+	NS_ADDREF(*result = p->result);
+	NS_RELEASE (p->result);
+
+	if (p)
+		delete (p);
+	return;
+}
 
 #ifdef NS_UNIX
 void *
