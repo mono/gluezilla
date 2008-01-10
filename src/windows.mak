@@ -41,6 +41,12 @@ ldebug=/DLL /NODEFAULTLIB:"libcmt" advapi32.lib
 
 mt="$(VCINSTALLDIR)\bin\mt.exe"
 
+!IF  "$(CFG)" == "Debug"
+manifest=".\gluezilla.dll.nonsp1.debug.manifest"
+!ELSE 
+manifest=".\gluezilla.dll.nonsp1.manifest"
+!ENDIF 
+
 src= \
 	SecurityWarningsDialogs.cpp \
 	PromptService.cpp \
@@ -70,4 +76,4 @@ all : gluezilla.dll
 
 gluezilla.dll:: gluezilla.obj $(objs)
   $(link) $(ldebug) $(lflags) -out:gluezilla.dll $(objs)
-  $(mt) /outputresource:".\gluezilla.dll;#2" /manifest ".\gluezilla.dll.intermediate.manifest"
+  $(mt) /outputresource:".\gluezilla.dll;#2" /manifest "$(manifest)"

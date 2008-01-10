@@ -1,3 +1,13 @@
+2008-01-10  Andreia Gaita <avidigal@novell.com>
+
+	* gluezilla.dll.nonsp1.manifest, gluezilla.dll.nonsp1.debug.manifest:
+	custom manifests that reference the original (non sp1) crt so that
+	gluezilla can run on un-updated XPs even if compiled with an SP1
+	platform SDK.
+	
+	* windows.mak: Ignore the generated manifest file, and use our own
+	manifest files instead.
+	
 2008-01-06  Andreia Gaita <avidigal@novell.com>
 
 	* Widget.h, Widget.cpp, gluezilla.h, gluezilla.cpp: Add method to get
