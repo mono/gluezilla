@@ -1,3 +1,7 @@
+2008-01-10  Wade Berrier  <wberrier@novell.com>
+
+	* configure.ac: version bump -> 1.2.6.1
+
 2007-11-19  Wade Berrier  <wberrier@novell.com>
 
 	* configure.ac:
