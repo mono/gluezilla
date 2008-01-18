@@ -397,28 +397,19 @@ Widget::GetProxyForObject (REFNSIID iid, nsISupports *object, void **result)
 nsresult
 Widget::GetProxyForDocument ()
 {
-	if (!this->document)
-	{
-		nsCOMPtr<nsIDOMWindow> domWindow;		
-		this->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
-		nsCOMPtr<nsIDOMDocument> domDoc;
-		domWindow->GetDocument (getter_AddRefs(domDoc));
-		nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));		
-		return GetProxyForObject (nsIDOMHTMLDocument::GetIID(), htmlDoc, getter_AddRefs (this->document));
-	}
-	
-	return NS_OK;
+	nsCOMPtr<nsIDOMWindow> domWindow;		
+	this->browserWindow->webBrowser->GetContentDOMWindow( getter_AddRefs (domWindow) );
+	nsCOMPtr<nsIDOMDocument> domDoc;
+	domWindow->GetDocument (getter_AddRefs(domDoc));
+	nsCOMPtr<nsIDOMHTMLDocument> htmlDoc (do_QueryInterface( domDoc ));		
+	return GetProxyForObject (nsIDOMHTMLDocument::GetIID(), htmlDoc, getter_AddRefs (this->document));
 }
 
 nsresult
 Widget::GetProxyForNavigation ()
 {
-	if (!this->webNav)
-	{
-		nsCOMPtr<nsIWebNavigation> navigation (do_QueryInterface (this->browserWindow->webBrowser));
-		return GetProxyForObject (nsIWebNavigation::GetIID(), navigation, getter_AddRefs (this->webNav));
-	}
-	return NS_OK;
+	nsCOMPtr<nsIWebNavigation> navigation (do_QueryInterface (this->browserWindow->webBrowser));
+	return GetProxyForObject (nsIWebNavigation::GetIID(), navigation, getter_AddRefs (this->webNav));
 }
 // EVENTS
 

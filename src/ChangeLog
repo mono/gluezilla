@@ -1,5 +1,9 @@
 2008-01-18  Andreia Gaita <avidigal@novell.com>
 
+	* Widget.cpp: don't cache navigation and document objects.
+
+2008-01-18  Andreia Gaita <avidigal@novell.com>
+
 	* gluezilla.cpp, gluezilla.h, Widget.h: add platform support
 	* BrowserWindow.cpp, interfaces.h: Use specific widget define instead
 	of generic os define to detect gtk
