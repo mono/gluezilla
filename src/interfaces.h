@@ -84,6 +84,9 @@
 /* XRE API */
 //#include "xulapp/nsXULAppAPI.h" 
 
+// Mozilla configuration to get compile settings
+#include "mozilla-config.h"
+
 #define NS_FROZENCALL
 #define XRE_API(type, name, params) \
   typedef type (NS_FROZENCALL * name##Type) params; \

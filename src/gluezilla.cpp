@@ -12,7 +12,7 @@
 #include "gluezilla.h"
 #include "Widget.h"
 
-#ifdef NS_UNIX
+#ifdef MOZ_WIDGET_GTK2
 #include "gtkWidget.h"
 GThread    *ui_thread_id;
 GAsyncQueue *queuein;
@@ -25,17 +25,22 @@ gluezilla_debug_startup ()
 }
 
 NS_METHOD_(Handle*)
-gluezilla_init (CallbackBin *events, const char * startDir, const char * dataDir)
+gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, const char * dataDir, Platform * mozPlatform)
 {
-#ifdef NS_UNIX
-	g_type_init();	
-	if (!g_thread_supported ()) g_thread_init (NULL);
+#ifdef MOZ_WIDGET_GTK2
+	if (platform == Winforms) {
+		g_type_init();	
+		if (!g_thread_supported ()) g_thread_init (NULL);
 
-	queuein = g_async_queue_new ();
-	queueout = g_async_queue_new ();
-	
-	ui_thread_id = g_thread_create (gtk_startup, NULL, TRUE, NULL);
-	g_async_queue_pop (queueout);
+		queuein = g_async_queue_new ();
+		queueout = g_async_queue_new ();
+		
+		ui_thread_id = g_thread_create (gtk_startup, NULL, TRUE, NULL);
+		g_async_queue_pop (queueout);
+	}
+	*mozPlatform = Gtk;
+#else ifdef XP_WIN32
+	*mozPlatform = Winforms;
 #endif
 
 	Widget *widget = new Widget (strdup(startDir), strdup(dataDir));
@@ -44,6 +49,7 @@ gluezilla_init (CallbackBin *events, const char * startDir, const char * dataDir
 	p->name = "init";
 	p->instance = widget;
 	p->events = events;
+	p->platform = platform;
 
 	nsresult result = widget->BeginInvoke (p);
 	if (p)

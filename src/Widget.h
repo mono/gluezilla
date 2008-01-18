@@ -255,6 +255,8 @@ class Widget
 		
 		PRUint32 width;
 		PRUint32 height;
+
+		Platform platform;
 	
 		// the appshell we have created
 		nsIAppShell *appShell;

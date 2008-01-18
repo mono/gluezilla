@@ -21,7 +21,7 @@
 #define STDCALL 
 #endif
 
-#ifdef NS_UNIX
+#ifdef MOZ_WIDGET_GTK2
 	#ifdef DEBUG
 		#define PRINT(str)	\
 			g_print(str)
@@ -124,7 +124,11 @@ extern "C"
 		STD_OK_CANCEL_BUTTONS 	= 513
 	} DialogButtonFlags;
 
-
+	typedef enum
+	{
+		Winforms = 1,
+		Gtk = 2
+	} Platform;
 
 	typedef struct _CallbackBin
 	{
@@ -204,7 +208,7 @@ extern "C"
 	// initialization
 	NS_EXPORT_(void) gluezilla_debug_startup ();
 	
-	NS_EXPORT_(Handle *) gluezilla_init (CallbackBin *events, const char * startDir, const char * dataDir);
+	NS_EXPORT_(Handle *) gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, const char * dataDir, Platform * mozPlatform);
 	NS_EXPORT_(int) gluezilla_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height);
 
 	// layout
@@ -250,6 +254,7 @@ struct Params {
 
 	const char * name;
 	Widget * instance;
+	
 	union {
 		struct {
 			char * uri;
@@ -261,6 +266,7 @@ struct Params {
 		};
 		struct {
 			CallbackBin *events;
+			Platform platform;
 		};
 		struct {
 			ReloadOption option;

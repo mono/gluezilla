@@ -18,7 +18,7 @@
 
 // for getting the native mozilla drawing handle
 
-#ifdef NS_UNIX
+#ifdef MOZ_WIDGET_GTK2
 #include "gtkWidget.h"
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
