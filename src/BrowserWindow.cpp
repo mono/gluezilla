@@ -57,6 +57,7 @@ BrowserWindow::BrowserWindow (void)
 nsresult
 BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 {
+	PRINT("BrowserWindow::Create\n");
 	nsresult result;
 
 	webBrowser = do_CreateInstance( NS_WEBBROWSER_CONTRACTID );
@@ -115,14 +116,12 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 	baseWindow->SetVisibility( PR_TRUE );
 
 	webNav = do_QueryInterface( webBrowser, &result );
-	if ( NS_FAILED( result ) || ! webNav )
-	{
+	if ( NS_FAILED( result ) || ! webNav ) {
 	    return NS_ERROR_FAILURE;
 	}
 
 
-    if ( webBrowser )
-    {
+    if ( webBrowser ) {
 		// I really hope we don't need this, it calls in nsIWidget.h which calls
 		// in a bunch of local includes we don't want
 /*		
@@ -151,6 +150,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 // Initialization
 nsresult BrowserWindow::RegisterComponents ()
 {
+	PRINT("BrowserWindow::RegisterComponents\n");
 	nsCOMPtr<nsIComponentRegistrar> compReg;
 	nsresult rv = NS_GetComponentRegistrar(getter_AddRefs(compReg));
 	NS_ENSURE_SUCCESS(rv, rv);
@@ -179,6 +179,7 @@ nsresult BrowserWindow::RegisterComponents ()
 // Layout
 nsresult BrowserWindow::Focus ()
 {
+	PRINT2("BrowserWindow::Focus - isFocused=%d\n",isFocused);
 	if (!isFocused) {
 		isFocused = PR_TRUE;
 		SetFocus ();
@@ -204,10 +205,8 @@ nsresult BrowserWindow::Navigate ()
 {
 	PRINT("BrowserWindow::Navigate2\n");
 
-	if (webNav)
-	{
-		if (uri.Length())
-		{
+	if (webNav) {
+		if (uri.Length()) {
 			webNav->LoadURI( (const PRUnichar*)uri.get(),
 				nsIWebNavigation::LOAD_FLAGS_NONE,
 					nsnull, nsnull, nsnull );
@@ -223,8 +222,7 @@ BrowserWindow::Forward ()
 {
 	PRINT("BrowserWindow::Forward\n");
 
-	if (webNav)
-	{
+	if (webNav)	{
 		PRBool canGoForward = PR_FALSE;
 		webNav->GetCanGoForward(&canGoForward);
 		if (canGoForward)
@@ -239,8 +237,7 @@ BrowserWindow::Back ()
 {
 	PRINT("BrowserWindow::Back\n");
 
-	if (webNav)
-	{
+	if (webNav) {
 		PRBool canGoBack = PR_FALSE;
 		webNav->GetCanGoBack(&canGoBack);
 		if (canGoBack)
@@ -277,10 +274,8 @@ nsresult BrowserWindow::Reload (ReloadOption option)
 {
 	PRINT("BrowserWindow::Reload\n");
 
-	if (webNav)
-	{
-		switch (option)
-		{
+	if (webNav) {
+		switch (option) {
 			case RELOAD_NONE:
 				return webNav->Reload (nsIWebNavigation::LOAD_FLAGS_NONE);
 				break;
@@ -350,10 +345,10 @@ nsresult BrowserWindow::OnMouse (nsCOMPtr <nsIDOMMouseEvent> mouseEvent, nsEmbed
 
 	if (type.Equals(NS_LITERAL_STRING("click")))
 		ret = owner->EventMouseClick (mouseInfo, modifiers);
-	else if (type.Equals (NS_LITERAL_STRING("mousedown")))
-	{
-		if (!isFocused)
+	else if (type.Equals (NS_LITERAL_STRING("mousedown"))) {
+		if (!isFocused) {			
 			owner->EventFocus ();
+		}
 		ret = owner->EventMouseDown (mouseInfo, modifiers);
 	}
 	else if (type.Equals (NS_LITERAL_STRING("mouseup")))
@@ -394,10 +389,8 @@ NS_INTERFACE_MAP_END
 NS_IMETHODIMP 
 BrowserWindow::GetInterface(const nsIID & aIID, void * *aInstancePtr)
 {
-	if ( aIID.Equals( NS_GET_IID( nsIDOMWindow ) ) )
-	{
-		if ( webBrowser )
-		{
+	if ( aIID.Equals( NS_GET_IID( nsIDOMWindow ) ) ) {
+		if ( webBrowser ) {
 			return webBrowser->GetContentDOMWindow( ( nsIDOMWindow** )aInstancePtr );
 		};
 
@@ -454,7 +447,6 @@ BrowserWindow::CreateChromeWindow(
 		return NS_OK;
 	}
 
-
 #ifdef NS_UNIX
 	PRINT("BrowserWindow::CreateChromeWindow\n");
 	NS_ENSURE_ARG_POINTER(_retval);
@@ -499,29 +491,24 @@ NS_IMETHODIMP
 BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 										   PRUint32 state, nsresult status)
 {	
-
-//	owner->EventStateChange(status, state);
+	owner->EventStateChange(status, state);
 	
 	bool netstop = ( state & STATE_STOP ) && ( state & STATE_IS_NETWORK ) && ( status == NS_OK );
 	bool windowstop = ( state & STATE_STOP ) && ( state & STATE_IS_WINDOW ) && ( status == NS_OK );
 	
-	if (netstop)
-	{
+	if (netstop) {
 		PRBool visibility;
 		this->GetVisibility(&visibility);
 		if (visibility)
 			this->SetVisibility(PR_TRUE);
 	}
-	if ( windowstop )
-	{
+	if ( windowstop ) {
 		// page load is complete so add event listeners
 		nsCOMPtr< nsIDOMWindow > window;
 		nsresult result = progress->GetDOMWindow( getter_AddRefs( window ) );
-		if ( result == NS_OK )
-		{
+		if ( result == NS_OK ) {
 			nsCOMPtr< nsIDOMEventTarget > target = do_QueryInterface( window );
-			if ( target )
-			{
+			if ( target ) {
 				target->AddEventListener(NS_LITERAL_STRING( "focus"), this, PR_TRUE );
 				target->AddEventListener(NS_LITERAL_STRING( "blur"), this, PR_TRUE );
 				target->AddEventListener(NS_LITERAL_STRING( "input"), this, PR_TRUE );
@@ -551,6 +538,7 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 				target->AddEventListener(NS_LITERAL_STRING( "deactivate"), this, PR_TRUE );
 				target->AddEventListener(NS_LITERAL_STRING( "focusin"), this, PR_TRUE );
 				target->AddEventListener(NS_LITERAL_STRING( "focusout"), this, PR_TRUE );
+				PRINT("Setting up listeners\n");
 			}
 		}
 	}
@@ -562,6 +550,7 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 NS_IMETHODIMP 
 BrowserWindow::HandleEvent(nsIDOMEvent *domEvent)
 {
+	PRINT("HandleEvent\n");
 	PRBool ret = PR_FALSE;
 	nsCOMPtr <nsIDOMKeyEvent> keyEvent = do_QueryInterface(domEvent);
 	nsCOMPtr <nsIDOMMouseEvent> mouseEvent = do_QueryInterface(domEvent);
@@ -571,18 +560,18 @@ BrowserWindow::HandleEvent(nsIDOMEvent *domEvent)
 
 	if (keyEvent)
 	{
+		PRINT("HandleEvent::Key\n");
 		ret = OnKey (keyEvent, type);
 	}
 	else if (mouseEvent)
 	{
+		PRINT("HandleEvent::Mouse\n");
 		ret = OnMouse (mouseEvent, type);	
 	}
-	//else
-	//{
-
-	owner->EventGeneric(type);
-
-	//}
+	else {
+		PRINT("HandleEvent::Generic\n");
+		owner->EventGeneric(type);
+	}
 
 	if (ret) {
 		domEvent->StopPropagation();

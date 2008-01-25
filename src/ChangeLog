@@ -1,3 +1,7 @@
+2008-01-24  Andreia Gaita <avidigal@novell.com>
+
+	* BrowserWindow.cpp (OnStateChange): send progress events up
+
 2008-01-18  Andreia Gaita <avidigal@novell.com>
 
 	* Widget.cpp: don't cache navigation and document objects.
