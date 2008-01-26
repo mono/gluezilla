@@ -1,3 +1,7 @@
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
+	* make.cmd, Makefile: Add missing header generation
+
 2007-11-19  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: rename to Makefile.am, and add EXTRA_DIST

@@ -3,6 +3,7 @@ md include
 md include\widget
 md include\docshell
 md include\dom
+md include\xpcom
 md lib
 copy %1\idl\*.idl idl
 xcopy %1\include\* include /e
@@ -21,3 +22,5 @@ xpidl.exe -I %1\idl\ -m header idl\nsIDOMKeyEvent.idl
 move nsIDOMKeyEvent.h include\dom\
 xpidl.exe -I %1\idl\ -m header idl\nsIWebNavigation.idl
 move nsIWebNavigation.h include\docshell\
+xpidl.exe -I %1\idl\ -m header idl\nsIProxyObjectManager.idl
+move nsIProxyObjectManager.h include\xpcom\

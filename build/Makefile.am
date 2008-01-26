@@ -10,8 +10,8 @@ XPIDL = $(GECKOBIN)/xpidl
 WGET = wget
 
 MAKEHEADER = $(XPIDL) -I ./idl/ -m header
-
 ALL: clean make-headers
+
     
 make-folders: 
 	-mkdir ./idl/ 
@@ -19,6 +19,7 @@ make-folders:
 	-mkdir ./include/widget
 	-mkdir ./include/docshell
 	-mkdir ./include/dom
+	-mkdir ./include/xpcom
 	-mkdir ./lib/
 	cp $(GECKOIDL)/*.idl ./idl/
 	cp $(GECKOINCLUDE)/*.h ./include/
@@ -42,3 +43,5 @@ make-headers: make-folders
 	mv nsIDOMKeyEvent.h ./include/dom/
 	$(MAKEHEADER) ./idl/nsIWebNavigation.idl
 	mv nsIWebNavigation.h ./include/docshell/
+	$(MAKEHEADER) ./idl/nsIProxyObjectManager.idl
+	mv nsIProxyObjectManager.h ./include/xpcom/
