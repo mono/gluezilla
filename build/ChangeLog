@@ -1,5 +1,9 @@
 2008-01-26  Andreia Gaita <avidigal@novell.com>
 
+	* idl_extras/nsIProxyObjectManager.idl: Added
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
 	* make.cmd, Makefile: Add missing header generation
 
 2007-11-19  Wade Berrier  <wberrier@novell.com>
