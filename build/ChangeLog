@@ -1,5 +1,12 @@
 2008-01-26  Andreia Gaita <avidigal@novell.com>
 
+	* idl_extras/nsIProxyObjectManager.idl: comment out nsProxyEvent header, 
+	it brings a bunch of useless dependencies when the only thing that's really
+	needed are three #defines.
+	* make.cmd: clean out directories before rebuilding.
+
+2008-01-26  Andreia Gaita <avidigal@novell.com>
+
 	* idl_extras/nsIProxyObjectManager.idl: Added
 
 2008-01-26  Andreia Gaita <avidigal@novell.com>

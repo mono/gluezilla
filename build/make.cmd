@@ -1,3 +1,7 @@
+del idl /F /Q /S
+del include /F /Q /S
+del lib /F /Q /S
+
 md idl
 md include
 md include\widget
