@@ -24,6 +24,18 @@ extern GAsyncQueue *queueout;
 #endif	
 
 
+// nsIProxyObjectManager includes nsProxyEvent.h, which brings
+// all kinds of ugly dependencies with it, completely unnecessarily
+// since the only thing that is really needed in that header are these
+// three definitions. Hence, the idl that is included in the build/idl_extras
+// has the include commented out. If we are building against that idl/header, 
+// we use these definitions instead.
+#ifndef PROXY_SYNC
+#define PROXY_SYNC    0x0001  // acts just like a function call.
+#define PROXY_ASYNC   0x0002  // fire and forget.  This will return immediately and you will lose all return information.
+#define PROXY_ALWAYS  0x0004   // ignore check to see if the eventQ is on the same thread as the caller, and alway return a proxied object.
+#endif
+
 PRUint32 Widget::widgetCount = 0;
 
 static NS_DEFINE_CID(kAppShellCID, NS_APPSHELL_CID);

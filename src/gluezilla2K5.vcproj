@@ -111,6 +111,7 @@
 			IntermediateDirectory=".\"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -131,7 +132,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
 				PreprocessorDefinitions="XPCOM_GLUE;NO_BUILD_REFCNT_LOGGING"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				ObjectFile="$(IntDir)\obj\"
 				ProgramDataBaseFileName="$(IntDir)\obj\"
 				DisableSpecificWarnings="4005;4996"
@@ -150,6 +151,8 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="xpcomglue.lib advapi32.lib"
 				AdditionalLibraryDirectories="..\build\lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames="libcmt"
 				ErrorReporting="0"
 			/>
 			<Tool
@@ -295,6 +298,10 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
+		<File
+			RelativePath=".\ChangeLog"
+			>
+		</File>
 		<File
 			RelativePath=".\Makefile"
 			>
