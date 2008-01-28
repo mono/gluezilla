@@ -21,25 +21,6 @@
 #define STDCALL 
 #endif
 
-#ifdef MOZ_WIDGET_GTK2
-	#ifdef DEBUG
-		#define PRINT(str)	\
-			g_print(str)
-		#define PRINT2(str, str1)	\
-			g_print(str, str1)
-		#define PRINT3(str, str1, str2)	\
-			g_print(str, str1, str2)
-	#else
-		#define PRINT(str)
-		#define PRINT2(str, str1)
-		#define PRINT3(str, str1, str2)
-	#endif
-#else //TODO: define these for non-unix
-	#define PRINT(str)
-	#define PRINT2(str, str1)
-	#define PRINT3(str, str1, str2)
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -138,15 +119,20 @@ extern "C"
 		void (STDCALL *OnLinkStatus)		(void);
 		void (STDCALL *OnDestroyBrowser)	(void);
 		void (STDCALL *OnSizeTo)			(PRInt32 x, PRInt32 y);
+
 		void (STDCALL *OnFocusNext)			(void);
 		void (STDCALL *OnFocusPrev)			(void);
+		
 		void (STDCALL *OnTitleChanged)		(void);
+		
 		void (STDCALL *OnShowTooltipWindow)	(const char *tipText, PRInt32 x, PRInt32 y);
 		void (STDCALL *OnHideTooltipWindow)	(void);
+		
 		void (STDCALL *OnStateNetStart)		(void);
 		void (STDCALL *OnStateNetStop)		(void);
 		void (STDCALL *OnStateSpecial)		(PRUint32 stateFlags, PRInt32 status);
 		void (STDCALL *OnStateChange)		(PRInt32 status, PRUint32 stateFlags);
+		
 		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnProgressAll)		(const char *uriString, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnLocationChanged)	(const char * url);
@@ -167,11 +153,10 @@ extern "C"
 		PRBool (STDCALL *OnMouseOut)		(MouseInfo mouseInfo, ModifierKeys modifiers);
 
 		PRBool (STDCALL *OnActivate)		(void);
-		PRBool (STDCALL *OnFocusIn)			(void);
-		PRBool (STDCALL *OnFocusOut)		(void);
+		PRBool (STDCALL *OnFocus)			(void);
+		PRBool (STDCALL *OnBlur)		(void);
 
 		PRBool (STDCALL *OnBeforeURIOpen)	(const char* url);
-		void (STDCALL *OnFocus)				(void);
 		PRBool (STDCALL *OnCreateNewWindow)	(void);
 
 		void (STDCALL *OnAlert)				(const PRUnichar * title, const PRUnichar * text);
@@ -199,6 +184,10 @@ extern "C"
 											 PRUint32 count, const PRUnichar ** list, 
 											 PRInt32 * retVal);
 
+
+		void (STDCALL *OnLoad)			();
+		void (STDCALL *OnUnload)		();
+		
 		void (STDCALL *OnGeneric)			(PRUnichar* type);
 
 	} CallbackBin;				

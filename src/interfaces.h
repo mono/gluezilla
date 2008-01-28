@@ -25,6 +25,7 @@
 #include <docshell/nsIWebNavigation.h>
 #include <docshell/nsIDocShellTreeItem.h>
 #include <nsIEmbeddingSiteWindow.h>
+#include <webbrwsr/nsIEmbeddingSiteWindow2.h>
 
 // for NS_APPSHELL_CID
 #include <widget/nsWidgetsCID.h>
@@ -67,7 +68,7 @@
 
 // Directory service provider definitions (LocationProvider)
 #include "nsDirectoryServiceDefs.h"
-#include "nsAppDirectoryServiceDefs.h"
+#include <xpcom/nsAppDirectoryServiceDefs.h>
 #include "nsIProperties.h"
 
 // psm initialization
@@ -104,4 +105,29 @@ XRE_API(void, XRE_TermEmbedding, ())
 XRE_API(PRBool,
 		GRE_GetCurrentProcessDirectory,
 		(char* buffer))
+
+
+#ifdef MOZ_WIDGET_GTK2
+#include <gtk/gtk.h>
+#include <gtk/gtkwindow.h>
+#include <gdk/gdkx.h>
+
+	#ifdef DEBUG
+		#define PRINT(str)	\
+			g_print(str)
+		#define PRINT2(str, str1)	\
+			g_print(str, str1)
+		#define PRINT3(str, str1, str2)	\
+			g_print(str, str1, str2)
+	#else
+		#define PRINT(str)
+		#define PRINT2(str, str1)
+		#define PRINT3(str, str1, str2)
+	#endif
+#else //TODO: define these for non-unix
+	#define PRINT(str)
+	#define PRINT2(str, str1)
+	#define PRINT3(str, str1, str2)
+#endif
+
 #endif

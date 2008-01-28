@@ -221,7 +221,7 @@ Widget::Init(Handle *hwnd, PRUint32 width, PRUint32 height)
 nsresult 
 Widget::CreateBrowserWindow()
 {
-	SHOUT("Widget::CreateBrowserWindow!\n");
+	PRINT("Widget::CreateBrowserWindow!\n");
 	browserWindow->setParent( this );
 	nsresult ret = browserWindow->Create( this->hwnd, this->width, this->height );
 	Handle * nativeMozWindow = browserWindow->getNativeWin ();
@@ -237,7 +237,8 @@ Widget::CreateBrowserWindow()
 nsresult 
 Widget::Focus (FocusOption focus)
 {
-	SHOUT("Widget::Focus!\n");
+	PRINT("Widget::Focus!\n");
+	this->Activate ();
 	if (focus == FOCUS_NONE)
 		this->browserWindow->Focus ();
 	else {
@@ -263,14 +264,15 @@ Widget::Focus (FocusOption focus)
 nsresult
 Widget::Blur ()
 {
-	SHOUT("Widget::Blur!\n");
+	PRINT("Widget::Blur!\n");
+	this->Deactivate ();
 	return NS_OK;
 }
 
 nsresult 
 Widget::Activate ()
 {
-	SHOUT("Widget::Activate!\n");
+	PRINT("Widget::Activate!\n");
 	nsresult rv;
 	nsCOMPtr<nsIWebBrowser> webBrowser;
 	rv = browserWindow->GetWebBrowser(getter_AddRefs(webBrowser));
@@ -288,16 +290,16 @@ Widget::Activate ()
 nsresult 
 Widget::Deactivate ()
 {
-	SHOUT("Widget::Deactivate!\n");
+	PRINT("Widget::Deactivate!\n");
 	nsresult rv;
 	nsCOMPtr<nsIWebBrowser> webBrowser;
 	rv = browserWindow->GetWebBrowser(getter_AddRefs(webBrowser));
 	if (NS_FAILED(rv))
-	return NS_ERROR_FAILURE;
+		return NS_ERROR_FAILURE;
 
 	nsCOMPtr<nsIWebBrowserFocus> webBrowserFocus(do_QueryInterface(webBrowser));
 	if (!webBrowserFocus)
-	return NS_ERROR_FAILURE;
+		return NS_ERROR_FAILURE;
 
 	webBrowserFocus->Deactivate();
 	return NS_OK;
@@ -307,7 +309,7 @@ Widget::Deactivate ()
 nsresult 
 Widget::Resize (PRUint32 width, PRUint32 height)
 {
-	SHOUT("Widget::Resize!\n");
+	PRINT("Widget::Resize!\n");
 	browserWindow->SetDimensions(nsIEmbeddingSiteWindow::DIM_FLAGS_POSITION |
 								nsIEmbeddingSiteWindow::DIM_FLAGS_SIZE_INNER,
 								0, 0, width, height);
@@ -323,7 +325,7 @@ Widget::Resize (PRUint32 width, PRUint32 height)
 nsresult 
 Widget::Navigate (const char * uri)
 {
-	SHOUT("Widget::Navigate!\n");	
+	PRINT("Widget::Navigate!\n");	
 	return this->Navigate (NS_ConvertUTF8toUTF16(uri));
 	return NS_ERROR_FAILURE;
 }
@@ -331,7 +333,7 @@ Widget::Navigate (const char * uri)
 nsresult 
 Widget::Navigate (nsString uri)
 {
-	SHOUT("Widget::Navigate!\n");
+	PRINT("Widget::Navigate!\n");
 	if (browserWindow)
 		return browserWindow->Navigate (uri);
 	return NS_ERROR_FAILURE;
@@ -340,7 +342,7 @@ Widget::Navigate (nsString uri)
 nsresult 
 Widget::Forward ()
 {
-	SHOUT("Widget::Forward!\n");
+	PRINT("Widget::Forward!\n");
 	if (browserWindow)
 		return browserWindow->Forward ();
 	return NS_ERROR_FAILURE;
@@ -349,7 +351,7 @@ Widget::Forward ()
 nsresult 
 Widget::Back ()
 {
-	SHOUT("Widget::Back!\n");
+	PRINT("Widget::Back!\n");
 	if (browserWindow)
 		return browserWindow->Back ();
 	return NS_ERROR_FAILURE;
@@ -358,7 +360,7 @@ Widget::Back ()
 nsresult 
 Widget::Home ()
 {
-	SHOUT("Widget::Home!\n");
+	PRINT("Widget::Home!\n");
 	if (browserWindow)
 		return browserWindow->Home ();
 	return NS_ERROR_FAILURE;
@@ -367,7 +369,7 @@ Widget::Home ()
 nsresult 
 Widget::Stop ()
 {
-	SHOUT("Widget::Stop!\n");
+	PRINT("Widget::Stop!\n");
 	if (browserWindow)
 		return browserWindow->Stop ();
 	return NS_ERROR_FAILURE;
@@ -376,7 +378,7 @@ Widget::Stop ()
 nsresult 
 Widget::Reload (ReloadOption option)
 {
-	SHOUT("Widget::Reload!\n");
+	PRINT("Widget::Reload!\n");
 	if (browserWindow)
 		return browserWindow->Reload (option);
 	return NS_ERROR_FAILURE;
@@ -487,27 +489,9 @@ Widget::EventActivate ()
 }
 
 PRBool 
-Widget::EventFocusIn ()
-{
-	return events->OnFocusIn ();
-}
-
-PRBool 
-Widget::EventFocusOut ()
-{
-	return events->OnFocusOut ();
-}
-
-PRBool 
 Widget::EventBeforeURIOpen (const char * uri)
 {
 	return events->OnBeforeURIOpen (uri);
-}
-
-void
-Widget::EventFocus ()
-{
-	events->OnFocus ();
 }
 
 PRBool 

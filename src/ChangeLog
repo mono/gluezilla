@@ -1,3 +1,27 @@
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
+	* EventListener.*: Move event handlers out of BrowserWindow and into
+	a separate handler class. This class calls events directly (does not
+	go through Widget, which was a pointless call anyway). Add focus. blur,
+	load and unload handlers.
+
+	* BrowserWindow.*: Relay events to the EventListener class, and save
+	instances on a list for later release.
+	Use nsIEmbeddingSiteWindow2 interface to get blur events.
+	Fire Status text change events.
+
+	* Widget.*: Call Activate() on focus, and Deactivate() on blur. 
+	According to the docs, it should only be called if the browser is shown, 
+	but focus doesn't work correctly without it.
+	Remove Event* methods that are not needed anymore (events are called
+	directly through EventListener)
+
+	* Makefile.am: Added new classes (and a missing header).
+
+	* interfaces.h: move print macros to here
+
+	* gluezilla.h: Add Load and Unload, rearrange callbacks
+
 2008-01-26  Andreia Gaita <avidigal@novell.com>
 
 	* Widget.cpp: Add proxy defines in case we're building against a local 

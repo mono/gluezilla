@@ -31,6 +31,7 @@
 using namespace fastdelegate;
 typedef FastDelegate1<Params*, nsresult> WidgetDelegate;
 
+class BrowserWindow;
 
 class Widget 
 {
@@ -216,12 +217,9 @@ class Widget
 
 
 		PRBool EventActivate		(void);
-		PRBool EventFocusIn			(void);
-		PRBool EventFocusOut		(void);
 
 		PRBool EventBeforeURIOpen	(const char* url);
 
-		void EventFocus				(void);
 		PRBool EventCreateNewWindow	(void);
 
 		void EventGeneric			(nsString type);
@@ -240,7 +238,7 @@ class Widget
 
 		CallbackBin	*events;
 
-		BrowserWindow *browserWindow;
+		BrowserWindow * browserWindow;
 		nsCOMPtr<nsIDOMHTMLDocument> document;
 		nsCOMPtr<nsIWebNavigation> webNav;
 	private:

@@ -301,66 +301,31 @@ nsresult BrowserWindow::Show ()
 
 
 // Events
-nsresult BrowserWindow::OnKey (nsCOMPtr <nsIDOMKeyEvent> keyEvent, nsEmbedString type)
+nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * type, const char * name) 
 {
-	nsresult ret = PR_FALSE;
-	ModifierKeys mkey;
-	keyEvent->GetAltKey (&(mkey.altKey));
-	keyEvent->GetCtrlKey (&(mkey.ctrlKey));
-	keyEvent->GetMetaKey (&(mkey.metaKey));
-	keyEvent->GetShiftKey (&(mkey.shiftKey));
-
-	KeyInfo keyInfo;
-	keyEvent->GetCharCode (&(keyInfo.charCode));
-	keyEvent->GetKeyCode (&(keyInfo.keyCode));
-
-	// Return TRUE from your signal handler to mark the event as consumed.
-	if (type.Equals(NS_LITERAL_STRING("keyup")))
-		ret = owner->EventDomKeyUp (keyInfo, mkey);
-	else if (type.Equals(NS_LITERAL_STRING("keydown")))
-		ret = owner->EventDomKeyDown (keyInfo, mkey);
-	else if (type.Equals(NS_LITERAL_STRING("keypress")))
-		ret = owner->EventDomKeyPress (keyInfo, mkey);
-	return PR_FALSE;
+	char string[strlen(type) + strlen(name) + 1];
+	sprintf(string, "%s:%s", type, name);
+	listeners [string] = new EventListener ();
+	listeners [string]->target = target;
+	listeners [string]->owner = this;
+	listeners [string]->events = owner->events;
+	nsresult rv = target->AddEventListener (NS_ConvertUTF8toUTF16 (name, strlen (name)), listeners[string], PR_TRUE);
+	return rv;
 }
 
-nsresult BrowserWindow::OnMouse (nsCOMPtr <nsIDOMMouseEvent> mouseEvent, nsEmbedString type)
+nsresult BrowserWindow::DettachEvent (const char * type, const char * name) 
 {
-	nsresult ret = PR_FALSE;
-	ModifierKeys modifiers;
-	MouseInfo mouseInfo;
-	mouseEvent->GetAltKey (&(modifiers.altKey));
-	mouseEvent->GetCtrlKey (&(modifiers.ctrlKey));
-	mouseEvent->GetMetaKey (&(modifiers.metaKey));
-	mouseEvent->GetShiftKey (&(modifiers.shiftKey));
-
-	
-	mouseEvent->GetClientX (&(mouseInfo.clientX));
-	mouseEvent->GetClientY (&(mouseInfo.clientY));
-	mouseEvent->GetScreenX (&(mouseInfo.screenX));
-	mouseEvent->GetScreenY (&(mouseInfo.screenY));
-
-
-	mouseEvent->GetButton (&(mouseInfo.button));
-
-	if (type.Equals(NS_LITERAL_STRING("click")))
-		ret = owner->EventMouseClick (mouseInfo, modifiers);
-	else if (type.Equals (NS_LITERAL_STRING("mousedown"))) {
-		if (!isFocused) {			
-			owner->EventFocus ();
-		}
-		ret = owner->EventMouseDown (mouseInfo, modifiers);
+	char string[strlen(type) + strlen(name) + 1];
+	sprintf(string, "%s:%s", type, name);
+	if (listeners[string] != nsnull) {
+		nsresult rv = listeners[string]->target->RemoveEventListener (NS_ConvertUTF8toUTF16 (name, strlen (name)), listeners[string], PR_TRUE);
+		listeners.erase (string);
+		return rv;
 	}
-	else if (type.Equals (NS_LITERAL_STRING("mouseup")))
-		ret = owner->EventMouseUp (mouseInfo, modifiers);
-	else if (type.Equals (NS_LITERAL_STRING("dblclick")))
-		ret = owner->EventMouseDoubleClick (mouseInfo, modifiers);
-	else if (type.Equals (NS_LITERAL_STRING("mouseover")))
-		ret = owner->EventMouseOver (mouseInfo, modifiers);
-	else if (type.Equals (NS_LITERAL_STRING("mouseout")))
-		ret = owner->EventMouseOut (mouseInfo, modifiers);
-	return PR_FALSE;
+	return NS_OK;
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -374,12 +339,10 @@ NS_INTERFACE_MAP_BEGIN(BrowserWindow)
 	NS_INTERFACE_MAP_ENTRY(nsIWebProgressListener)
 	NS_INTERFACE_MAP_ENTRY(nsIURIContentListener)
 	NS_INTERFACE_MAP_ENTRY(nsSupportsWeakReference)
-	NS_INTERFACE_MAP_ENTRY(nsIDOMEventListener)
 	NS_INTERFACE_MAP_ENTRY_AMBIGUOUS(nsISupports, nsIWebProgressListener)
 	NS_INTERFACE_MAP_ENTRY(nsIWindowCreator)
 	NS_INTERFACE_MAP_ENTRY(nsIEmbeddingSiteWindow)
-	//NS_INTERFACE_MAP_ENTRY(nsIPromptService)
-//	NS_INTERFACE_MAP_ENTRY(nsISecurityWarningDialogs)
+	NS_INTERFACE_MAP_ENTRY(nsIEmbeddingSiteWindow2)
 NS_INTERFACE_MAP_END
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -406,7 +369,7 @@ NS_IMETHODIMP
 BrowserWindow::SetStatus(PRUint32 statusType, const PRUnichar *status)
 {
 	statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
-
+	owner->events->OnStatusChange (statusText, 100);
 	return NS_OK;
 }
 
@@ -502,87 +465,47 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 		if (visibility)
 			this->SetVisibility(PR_TRUE);
 	}
+	
 	if ( windowstop ) {
-		// page load is complete so add event listeners
 		nsCOMPtr< nsIDOMWindow > window;
 		nsresult result = progress->GetDOMWindow( getter_AddRefs( window ) );
-		if ( result == NS_OK ) {
-			nsCOMPtr< nsIDOMEventTarget > target = do_QueryInterface( window );
-			if ( target ) {
-				target->AddEventListener(NS_LITERAL_STRING( "focus"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "blur"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "input"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "select"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "change"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "submit"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "reset"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "keyup"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "keydown"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "keypress"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "abort"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "error"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "load"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "unload"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "mousedown"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "mouseup"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "click"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "dblclick"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "mouseover"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "mouseout"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "mousemove"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "popupshowing"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "popupshown"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "popuphiding"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "popuphidden"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "activate"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "deactivate"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "focusin"), this, PR_TRUE );
-				target->AddEventListener(NS_LITERAL_STRING( "focusout"), this, PR_TRUE );
-				PRINT("Setting up listeners\n");
-			}
-		}
+		nsCOMPtr< nsIDOMEventTarget > target = do_QueryInterface( window );
+		AttachEvent ( target, "window", "load" );
+		AttachEvent ( target, "window", "unload" );
+		AttachEvent ( target, "window", "focus" );
+		AttachEvent ( target, "window", "blur" );
+		AttachEvent ( target, "window", "abort" );
+		AttachEvent ( target, "window", "error" );
+		AttachEvent ( target, "window", "activate" );
+		AttachEvent ( target, "window", "deactivate" );
+		AttachEvent ( target, "window", "focusin" );
+		AttachEvent ( target, "window", "focusout" );		
+
+		AttachEvent ( target, "window", "input" );
+		AttachEvent ( target, "window", "select" );
+		AttachEvent ( target, "window", "change" );
+		AttachEvent ( target, "window", "submit" );
+		AttachEvent ( target, "window", "reset" );
+		AttachEvent ( target, "window", "keyup" );
+		
+		AttachEvent ( target, "window", "keydown" );
+		AttachEvent ( target, "window", "keypress" );
+
+		AttachEvent ( target, "window", "click" );
+		AttachEvent ( target, "window", "dblclick" );
+		AttachEvent ( target, "window", "mousedown" );
+		AttachEvent ( target, "window", "mouseup" );
+		AttachEvent ( target, "window", "mouseover" );
+		AttachEvent ( target, "window", "mouseout" );
+		
+		AttachEvent ( target, "window", "popupshowing" );
+		AttachEvent ( target, "window", "popupshown" );
+		AttachEvent ( target, "window", "popuphiding" );
+		AttachEvent ( target, "window", "popuphidden" );
+		
 	}
-	
 	return NS_OK;
 }
-
-/* void handleEvent (in nsIDOMEvent event); */
-NS_IMETHODIMP 
-BrowserWindow::HandleEvent(nsIDOMEvent *domEvent)
-{
-	PRINT("HandleEvent\n");
-	PRBool ret = PR_FALSE;
-	nsCOMPtr <nsIDOMKeyEvent> keyEvent = do_QueryInterface(domEvent);
-	nsCOMPtr <nsIDOMMouseEvent> mouseEvent = do_QueryInterface(domEvent);
-
-	nsEmbedString type;
-	domEvent->GetType (type);
-
-	if (keyEvent)
-	{
-		PRINT("HandleEvent::Key\n");
-		ret = OnKey (keyEvent, type);
-	}
-	else if (mouseEvent)
-	{
-		PRINT("HandleEvent::Mouse\n");
-		ret = OnMouse (mouseEvent, type);	
-	}
-	else {
-		PRINT("HandleEvent::Generic\n");
-		owner->EventGeneric(type);
-	}
-
-	if (ret) {
-		domEvent->StopPropagation();
-		domEvent->PreventDefault();
-	}
-
-
-	return ret;
-}
-
-
 
 // TODO
 
@@ -654,7 +577,9 @@ BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aReque
 NS_IMETHODIMP 
 BrowserWindow::OnStatusChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsresult aStatus, const PRUnichar *aMessage)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+	statusText = (char *)NS_ConvertUTF16toUTF8( aMessage ).get();
+	owner->events->OnStatusChange (statusText, aStatus);
+    return NS_OK;
 }
 
 /* void onSecurityChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in unsigned long aState); */
@@ -718,7 +643,7 @@ BrowserWindow::SetParentContentListener(nsIURIContentListener * aParentContentLi
 
 
 
-/* nsIEmbeddingSiteWindow
+// nsIEmbeddingSiteWindow
 
 /* void setDimensions (in unsigned long flags, in long x, in long y, in long cx, in long cy); */
 NS_IMETHODIMP 
@@ -753,6 +678,13 @@ NS_IMETHODIMP
 BrowserWindow::SetFocus()
 {
     return baseWindow->SetFocus();
+}
+
+// nsIEmbeddingSiteWindow2
+NS_IMETHODIMP 
+BrowserWindow::Blur()
+{
+    return NS_OK;
 }
 
 /* attribute boolean visibility; */

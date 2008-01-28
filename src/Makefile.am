@@ -18,10 +18,13 @@ libgluezilla_la_SOURCES = 	\
 	BrowserWindow.h	\
 	Widget.cpp	\
 	Widget.h	\
+	EventListener.cpp	\
+	EventListener.h	\
 	gtkWidget.cpp	\
 	gtkWidget.h	\
 	gluezilla.cpp	\
-	gluezilla.h
+	gluezilla.h   \
+	FastDelegate.h
 
 libgluezilla_la_LIBADD = $(GLUEZILLA_LIBS)
 

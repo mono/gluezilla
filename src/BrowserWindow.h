@@ -9,12 +9,16 @@
  * 
  */
 
-#include "Widget.h"
 
 #ifndef _BROWSERWINDOW_H_
 #define _BROWSERWINDOW_H_
 
+#include "Widget.h"
+#include "EventListener.h"
+#include <map>
+
 class Widget;
+class EventListener;
 
 class BrowserWindow :	
 	public nsIInterfaceRequestor,
@@ -23,9 +27,9 @@ class BrowserWindow :
 	public nsIWebProgressListener,
 	public nsIURIContentListener,
 	public nsSupportsWeakReference,
-	public nsIDOMEventListener,
 	public nsIWindowCreator,
-	public nsIEmbeddingSiteWindow
+//	public nsIEmbeddingSiteWindow,
+	public nsIEmbeddingSiteWindow2
 {
 
  public:
@@ -43,9 +47,9 @@ class BrowserWindow :
 	NS_DECL_NSIWEBBROWSERCHROMEFOCUS
 	NS_DECL_NSIWEBPROGRESSLISTENER
 	NS_DECL_NSIURICONTENTLISTENER
-	NS_DECL_NSIDOMEVENTLISTENER
 	NS_DECL_NSIWINDOWCREATOR
 	NS_DECL_NSIEMBEDDINGSITEWINDOW
+	NS_DECL_NSIEMBEDDINGSITEWINDOW2
 
 
 	// initialization
@@ -66,11 +70,6 @@ class BrowserWindow :
 	nsresult Show ();
 	nsresult Resize (PRUint32 width, PRUint32 height);
 
-	// events
-	nsresult OnKey (nsCOMPtr <nsIDOMKeyEvent> keyEvent, nsEmbedString type);
-	nsresult OnMouse (nsCOMPtr <nsIDOMMouseEvent> mouseEvent, nsEmbedString type);
-
-
 	// getters / setters
 	Handle * getNativeWin () { return this->nativeMozWidget;}
 
@@ -81,6 +80,9 @@ class BrowserWindow :
 	nsString getUri () { return this->uri; };
 
 	nsCOMPtr<nsIWebNavigation> getWebNavigation () { return this->webNav; }
+	
+	nsresult AttachEvent (nsIDOMEventTarget * target, const char * type, const char * name);
+	nsresult DettachEvent (const char * type, const char * name);
 
 	Widget * owner;
 	nsCOMPtr<nsIWebBrowser> 	webBrowser;
@@ -98,8 +100,8 @@ private:
 	PRBool isFocused;
 
 	Handle * nativeMozWidget;
-
-
+	
+	std::map<const char*, EventListener *> listeners;
 };
   
 
