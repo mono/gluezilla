@@ -20,6 +20,7 @@ make-folders:
 	-mkdir ./include/docshell
 	-mkdir ./include/dom
 	-mkdir ./include/xpcom
+	-mkdir ./include/webbrwsr
 	-mkdir ./lib/
 	cp $(GECKOIDL)/*.idl ./idl/
 	cp $(GECKOINCLUDE)/*.h ./include/
@@ -45,3 +46,6 @@ make-headers: make-folders
 	mv nsIWebNavigation.h ./include/docshell/
 	$(MAKEHEADER) ./idl/nsIProxyObjectManager.idl
 	mv nsIProxyObjectManager.h ./include/xpcom/
+	$(MAKEHEADER) ./idl/nsIEmbeddingSiteWindow2.idl
+	mv nsIEmbeddingSiteWindow2.h ./include/webbrwsr/
+

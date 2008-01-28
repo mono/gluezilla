@@ -8,6 +8,7 @@ md include\widget
 md include\docshell
 md include\dom
 md include\xpcom
+md include\webbrwsr
 md lib
 copy %1\idl\*.idl idl
 xcopy %1\include\* include /e
@@ -28,3 +29,6 @@ xpidl.exe -I %1\idl\ -m header idl\nsIWebNavigation.idl
 move nsIWebNavigation.h include\docshell\
 xpidl.exe -I %1\idl\ -m header idl\nsIProxyObjectManager.idl
 move nsIProxyObjectManager.h include\xpcom\
+xpidl.exe -I %1\idl\ -m header idl\nsIEmbeddingSiteWindow2.idl
+move nsIEmbeddingSiteWindow2.h include\webbrwsr\
+
