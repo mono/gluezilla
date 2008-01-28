@@ -1,5 +1,9 @@
 2008-01-28  Andreia Gaita <avidigal@novell.com>
 
+	* windows.mak: Updated with new EventListener files
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
 	* EventListener.cpp, EventListener.h: Forgot to add them :p
 
 2008-01-28  Andreia Gaita <avidigal@novell.com>

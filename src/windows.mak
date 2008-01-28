@@ -51,6 +51,7 @@ src= \
 	SecurityWarningsDialogs.cpp \
 	PromptService.cpp \
 	LocationProvider.cpp \
+	EventListener.cpp \
 	BrowserWindow.cpp \
 	Widget.cpp \
 	gluezilla.cpp
@@ -59,6 +60,7 @@ objs= \
 	"$(OBJDIR)\SecurityWarningsDialogs.obj" \
 	"$(OBJDIR)\PromptService.obj" \
 	"$(OBJDIR)\LocationProvider.obj" \
+	"$(OBJDIR)\EventListener.obj" \
 	"$(OBJDIR)\BrowserWindow.obj" \
 	"$(OBJDIR)\Widget.obj" \
 	"$(OBJDIR)\gluezilla.obj"
