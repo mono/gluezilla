@@ -1,5 +1,9 @@
 2008-01-28  Andreia Gaita <avidigal@novell.com>
 
+	* EventListener.cpp, EventListener.h: Forgot to add them :p
+
+2008-01-28  Andreia Gaita <avidigal@novell.com>
+
 	* EventListener.*: Move event handlers out of BrowserWindow and into
 	a separate handler class. This class calls events directly (does not
 	go through Widget, which was a pointless call anyway). Add focus. blur,
