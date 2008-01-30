@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
+				AdditionalIncludeDirectories=".;..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
 				PreprocessorDefinitions="XPCOM_GLUE;DEBUG;NO_BUILD_REFCNT_LOGGING"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EventListener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\gluezilla.cpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 			>
 			<File
 				RelativePath=".\BrowserWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EventListener.h"
 				>
 			</File>
 			<File

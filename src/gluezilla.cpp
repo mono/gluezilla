@@ -40,7 +40,7 @@ gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, c
 	}
 	*mozPlatform = Gtk;
 #endif
-#if XP_WIN32
+#ifdef XP_WIN32
 	*mozPlatform = Winforms;
 #endif
 

@@ -1,3 +1,11 @@
+2008-01-30  Andreia Gaita <avidigal@novell.com>
+
+	* windows.mak: add local directory for includes.
+	* BrowserWindow.cpp: allocate event name differently, msvc doesn't
+	like the old way.
+	* Widget.cpp: only activate and deactivate browser on non-windows
+	systems, windows doesn't like it.
+
 2008-01-28  Andreia Gaita <avidigal@novell.com>
 
 	* windows.mak: Updated with new EventListener files

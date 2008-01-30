@@ -238,7 +238,9 @@ nsresult
 Widget::Focus (FocusOption focus)
 {
 	PRINT("Widget::Focus!\n");
+#ifndef XP_WIN32
 	this->Activate ();
+#endif
 	if (focus == FOCUS_NONE)
 		this->browserWindow->Focus ();
 	else {
@@ -265,7 +267,9 @@ nsresult
 Widget::Blur ()
 {
 	PRINT("Widget::Blur!\n");
+#ifndef XP_WIN32
 	this->Deactivate ();
+#endif
 	return NS_OK;
 }
 

@@ -303,7 +303,9 @@ nsresult BrowserWindow::Show ()
 // Events
 nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * type, const char * name) 
 {
-	char string[strlen(type) + strlen(name) + 1];
+	char * string = (char*)malloc (strlen(type) + strlen(name) + 1);
+	if (!string)
+		return NS_ERROR_FAILURE;
 	sprintf(string, "%s:%s", type, name);
 	listeners [string] = new EventListener ();
 	listeners [string]->target = target;
@@ -315,7 +317,9 @@ nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * ty
 
 nsresult BrowserWindow::DettachEvent (const char * type, const char * name) 
 {
-	char string[strlen(type) + strlen(name) + 1];
+	char * string = (char*)malloc (strlen(type) + strlen(name) + 1);
+	if (!string)
+		return NS_ERROR_FAILURE;
 	sprintf(string, "%s:%s", type, name);
 	if (listeners[string] != nsnull) {
 		nsresult rv = listeners[string]->target->RemoveEventListener (NS_ConvertUTF8toUTF16 (name, strlen (name)), listeners[string], PR_TRUE);
