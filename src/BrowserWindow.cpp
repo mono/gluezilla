@@ -303,10 +303,10 @@ nsresult BrowserWindow::Show ()
 // Events
 nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * type, const char * name) 
 {
-	char * string = (char*)malloc (strlen(type) + strlen(name) + 1);
-	if (!string)
-		return NS_ERROR_FAILURE;
-	sprintf(string, "%s:%s", type, name);
+	nsEmbedCString typeName (type);
+	typeName.Append (":");
+	typeName.Append (name);
+	const char * string = typeName.get();
 	listeners [string] = new EventListener ();
 	listeners [string]->target = target;
 	listeners [string]->owner = this;
@@ -317,10 +317,10 @@ nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * ty
 
 nsresult BrowserWindow::DettachEvent (const char * type, const char * name) 
 {
-	char * string = (char*)malloc (strlen(type) + strlen(name) + 1);
-	if (!string)
-		return NS_ERROR_FAILURE;
-	sprintf(string, "%s:%s", type, name);
+	nsEmbedCString typeName (type);
+	typeName.Append (":");
+	typeName.Append (name);
+	const char * string = typeName.get();
 	if (listeners[string] != nsnull) {
 		nsresult rv = listeners[string]->target->RemoveEventListener (NS_ConvertUTF8toUTF16 (name, strlen (name)), listeners[string], PR_TRUE);
 		listeners.erase (string);
@@ -372,8 +372,8 @@ BrowserWindow::GetInterface(const nsIID & aIID, void * *aInstancePtr)
 NS_IMETHODIMP 
 BrowserWindow::SetStatus(PRUint32 statusType, const PRUnichar *status)
 {
-	statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
-	owner->events->OnStatusChange (statusText, 100);
+	//statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
+	owner->events->OnStatusChange ("", 100);
 	return NS_OK;
 }
 
@@ -476,7 +476,9 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 		nsCOMPtr< nsIDOMEventTarget > target = do_QueryInterface( window );
 		AttachEvent ( target, "window", "load" );
 		AttachEvent ( target, "window", "unload" );
+#ifndef XP_WIN32
 		AttachEvent ( target, "window", "focus" );
+#endif
 		AttachEvent ( target, "window", "blur" );
 		AttachEvent ( target, "window", "abort" );
 		AttachEvent ( target, "window", "error" );
