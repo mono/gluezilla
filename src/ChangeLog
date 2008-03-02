@@ -1,3 +1,20 @@
+2008-03-02  Andreia Gaita  <avidigal@novell.com>
+
+	* interfaces.h: Seems xulrunner 1.9 removed some headers with defines
+	that I was using to detect what type of toolkit it was running on. Removed
+	the offending header from the include list, and rely on OS defines only 
+	(*sigh*)
+
+	* gluezilla.h: Clean out a bunch of events that are not being used. Change
+	the OS detection defines. Added new managed string support, soon to replace
+	old string methods.
+
+	* gluezilla.cpp, Widget.*: Change OS detection defines. Fix platform detection
+	code so it runs happily in gtk apps as well.
+
+	* EventListener.cpp: Send the event-affected node up to the managed side so
+	it can be matched it to a managed object and fired properly.
+
 2008-01-30  Andreia Gaita <avidigal@novell.com>
 
 	* windows.mak: add local directory for includes.

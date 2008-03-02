@@ -86,7 +86,9 @@
 //#include "xulapp/nsXULAppAPI.h" 
 
 // Mozilla configuration to get compile settings
-#include "mozilla-config.h"
+//#include "mozilla-config.h"
+
+//#include <necko/nsNetUtil.h>
 
 #define NS_FROZENCALL
 #define XRE_API(type, name, params) \
@@ -107,7 +109,7 @@ XRE_API(PRBool,
 		(char* buffer))
 
 
-#ifdef MOZ_WIDGET_GTK2
+#ifdef NS_UNIX
 #include <gtk/gtk.h>
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkx.h>

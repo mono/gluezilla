@@ -18,7 +18,7 @@
 
 // for getting the native mozilla drawing handle
 
-#ifdef MOZ_WIDGET_GTK2
+#ifdef NS_UNIX
 #include "gtkWidget.h"
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
@@ -401,8 +401,8 @@ BrowserWindow::CreateChromeWindow(
 			nsIWebBrowserChrome **_retval)
 {
 
-	if (!this->owner->EventCreateNewWindow ())
-		return NS_ERROR_FAILURE;
+//	if (!owner->events->EventCreateNewWindow ())
+//		return NS_ERROR_FAILURE;
 
 	//if (aChromeFlags & nsIWebBrowserChrome::CHROME_OPENAS_CHROME)
 	//	this->isChrome = PR_TRUE;
@@ -458,7 +458,7 @@ NS_IMETHODIMP
 BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 										   PRUint32 state, nsresult status)
 {	
-	owner->EventStateChange(status, state);
+	owner->events->OnStateChange(status, state);
 	
 	bool netstop = ( state & STATE_STOP ) && ( state & STATE_IS_NETWORK ) && ( status == NS_OK );
 	bool windowstop = ( state & STATE_STOP ) && ( state & STATE_IS_WINDOW ) && ( status == NS_OK );
@@ -476,7 +476,7 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 		nsCOMPtr< nsIDOMEventTarget > target = do_QueryInterface( window );
 		AttachEvent ( target, "window", "load" );
 		AttachEvent ( target, "window", "unload" );
-#ifndef XP_WIN32
+#ifndef NS_WIN32
 		AttachEvent ( target, "window", "focus" );
 #endif
 		AttachEvent ( target, "window", "blur" );
@@ -492,10 +492,10 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 		AttachEvent ( target, "window", "change" );
 		AttachEvent ( target, "window", "submit" );
 		AttachEvent ( target, "window", "reset" );
-		AttachEvent ( target, "window", "keyup" );
 		
 		AttachEvent ( target, "window", "keydown" );
 		AttachEvent ( target, "window", "keypress" );
+		AttachEvent ( target, "window", "keyup" );
 
 		AttachEvent ( target, "window", "click" );
 		AttachEvent ( target, "window", "dblclick" );
@@ -503,6 +503,7 @@ BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 		AttachEvent ( target, "window", "mouseup" );
 		AttachEvent ( target, "window", "mouseover" );
 		AttachEvent ( target, "window", "mouseout" );
+		AttachEvent ( target, "window", "mousemove" );
 		
 		AttachEvent ( target, "window", "popupshowing" );
 		AttachEvent ( target, "window", "popupshown" );
@@ -575,7 +576,7 @@ BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aReque
 {
 	nsCString url;
 	location->GetSpec (url);
-    owner->EventLocationChanged(url.BeginReading ());
+//    owner->events->EventLocationChanged(url.BeginReading ());
 	return NS_OK;
 }
 
@@ -583,6 +584,7 @@ BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aReque
 NS_IMETHODIMP 
 BrowserWindow::OnStatusChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsresult aStatus, const PRUnichar *aMessage)
 {
+	PRINT ("gluezilla: OnStatusChange");
 	statusText = (char *)NS_ConvertUTF16toUTF8( aMessage ).get();
 	owner->events->OnStatusChange (statusText, aStatus);
     return NS_OK;

@@ -45,10 +45,14 @@ nsresult
 Widget::BeginInvoke (Params * params)
 {
 	#ifdef NS_UNIX
-	GThread *thread = g_thread_self ();
-	if (thread != ui_thread_id) {
-		g_idle_add (gtk_invoke, params);
-		g_async_queue_pop (queueout);
+	if (this->platform == Winforms) {
+		GThread *thread = g_thread_self ();
+		if (thread != ui_thread_id) {
+			g_idle_add (gtk_invoke, params);
+			g_async_queue_pop (queueout);
+		} else {
+			return EndInvoke (params);
+		}
 	} else {
 		return EndInvoke (params);
 	}
@@ -197,12 +201,14 @@ Widget::Init(Handle *hwnd, PRUint32 width, PRUint32 height)
 	this->hwnd = hwnd;
 
 #ifdef NS_UNIX
-	gdk_threads_enter ();
-	GtkWidget *embed = native_embed_widget_foreign_new((GdkNativeWindow)(GPOINTER_TO_INT(hwnd)));
-	gtk_widget_set_usize(embed, width, height);
-	gtk_widget_show(embed);
-	gdk_threads_leave ();
-	this->hwnd = (Handle*)embed;
+	if (platform == Winforms) {
+		gdk_threads_enter ();
+		GtkWidget *embed = native_embed_widget_foreign_new((GdkNativeWindow)(GPOINTER_TO_INT(hwnd)));
+		gtk_widget_set_usize(embed, width, height);
+		gtk_widget_show(embed);
+		gdk_threads_leave ();
+		this->hwnd = (Handle*)embed;
+	}
 #endif
 
 	nsCOMPtr< nsIWebBrowser > newBrowser;
@@ -238,7 +244,7 @@ nsresult
 Widget::Focus (FocusOption focus)
 {
 	PRINT("Widget::Focus!\n");
-#ifndef XP_WIN32
+#ifndef NS_WIN32
 	this->Activate ();
 #endif
 	if (focus == FOCUS_NONE)
@@ -267,7 +273,7 @@ nsresult
 Widget::Blur ()
 {
 	PRINT("Widget::Blur!\n");
-#ifndef XP_WIN32
+#ifndef NS_WIN32
 	this->Deactivate ();
 #endif
 	return NS_OK;
@@ -431,95 +437,8 @@ Widget::GetProxyForNavigation ()
 }
 // EVENTS
 
-PRBool
-Widget::EventDomKeyDown (KeyInfo keyInfo, ModifierKeys modifiers)
-{
-	return events->OnDomKeyDown (keyInfo, modifiers);
-}
-
-PRBool
-Widget::EventDomKeyUp (KeyInfo keyInfo, ModifierKeys modifiers)
-{
-	return events->OnDomKeyUp (keyInfo, modifiers);
-}
-
-PRBool
-Widget::EventDomKeyPress (KeyInfo keyInfo, ModifierKeys modifiers)
-{
-	return events->OnDomKeyPress (keyInfo, modifiers);
-}
-
-PRBool
-Widget::EventMouseDown (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseDown (mouseInfo, modifiers);
-}
-
-PRBool
-Widget::EventMouseUp (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseUp (mouseInfo, modifiers);
-}
-
-PRBool
-Widget::EventMouseClick (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseClick (mouseInfo, modifiers);
-}
-
-PRBool
-Widget::EventMouseDoubleClick (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseDoubleClick (mouseInfo, modifiers);
-}
-
-PRBool
-Widget::EventMouseOver (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseOver (mouseInfo, modifiers);
-
-}
-
-PRBool
-Widget::EventMouseOut (MouseInfo mouseInfo, ModifierKeys modifiers)
-{
-	return events->OnMouseOut (mouseInfo, modifiers);
-}
-
 PRBool 
 Widget::EventActivate ()
 {
 	return events->OnActivate ();
-}
-
-PRBool 
-Widget::EventBeforeURIOpen (const char * uri)
-{
-	return events->OnBeforeURIOpen (uri);
-}
-
-PRBool 
-Widget::EventCreateNewWindow ()
-{
-	return events->OnCreateNewWindow ();
-}
-
-void 
-Widget::EventStateChange (PRUint32 state, PRInt32 status)
-{
-	events->OnStateChange (state, status);
-}
-
-void 
-Widget::EventLocationChanged (const char * uri)
-{
-	events->OnLocationChanged (uri);
-}
-
-
-void
-Widget::EventGeneric (nsString type)
-{
-	PRUnichar * t = (PRUnichar*)NS_StringCloneData(type);
-	events->OnGeneric (t);
 }

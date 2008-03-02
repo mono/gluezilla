@@ -12,7 +12,7 @@
 #include "gluezilla.h"
 #include "Widget.h"
 
-#ifdef MOZ_WIDGET_GTK2
+#ifdef NS_UNIX
 #include "gtkWidget.h"
 GThread    *ui_thread_id;
 GAsyncQueue *queuein;
@@ -27,7 +27,7 @@ gluezilla_debug_startup ()
 NS_METHOD_(Handle*)
 gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, const char * dataDir, Platform * mozPlatform)
 {
-#ifdef MOZ_WIDGET_GTK2
+#ifdef NS_UNIX
 	if (platform == Winforms) {
 		g_type_init();	
 		if (!g_thread_supported ()) g_thread_init (NULL);
@@ -40,17 +40,16 @@ gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, c
 	}
 	*mozPlatform = Gtk;
 #endif
-#ifdef XP_WIN32
+#ifdef NS_WIN32
 	*mozPlatform = Winforms;
 #endif
 
-	Widget *widget = new Widget (strdup(startDir), strdup(dataDir));
-
+	Widget *widget = new Widget (strdup(startDir), strdup(dataDir), platform);
+	
 	Params * p = new Params ();
 	p->name = "init";
 	p->instance = widget;
 	p->events = events;
-	p->platform = platform;
 
 	nsresult result = widget->BeginInvoke (p);
 	if (p)
@@ -366,6 +365,56 @@ gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object
 		delete (p);
 	return;
 }
+
+
+NS_METHOD_(nsresult)
+gluezilla_StringContainerInit (nsStringContainer &aStr)
+{
+	return NS_StringContainerInit (aStr);
+}
+
+NS_METHOD_(void)
+gluezilla_StringContainerFinish (nsStringContainer &aStr)
+{
+	NS_StringContainerFinish (aStr);
+}
+
+NS_METHOD_(PRUint32)
+gluezilla_StringGetData (const nsAString &aStr, const PRUnichar **aBuf, PRBool *aTerm)
+{
+	return NS_StringGetData (aStr, aBuf, aTerm);
+}
+
+NS_METHOD_(nsresult)
+gluezilla_StringSetData (nsAString &aStr, const PRUnichar *aBuf, PRUint32 aCount)
+{
+	return NS_StringSetData (aStr, aBuf, aCount);
+}
+	
+NS_METHOD_(nsresult)
+gluezilla_CStringContainerInit (nsCStringContainer &aStr)
+{
+	return NS_CStringContainerInit (aStr);
+}
+
+NS_METHOD_(void)
+gluezilla_CStringContainerFinish (nsCStringContainer &aStr)
+{
+	NS_CStringContainerFinish (aStr);
+}
+
+NS_METHOD_(PRUint32)
+gluezilla_CStringGetData (const nsACString &aStr, const char **aBuf, PRBool *aTerm)
+{
+	return NS_CStringGetData (aStr, aBuf, aTerm);
+}
+
+NS_METHOD_(nsresult)
+gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount)
+{
+	return NS_CStringSetData (aStr, aBuf, aCount);
+}
+
 
 #ifdef NS_UNIX
 void *

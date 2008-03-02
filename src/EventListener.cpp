@@ -8,6 +8,7 @@ EventListener::HandleEvent (nsIDOMEvent *domEvent)
 	nsEmbedString type;
 	domEvent->GetType (type);
 	
+	
 	PRBool ret = PR_FALSE;
 	nsCOMPtr <nsIDOMKeyEvent> keyEvent = do_QueryInterface(domEvent);
 	nsCOMPtr <nsIDOMMouseEvent> mouseEvent = do_QueryInterface(domEvent);
@@ -25,8 +26,11 @@ EventListener::HandleEvent (nsIDOMEvent *domEvent)
 	} else if (type.Equals(NS_LITERAL_STRING("unload"))) {
 		events->OnUnload ();
 	} else {
-		PRUnichar * t = (PRUnichar*)NS_StringCloneData(type);
-		events->OnGeneric (t);
+		
+//		PRUnichar * t = (PRUnichar*)NS_StringCloneData(type);
+		nsEmbedCString s = NS_ConvertUTF16toUTF8 (type);
+		PRINT2 ("Calling Generic with %s\n", s.get());
+		events->OnGeneric (type.get());
 	}
 
 	if (ret) {
@@ -51,13 +55,18 @@ EventListener::OnKey (nsCOMPtr <nsIDOMKeyEvent> keyEvent, nsEmbedString type)
 	keyEvent->GetCharCode (&(keyInfo.charCode));
 	keyEvent->GetKeyCode (&(keyInfo.keyCode));
 
+	nsCOMPtr <nsIDOMEventTarget> target;
+	keyEvent->GetTarget(getter_AddRefs (target));
+	nsCOMPtr <nsIDOMNode> node = do_QueryInterface(target);
+	
+	
 	// Return TRUE from your signal handler to mark the event as consumed.
 	if (type.Equals(NS_LITERAL_STRING("keyup")))
-		ret = events->OnDomKeyUp (keyInfo, mkey);
+		ret = events->OnDomKeyUp (keyInfo, mkey, node);
 	else if (type.Equals(NS_LITERAL_STRING("keydown")))
-		ret = events->OnDomKeyDown (keyInfo, mkey);
+		ret = events->OnDomKeyDown (keyInfo, mkey, node);
 	else if (type.Equals(NS_LITERAL_STRING("keypress")))
-		ret = events->OnDomKeyPress (keyInfo, mkey);
+		ret = events->OnDomKeyPress (keyInfo, mkey, node);
 	return PR_FALSE;
 }
 
@@ -81,17 +90,21 @@ EventListener::OnMouse (nsCOMPtr <nsIDOMMouseEvent> mouseEvent, nsEmbedString ty
 
 	mouseEvent->GetButton (&(mouseInfo.button));
 	
+	nsCOMPtr <nsIDOMEventTarget> target;
+	mouseEvent->GetTarget(getter_AddRefs (target));
+	nsCOMPtr <nsIDOMNode> node = do_QueryInterface(target);
+	
 	if (type.Equals(NS_LITERAL_STRING("click")))
-		ret = events->OnMouseClick (mouseInfo, modifiers);
+		ret = events->OnMouseClick (mouseInfo, modifiers, node);
 	else if (type.Equals (NS_LITERAL_STRING("mousedown")))
-		ret = events->OnMouseDown (mouseInfo, modifiers);
+		ret = events->OnMouseDown (mouseInfo, modifiers, node);
 	else if (type.Equals (NS_LITERAL_STRING("mouseup")))
-		ret = events->OnMouseUp (mouseInfo, modifiers);
+		ret = events->OnMouseUp (mouseInfo, modifiers, node);
 	else if (type.Equals (NS_LITERAL_STRING("dblclick")))
-		ret = events->OnMouseDoubleClick (mouseInfo, modifiers);
+		ret = events->OnMouseDoubleClick (mouseInfo, modifiers, node);
 	else if (type.Equals (NS_LITERAL_STRING("mouseover")))
-		ret = events->OnMouseOver (mouseInfo, modifiers);
+		ret = events->OnMouseOver (mouseInfo, modifiers, node);
 	else if (type.Equals (NS_LITERAL_STRING("mouseout")))
-		ret = events->OnMouseOut (mouseInfo, modifiers);
+		ret = events->OnMouseOut (mouseInfo, modifiers, node);
 	return PR_FALSE;
 }

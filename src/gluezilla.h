@@ -14,7 +14,7 @@
 
 #include "interfaces.h"
 
-#ifdef WIN32
+#ifdef NS_WIN32
 #define NS_EXPORT_(type) __declspec(dllexport) type __stdcall
 #define STDCALL __stdcall
 #else
@@ -115,49 +115,27 @@ extern "C"
 	{
 		void (STDCALL *OnWidgetLoaded)		();
 
-		void (STDCALL *OnJSStatus)			(void);
-		void (STDCALL *OnLinkStatus)		(void);
-		void (STDCALL *OnDestroyBrowser)	(void);
-		void (STDCALL *OnSizeTo)			(PRInt32 x, PRInt32 y);
-
-		void (STDCALL *OnFocusNext)			(void);
-		void (STDCALL *OnFocusPrev)			(void);
-		
-		void (STDCALL *OnTitleChanged)		(void);
-		
-		void (STDCALL *OnShowTooltipWindow)	(const char *tipText, PRInt32 x, PRInt32 y);
-		void (STDCALL *OnHideTooltipWindow)	(void);
-		
-		void (STDCALL *OnStateNetStart)		(void);
-		void (STDCALL *OnStateNetStop)		(void);
-		void (STDCALL *OnStateSpecial)		(PRUint32 stateFlags, PRInt32 status);
 		void (STDCALL *OnStateChange)		(PRInt32 status, PRUint32 stateFlags);
 		
 		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void (STDCALL *OnProgressAll)		(const char *uriString, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnLocationChanged)	(const char * url);
 		void (STDCALL *OnStatusChange)		(const char *message, PRInt32 status);
-		void (STDCALL *OnSecurityChange)	(PRUint32 state);
-		void (STDCALL *OnVisibility)		(PRBool val);
 	    
 		//return true to abort/consume
-		PRBool (STDCALL *OnDomKeyDown)		(KeyInfo keyInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnDomKeyUp)		(KeyInfo keyInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnDomKeyPress)		(KeyInfo keyInfo, ModifierKeys modifiers);
+		PRBool (STDCALL *OnDomKeyDown)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnDomKeyUp)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnDomKeyPress)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
 		
-		PRBool (STDCALL *OnMouseDown)		(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnMouseUp)			(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnMouseClick)		(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnMouseDoubleClick)(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnMouseOver)		(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool (STDCALL *OnMouseOut)		(MouseInfo mouseInfo, ModifierKeys modifiers);
+		PRBool (STDCALL *OnMouseDown)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnMouseUp)			(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnMouseClick)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnMouseDoubleClick)(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnMouseOver)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
+		PRBool (STDCALL *OnMouseOut)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
 
 		PRBool (STDCALL *OnActivate)		(void);
 		PRBool (STDCALL *OnFocus)			(void);
 		PRBool (STDCALL *OnBlur)		(void);
-
-		PRBool (STDCALL *OnBeforeURIOpen)	(const char* url);
-		PRBool (STDCALL *OnCreateNewWindow)	(void);
 
 		void (STDCALL *OnAlert)				(const PRUnichar * title, const PRUnichar * text);
 		PRBool (STDCALL *OnAlertCheck)		(const PRUnichar * title, const PRUnichar * text, const PRUnichar * chkMsg, PRBool * chkState);
@@ -188,7 +166,7 @@ extern "C"
 		void (STDCALL *OnLoad)			();
 		void (STDCALL *OnUnload)		();
 		
-		void (STDCALL *OnGeneric)			(PRUnichar* type);
+		void (STDCALL *OnGeneric)			(const PRUnichar* type);
 
 	} CallbackBin;				
 
@@ -232,6 +210,16 @@ extern "C"
 	
 	NS_EXPORT_(void) gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object, nsISupports ** result);
 	
+	NS_EXPORT_(nsresult) 	gluezilla_StringContainerInit (nsStringContainer &aStr);
+	NS_EXPORT_(void) 		gluezilla_StringContainerFinish (nsStringContainer &aStr);
+	NS_EXPORT_(PRUint32) 	gluezilla_StringGetData (const nsAString &aStr, const PRUnichar **aBuf, PRBool *aTerm);
+	NS_EXPORT_(nsresult) 	gluezilla_StringSetData (nsAString &aStr, const PRUnichar *aBuf, PRUint32 aCount);
+	
+	NS_EXPORT_(nsresult) 	gluezilla_CStringContainerInit (nsCStringContainer &aStr);
+	NS_EXPORT_(void) 		gluezilla_CStringContainerFinish (nsCStringContainer &aStr);
+	NS_EXPORT_(PRUint32) 	gluezilla_CStringGetData (const nsACString &aStr, const char **aBuf, PRBool *aTerm);
+	NS_EXPORT_(nsresult) 	gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount);
+	
 #ifdef __cplusplus
 }
 #endif				/* __cplusplus */
@@ -255,7 +243,6 @@ struct Params {
 		};
 		struct {
 			CallbackBin *events;
-			Platform platform;
 		};
 		struct {
 			ReloadOption option;

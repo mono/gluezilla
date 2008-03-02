@@ -36,10 +36,11 @@ class BrowserWindow;
 class Widget 
 {
 	public:
-		Widget (const char * startDir, const char * dataDir)
+		Widget (const char * startDir, const char * dataDir, Platform platform)
 		{
 			this->startDir = startDir;
 			this->dataDir = dataDir;
+			this->platform = platform;
 			// delegate initialization
 
 			// initialization and shutdown
@@ -182,46 +183,7 @@ class Widget
 
 
 		// Events
-		void EventOnWidgetLoaded	();
-
-		void EventJSStatus			(void);
-		void EventLinkStatus		(void);
-		void EventDestroyBrowser	(void);
-		void EventSizeTo			(PRInt32 x, PRInt32 y);
-		void EventFocusNext			(void);
-		void EventFocusPrev			(void);
-		void EventTitleChanged		(void);
-		void EventShowTooltipWindow	(PRInt32 x, PRInt32 y, const char *tipText);
-		void EventHideTooltipWindow	(void);
-		void EventStateNetStart		(void);
-		void EventStateNetStop		(void);
-		void EventStateSpecial		(PRUint32 stateFlags, PRInt32 status);
-		void EventStateChange		(PRUint32 stateFlags, PRInt32 status);
-		void EventProgress			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void EventProgressAll		(const char *uriString, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void EventLocationChanged	(const char * url);
-		void EventStatusChange		(PRInt32 status, const char *message);
-		void EventSecurityChange	(PRUint32 state);
-		void EventVisibility		(PRBool val);
-
-		PRBool EventDomKeyDown			(KeyInfo keyInfo, ModifierKeys modifiers);
-		PRBool EventDomKeyUp			(KeyInfo keyInfo, ModifierKeys modifiers);
-		PRBool EventDomKeyPress			(KeyInfo keyInfo, ModifierKeys modifiers);
-
-		PRBool EventMouseDown			(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool EventMouseUp				(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool EventMouseClick			(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool EventMouseDoubleClick	(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool EventMouseOver			(MouseInfo mouseInfo, ModifierKeys modifiers);
-		PRBool EventMouseOut			(MouseInfo mouseInfo, ModifierKeys modifiers);
-
-
 		PRBool EventActivate		(void);
-
-		PRBool EventBeforeURIOpen	(const char* url);
-
-		PRBool EventCreateNewWindow	(void);
-
 		void EventGeneric			(nsString type);
 
 
