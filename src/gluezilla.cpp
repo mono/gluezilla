@@ -338,7 +338,7 @@ gluezilla_stringSet(nsString & str, PRUnichar * text)
 }
 
 NS_METHOD_(nsIServiceManager*)
-gluezilla_getServiceManager(Handle *instance)
+gluezilla_getServiceManager()
 {
 	nsCOMPtr<nsIServiceManager> servMan;
 	NS_GetServiceManager (getter_AddRefs (servMan));

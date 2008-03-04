@@ -205,8 +205,6 @@ extern "C"
 	NS_EXPORT_(nsresult) gluezilla_stringFinish (nsString * string);
 	NS_EXPORT_(PRUnichar*) gluezilla_stringGet(nsString & str);
 	NS_EXPORT_(void) gluezilla_stringSet(nsString & str, PRUnichar * text);
-
-	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager(Handle *instance);
 	
 	NS_EXPORT_(void) gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object, nsISupports ** result);
 	
@@ -219,7 +217,9 @@ extern "C"
 	NS_EXPORT_(void) 		gluezilla_CStringContainerFinish (nsCStringContainer &aStr);
 	NS_EXPORT_(PRUint32) 	gluezilla_CStringGetData (const nsACString &aStr, const char **aBuf, PRBool *aTerm);
 	NS_EXPORT_(nsresult) 	gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount);
-	
+
+	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager();
+
 #ifdef __cplusplus
 }
 #endif				/* __cplusplus */

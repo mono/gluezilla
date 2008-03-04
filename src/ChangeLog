@@ -1,3 +1,7 @@
+2008-03-04  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.*: fix getServiceManager to return the object directly.
+
 2008-03-02  Andreia Gaita  <avidigal@novell.com>
 
 	* interfaces.h: Seems xulrunner 1.9 removed some headers with defines
