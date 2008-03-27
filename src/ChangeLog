@@ -1,3 +1,9 @@
+2008-03-27  Andreia Gaita  <avidigal@novell.com>
+
+	* gluezilla.cpp, gluezilla.h: Debug helper method change
+	* Widget.cpp: Only resize the gtk widget if we're running on a platform
+	that needs it.
+
 2008-03-04  Andreia Gaita  <avidigal@novell.com>
 
 	* gluezilla.*: fix getServiceManager to return the object directly.

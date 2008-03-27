@@ -324,7 +324,9 @@ Widget::Resize (PRUint32 width, PRUint32 height)
 								nsIEmbeddingSiteWindow::DIM_FLAGS_SIZE_INNER,
 								0, 0, width, height);
 #ifdef NS_UNIX
-	gtk_widget_set_usize(reinterpret_cast<GtkWidget*>(this->hwnd), width, height);
+	if (this->platform == Winforms) {
+		gtk_widget_set_usize(reinterpret_cast<GtkWidget*>(this->hwnd), width, height);
+	}
 #endif
 
 	return NS_ERROR_FAILURE;

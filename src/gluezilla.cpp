@@ -20,8 +20,9 @@ GAsyncQueue *queueout;
 #endif
 
 NS_METHOD_(void)
-gluezilla_debug_startup ()
+gluezilla_debug (int signal)
 {
+	PRINT2 ("debug signal: %d\n", signal);
 }
 
 NS_METHOD_(Handle*)
