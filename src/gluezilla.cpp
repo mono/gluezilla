@@ -26,8 +26,8 @@ gluezilla_debug (int signal)
 }
 
 NS_METHOD_(Handle*)
-gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, const char * dataDir, Platform * mozPlatform)
-{
+gluezilla_init (Platform platform, Platform * mozPlatform)
+{	
 #ifdef NS_UNIX
 	if (platform == Winforms) {
 		g_type_init();	
@@ -45,6 +45,15 @@ gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, c
 	*mozPlatform = Winforms;
 #endif
 
+	return 0;
+}
+
+NS_METHOD_(Handle*)
+gluezilla_createBrowserWindow (CallbackBin *events, Handle *hwnd, 
+							   PRInt32 width, PRInt32 height, 
+							   const char * startDir, const char * dataDir, 
+							   Platform platform)
+{
 	Widget *widget = new Widget (strdup(startDir), strdup(dataDir), platform);
 	
 	Params * p = new Params ();
@@ -55,26 +64,21 @@ gluezilla_init (Platform platform, CallbackBin *events, const char * startDir, c
 	nsresult result = widget->BeginInvoke (p);
 	if (p)
 		delete (p);
-	return reinterpret_cast<Handle*>(widget);
-}
 
-NS_METHOD_(int)
-gluezilla_createBrowserWindow (Handle *instance, Handle *hwnd, PRInt32 width, PRInt32 height)
-{
-	Widget *widget = reinterpret_cast<Widget *> (instance);
 	Handle * handle = hwnd;
 
-	Params * p = new Params ();
+	p = new Params ();
 	p->name = "create";
 	p->instance = widget;
 	p->hwnd = hwnd;
 	p->width = width;
 	p->height = height;
 
-	nsresult result = widget->BeginInvoke (p);
+	result = widget->BeginInvoke (p);
 	if (p)
 		delete (p);
-	return result;
+
+	return reinterpret_cast<Handle*>(widget);
 }
 
 /*******************
