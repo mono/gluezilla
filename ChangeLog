@@ -1,3 +1,7 @@
+2008-04-08  Wade Berrier  <wberrier@novell.com>
+
+	* configure.ac: version bump -> 1.9.1
+
 2008-02-27  Andreia Gaita <avidigal@novell.com>
 	[Backport to 1.9]
 	* configure.ac: Add flag for char compatibility with
