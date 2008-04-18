@@ -21,8 +21,7 @@ static gboolean gtk_invoke (gpointer data);
 // from gluezilla.cpp
 extern GThread    *ui_thread_id;
 extern GAsyncQueue *queueout;
-#endif	
-
+#endif
 
 // nsIProxyObjectManager includes nsProxyEvent.h, which brings
 // all kinds of ugly dependencies with it, completely unnecessarily
@@ -44,7 +43,7 @@ static NS_DEFINE_CID(kAppShellCID, NS_APPSHELL_CID);
 nsresult 
 Widget::BeginInvoke (Params * params)
 {
-	#ifdef NS_UNIX
+#ifdef NS_UNIX
 	if (this->platform == Winforms) {
 		GThread *thread = g_thread_self ();
 		if (thread != ui_thread_id) {
@@ -57,10 +56,9 @@ Widget::BeginInvoke (Params * params)
 		return EndInvoke (params);
 	}
 	return NS_OK;
-	#else
+#else
 	return EndInvoke (params);
-	#endif
-			
+#endif			
 }
 
 
@@ -140,23 +138,6 @@ Widget::Load (CallbackBin *events)
 			return -1;
 		}
 
-		//nsDynamicFunctionLoad xreFunctions[] = {
-		//  {"XRE_InitEmbedding", (NSFuncPtr*) &XRE_InitEmbedding},
-		//  {"XRE_TermEmbedding", (NSFuncPtr*) &XRE_TermEmbedding},
-		//  //{"GRE_GetCurrentProcessDirectory", (NSFuncPtr*) &GRE_GetCurrentProcessDirectory},
-		//  {nsnull, nsnull}
-		//}; 
-
-		//rv = XPCOMGlueLoadXULFunctions(xreFunctions);
-		//NS_ENSURE_SUCCESS(rv, rv);
-
-
-		//nsCOMPtr<nsILocalFile> app;
-		//nsEmbedCString file(startDir);
-		//rv = NS_NewNativeLocalFile(file, PR_TRUE, getter_AddRefs(app));
-
-		//XRE_InitEmbedding(gre, app, nsnull, nsnull, 0); 
-
 		nsCOMPtr<nsIAppShell> appShell;
 		appShell = do_CreateInstance(kAppShellCID);
 		if (!appShell) {
@@ -233,9 +214,6 @@ Widget::CreateBrowserWindow()
 	Handle * nativeMozWindow = browserWindow->getNativeWin ();
 	this->Navigate ("about:blank");
 	return NS_OK;
-
-
-	//return -1;
 }
 
 
@@ -437,6 +415,24 @@ Widget::GetProxyForNavigation ()
 	nsCOMPtr<nsIWebNavigation> navigation (do_QueryInterface (this->browserWindow->webBrowser));
 	return GetProxyForObject (nsIWebNavigation::GetIID(), navigation, getter_AddRefs (this->webNav));
 }
+
+char *
+Widget::EvalScript (const char * script)
+{
+	nsCOMPtr< nsIScriptGlobalObjectOwner > theGlobalObjectOwner( do_GetInterface( browserWindow->webBrowser ) );
+	nsIScriptGlobalObject* theGlobalObject;
+	theGlobalObject = theGlobalObjectOwner->GetScriptGlobalObject();
+
+	nsIScriptContext* theScriptContext = theGlobalObject->GetContext();
+
+	PRBool IsUndefined;
+	nsString output;
+	nsresult result = theScriptContext->EvaluateString (NS_ConvertUTF8toUTF16(script),
+	   nsnull, nsnull, "", 1, nsnull, &output, &IsUndefined);
+
+	return (char *)NS_ConvertUTF16toUTF8 (output).get ();
+}
+
 // EVENTS
 
 PRBool 

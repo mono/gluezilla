@@ -66,6 +66,7 @@ class Widget
 			delegates["getDocument"].bind (this, &Widget::GetDocument);
 			delegates["getNavigation"].bind (this, &Widget::GetNavigation);
 			delegates["getProxyForObject"].bind (this, &Widget::GetProxyForObject);
+			delegates["evalScript"].bind (this, &Widget::EvalScript);
 		}
 		~Widget() {
 			int a = 0;
@@ -112,7 +113,7 @@ class Widget
 
 		// navigation
 		nsresult Navigate (Params * params) {
-			return this->Navigate (params->uri);
+			return this->Navigate (params->string);
 		}
 
 		nsresult Forward (Params * params) {
@@ -150,6 +151,12 @@ class Widget
 			NS_ADDREF(params->result = result);
 			return NS_OK;
 		}
+		
+		nsresult EvalScript (Params * params) {
+			params->string = this->EvalScript (params->string);
+			return 0;
+		}
+
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
@@ -179,6 +186,8 @@ class Widget
 		nsresult GetProxyForNavigation ();
 		nsresult GetProxyForObject (REFNSIID iid, nsISupports *object, void **result);
 		
+		char * EvalScript (const char * script);
+
 		Handle * getHandle () { return this->hwnd;}
 
 

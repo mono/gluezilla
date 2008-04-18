@@ -30,14 +30,7 @@ gluezilla_init (Platform platform, Platform * mozPlatform)
 {	
 #ifdef NS_UNIX
 	if (platform == Winforms) {
-		g_type_init();	
-		if (!g_thread_supported ()) g_thread_init (NULL);
-
-		queuein = g_async_queue_new ();
-		queueout = g_async_queue_new ();
-		
-		ui_thread_id = g_thread_create (gtk_startup, NULL, TRUE, NULL);
-		g_async_queue_pop (queueout);
+		gtk_initialize_thread ();
 	}
 	*mozPlatform = Gtk;
 #endif
@@ -168,7 +161,7 @@ gluezilla_navigate (Handle *instance, const char * uri)
 	Params * p = new Params ();
 	p->name = "navigate";
 	p->instance = widget;
-	p->uri = strdup (uri);
+	p->string = strdup (uri);
 
 	nsresult result = widget->BeginInvoke (p);
 	if (p)
@@ -420,8 +413,36 @@ gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount)
 	return NS_CStringSetData (aStr, aBuf, aCount);
 }
 
+NS_METHOD_(char *)
+gluezilla_evalScript (Handle *instance, const char * script)
+{
+	Widget *widget = reinterpret_cast<Widget *> (instance);	
+	Params * p = new Params ();
+	p->name = "evalScript";
+	p->instance = widget;
+	p->string = strdup (script);
+
+	nsresult result = widget->BeginInvoke (p);
+	char * string = strdup (p->string);
+	if (p)
+		delete (p);
+	return string;
+}
+
 
 #ifdef NS_UNIX
+void gtk_initialize_thread () 
+{
+	g_type_init();	
+	if (!g_thread_supported ()) g_thread_init (NULL);
+
+	queuein = g_async_queue_new ();
+	queueout = g_async_queue_new ();
+
+	ui_thread_id = g_thread_create (gtk_startup, NULL, TRUE, NULL);
+	g_async_queue_pop (queueout);
+}
+
 void *
 gtk_startup (gpointer data)
 {
@@ -431,7 +452,6 @@ gtk_startup (gpointer data)
 	int argc = 0;
 	char **argv=NULL;
 	gtk_init(&argc, &argv);
-	//gdk_window_set_debug_updates (TRUE);	
 	g_idle_add (gtk_init_done, NULL);
 	gtk_main();
 	gdk_threads_leave ();
@@ -452,11 +472,5 @@ gtk_shutdown (gpointer data)
 {
 	PRINT2 ("gtk_shutdown %p \n", g_thread_self ());	
 	gtk_exit (0);
-	//gdk_threads_enter ();	
-	//while (gtk_main_level () != 0)
-	//	gtk_main_quit();
-	//gdk_threads_leave ();
-	//gtk_exit (0);
-	//return 0;
 }
 #endif

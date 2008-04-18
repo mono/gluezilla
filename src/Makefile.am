@@ -24,7 +24,9 @@ libgluezilla_la_SOURCES = 	\
 	gtkWidget.h	\
 	gluezilla.cpp	\
 	gluezilla.h   \
-	FastDelegate.h
+	FastDelegate.h \
+	gluezilla_nsIScriptContext.h \
+	gluezilla_nsIScriptGlobalObject.h
 
 libgluezilla_la_LIBADD = $(GLUEZILLA_LIBS)
 

@@ -119,7 +119,7 @@ extern "C"
 		
 		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnLocationChanged)	(const char * url);
-		void (STDCALL *OnStatusChange)		(const char *message, PRInt32 status);
+		void (STDCALL *OnStatusChange)		(const PRUnichar *message, PRInt32 status);
 	    
 		//return true to abort/consume
 		PRBool (STDCALL *OnDomKeyDown)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
@@ -222,6 +222,7 @@ extern "C"
 	NS_EXPORT_(nsresult) 	gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount);
 
 	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager();
+	NS_EXPORT_(char*) gluezilla_evalScript (Handle *instance, const char * script);
 
 #ifdef __cplusplus
 }
@@ -237,7 +238,7 @@ struct Params {
 	
 	union {
 		struct {
-			char * uri;
+			char * string;
 		};
 		struct {
 			Handle * hwnd;
@@ -264,7 +265,6 @@ struct Params {
 			nsISupports * object;
 			nsISupports * result;
 		};
-
 	};
 };
 

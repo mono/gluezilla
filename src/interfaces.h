@@ -90,6 +90,11 @@
 
 //#include <necko/nsNetUtil.h>
 
+#include <nsIInterfaceRequestorUtils.h>
+#include "dom/nsIScriptGlobalObjectOwner.h"
+#include "gluezilla_nsIScriptGlobalObject.h"
+#include "gluezilla_nsIScriptContext.h"
+
 #define NS_FROZENCALL
 #define XRE_API(type, name, params) \
   typedef type (NS_FROZENCALL * name##Type) params; \

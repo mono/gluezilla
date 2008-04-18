@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".;..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr"
+				AdditionalIncludeDirectories=".;..\build\include;..\build\include\xpcom;..\build\include\string;..\build\include\nspr;..\build\include\widget"
 				PreprocessorDefinitions="XPCOM_GLUE;DEBUG;NO_BUILD_REFCNT_LOGGING"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
@@ -257,6 +257,14 @@
 			</File>
 			<File
 				RelativePath=".\gluezilla.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gluezilla_nsIScriptContext.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gluezilla_nsIScriptGlobalObject.h"
 				>
 			</File>
 			<File

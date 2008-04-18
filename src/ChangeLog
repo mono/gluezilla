@@ -1,3 +1,21 @@
+2008-04-18  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla_nsIScriptContext.h, gluezilla_nsIScriptGlobalObject.h,
+	  gluezilla2K5.vcproj: Javascript eval support: Added custom
+	  nsIScriptContext and nsIScriptGlobalObject headers; the
+	  xulrunner-sdk-provided ones are not frozen, not idl-generated, and
+	  pull in the entire private mozilla dependencies that we can't use,
+	  when what I really need is just the first call from each header
+	  anyway.
+	* BrowserWindow.cpp: Fix status change callback
+	* Widget.cpp, Widget.h: Added EvalScript for javascript eval support.
+	  Code cleanup.
+	* gluezilla.cpp: Added gluezilla_evalScript for javascript eval
+	  support. Code cleanup.
+	* interfaces.h: New headers included for javascript eval support
+	* gluezilla.h: Added gluezilla_evalScript for javascript eval support.
+	  Change OnStatusChange signature to use unicode strings.
+
 2008-04-07  Andreia Gaita <avidigal@novell.com> 
 
 	* gluezilla.cpp, gluezilla.h: Use gluezilla_init for platform initialization

@@ -373,7 +373,7 @@ NS_IMETHODIMP
 BrowserWindow::SetStatus(PRUint32 statusType, const PRUnichar *status)
 {
 	//statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
-	owner->events->OnStatusChange ("", 100);
+	owner->events->OnStatusChange (status, 100);
 	return NS_OK;
 }
 
@@ -585,8 +585,7 @@ NS_IMETHODIMP
 BrowserWindow::OnStatusChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsresult aStatus, const PRUnichar *aMessage)
 {
 	PRINT ("gluezilla: OnStatusChange");
-	statusText = (char *)NS_ConvertUTF16toUTF8( aMessage ).get();
-	owner->events->OnStatusChange (statusText, aStatus);
+	owner->events->OnStatusChange (aMessage, aStatus);
     return NS_OK;
 }
 
