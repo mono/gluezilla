@@ -228,6 +228,7 @@ extern "C"
 }
 #endif				/* __cplusplus */
 
+void gtk_initialize_thread ();
 
 class Widget;
 

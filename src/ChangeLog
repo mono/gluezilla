@@ -1,5 +1,11 @@
 2008-04-18  Andreia Gaita <avidigal@novell.com> 
 
+	* gluezilla_nsIScriptContext.h, gluezilla_nsIScriptGlobalObject.h: Add
+	  eof newline
+	* gluezilla.h: Fix forward declaration
+
+2008-04-18  Andreia Gaita <avidigal@novell.com> 
+
 	* gluezilla_nsIScriptContext.h, gluezilla_nsIScriptGlobalObject.h,
 	  gluezilla2K5.vcproj: Javascript eval support: Added custom
 	  nsIScriptContext and nsIScriptGlobalObject headers; the
