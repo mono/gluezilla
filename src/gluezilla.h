@@ -115,17 +115,17 @@ extern "C"
 	{
 		void (STDCALL *OnWidgetLoaded)		();
 
-		void (STDCALL *OnStateChange)		(PRInt32 status, PRUint32 stateFlags);
+		void (STDCALL *OnStateChange)		(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 status, PRUint32 stateFlags);
 		
 		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
-		void (STDCALL *OnLocationChanged)	(const char * url);
-		void (STDCALL *OnStatusChange)		(const PRUnichar *message, PRInt32 status);
+		void (STDCALL *OnLocationChanged)	(nsIWebProgress *webProgress, nsIRequest *request, nsIURI * uri);
+		void (STDCALL *OnStatusChange)		(nsIWebProgress *webProgress, nsIRequest *request, const PRUnichar *message, PRInt32 status);
 	    
 		//return true to abort/consume
 		PRBool (STDCALL *OnDomKeyDown)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
 		PRBool (STDCALL *OnDomKeyUp)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
 		PRBool (STDCALL *OnDomKeyPress)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
-		
+			
 		PRBool (STDCALL *OnMouseDown)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
 		PRBool (STDCALL *OnMouseUp)			(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);
 		PRBool (STDCALL *OnMouseClick)		(MouseInfo mouseInfo, ModifierKeys modifiers, nsIDOMNode * node);

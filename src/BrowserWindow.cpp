@@ -104,14 +104,16 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 	RegisterComponents ();
 
 	
-    baseWindow = do_QueryInterface( webBrowser );
+    baseWindow = do_QueryInterface (webBrowser);
 	
 	result = baseWindow->InitWindow( hwnd, nsnull,  0, 0, width, height );
     result = baseWindow->Create();
 
-    nsCOMPtr< nsIWebProgressListener > listener( NS_STATIC_CAST( nsIWebProgressListener*, this ) );
-    nsCOMPtr< nsIWeakReference > thisListener( NS_GetWeakReference( listener ) );
-    (void)webBrowser->AddWebBrowserListener( thisListener, NS_GET_IID( nsIWebProgressListener ) );
+    nsCOMPtr<nsIWebProgressListener> wpl (static_cast<nsIWebProgressListener*>(this));
+    nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
+    webBrowser->AddWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
+
+	webBrowser->SetParentURIContentListener (static_cast<nsIURIContentListener*>(this));
 
 	baseWindow->SetVisibility( PR_TRUE );
 
@@ -373,7 +375,7 @@ NS_IMETHODIMP
 BrowserWindow::SetStatus(PRUint32 statusType, const PRUnichar *status)
 {
 	//statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
-	owner->events->OnStatusChange (status, 100);
+//	owner->events->OnStatusChange (status, 100);
 	return NS_OK;
 }
 
@@ -458,7 +460,7 @@ NS_IMETHODIMP
 BrowserWindow::OnStateChange(nsIWebProgress* progress, nsIRequest* request,
 										   PRUint32 state, nsresult status)
 {	
-	owner->events->OnStateChange(status, state);
+	owner->events->OnStateChange(progress, request, status, state);
 	
 	bool netstop = ( state & STATE_STOP ) && ( state & STATE_IS_NETWORK ) && ( status == NS_OK );
 	bool windowstop = ( state & STATE_STOP ) && ( state & STATE_IS_WINDOW ) && ( status == NS_OK );
@@ -565,27 +567,26 @@ BrowserWindow::ExitModalEventLoop(nsresult aStatus)
 
 /* void onProgressChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in long aCurSelfProgress, in long aMaxSelfProgress, in long aCurTotalProgress, in long aMaxTotalProgress); */
 NS_IMETHODIMP 
-BrowserWindow::OnProgressChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, PRInt32 aCurSelfProgress, PRInt32 aMaxSelfProgress, PRInt32 aCurTotalProgress, PRInt32 aMaxTotalProgress)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
+BrowserWindow::OnProgressChange(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 aCurSelfProgress, PRInt32 aMaxSelfProgress, PRInt32 aCurTotalProgress, PRInt32 aMaxTotalProgress)
+{	
+	owner->events->OnProgress(aCurTotalProgress, aMaxTotalProgress);
+    return NS_OK;
 }
 
 /* void onLocationChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in nsIURI aLocation); */
 NS_IMETHODIMP 
-BrowserWindow::OnLocationChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsIURI *location)
+BrowserWindow::OnLocationChange(nsIWebProgress *webProgress, nsIRequest *request, nsIURI *location)
 {
-	nsCString url;
-	location->GetSpec (url);
-//    owner->events->EventLocationChanged(url.BeginReading ());
+    owner->events->OnLocationChanged(webProgress, request, location);
 	return NS_OK;
 }
 
 /* void onStatusChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in nsresult aStatus, in wstring aMessage); */
 NS_IMETHODIMP 
-BrowserWindow::OnStatusChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, nsresult aStatus, const PRUnichar *aMessage)
+BrowserWindow::OnStatusChange(nsIWebProgress *webProgress, nsIRequest *request, nsresult aStatus, const PRUnichar *aMessage)
 {
 	PRINT ("gluezilla: OnStatusChange");
-	owner->events->OnStatusChange (aMessage, aStatus);
+	owner->events->OnStatusChange (webProgress, request, aMessage, aStatus);
     return NS_OK;
 }
 
