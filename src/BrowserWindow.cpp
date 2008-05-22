@@ -569,7 +569,7 @@ BrowserWindow::ExitModalEventLoop(nsresult aStatus)
 NS_IMETHODIMP 
 BrowserWindow::OnProgressChange(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 aCurSelfProgress, PRInt32 aMaxSelfProgress, PRInt32 aCurTotalProgress, PRInt32 aMaxTotalProgress)
 {	
-	owner->events->OnProgress(aCurTotalProgress, aMaxTotalProgress);
+	owner->events->OnProgress(webProgress, request, aCurTotalProgress, aMaxTotalProgress);
     return NS_OK;
 }
 

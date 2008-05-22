@@ -117,7 +117,7 @@ extern "C"
 
 		void (STDCALL *OnStateChange)		(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 status, PRUint32 stateFlags);
 		
-		void (STDCALL *OnProgress)			(PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
+		void (STDCALL *OnProgress)			(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnLocationChanged)	(nsIWebProgress *webProgress, nsIRequest *request, nsIURI * uri);
 		void (STDCALL *OnStatusChange)		(nsIWebProgress *webProgress, nsIRequest *request, const PRUnichar *message, PRInt32 status);
 	    
