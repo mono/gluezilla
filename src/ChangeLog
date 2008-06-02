@@ -1,3 +1,7 @@
+2008-06-02  Andreia Gaita <avidigal@novell.com> 
+
+	* gtkWidget.cpp, Widget.cpp, Widget.h: Clean up
+
 2008-05-22  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp, gluezilla.h: Add more xpcom helper objects for

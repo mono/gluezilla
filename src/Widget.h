@@ -44,8 +44,8 @@ class Widget
 			// delegate initialization
 
 			// initialization and shutdown
-			delegates["init"].bind (this, &Widget::Load);
-			delegates["create"].bind (this, &Widget::Init);
+			delegates["init"].bind (this, &Widget::Init);
+			delegates["create"].bind (this, &Widget::Create);
 			delegates["shutdown"].bind (this, &Widget::Shutdown);
 
 			// layout
@@ -81,12 +81,12 @@ class Widget
 		// generic targets for delegation
 
 		// initialization and shutdown
-		nsresult Load (Params * params) {
-			return this->Load (params->events);
+		nsresult Init (Params * params) {
+			return this->Init (params->events);
 		}
 
-		nsresult Init (Params * params) {
-			return this->Init (params->hwnd, params->width, params->height);
+		nsresult Create (Params * params) {
+			return this->Create (params->hwnd, params->width, params->height);
 		}
 
 		nsresult Shutdown (Params * params) {

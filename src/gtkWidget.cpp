@@ -66,35 +66,18 @@ static gboolean
 native_embed_widget_expose(GtkWidget *widget, GdkEventExpose *event)
 {
 	PRINT("native_embed_widget_expose\n");
-
-/*
-	gdk_draw_line (widget->window, 
-		widget->style->fg_gc[widget->state],
-		0, 0, 10, 10);
-*/
 	return FALSE;
 }
 
 static void
 native_embed_widget_init(NativeEmbedWidget *embed)
 {
-	PRINT("native_embed_widget_init\n");
-	/*
-//	gtk_widget_set_name(GTK_WIDGET(embed), "gtkmozembed");
-#ifdef MOZ_WIDGET_GTK2
-	GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(embed), GTK_NO_WINDOW);
-#endif
-  	GtkWidget * button = gtk_button_new_with_label("HAHAHA");
-	gtk_container_add(GTK_CONTAINER(embed), button);
-	gtk_widget_show(button);
-*/
-		
+	PRINT("native_embed_widget_init\n");		
 }
 
 GtkWidget *
 native_embed_widget_new()
-{
-	
+{	
 	PRINT("native_embed_widget_new\n");
 	NativeEmbedWidget * embed_widget = (NativeEmbedWidget *)g_object_new (GTK_TYPE_NATIVE_EMBED, NULL);
 

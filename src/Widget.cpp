@@ -118,7 +118,7 @@ Widget::GRE_Startup()
 
 
 nsresult
-Widget::Load (CallbackBin *events)
+Widget::Init (CallbackBin *events)
 {
 	widgetCount++;
 
@@ -155,27 +155,8 @@ Widget::Load (CallbackBin *events)
 	return 0;
 }
 
-void
-Widget::Shutdown ()
-{
-	widgetCount--;
-
-	if (widgetCount == 0) {
-		if (appShell) {
-			// Shutdown the appshell service.
-			this->appShell->Spindown();
-			NS_RELEASE(this->appShell);
-			this->appShell = 0;
-		}
-		GRE_Shutdown();
-		#ifdef NS_UNIX
-		g_idle_add (gtk_shutdown, NULL);
-		#endif
-	}
-}
-
 nsresult 
-Widget::Init(Handle *hwnd, PRUint32 width, PRUint32 height)
+Widget::Create (Handle *hwnd, PRUint32 width, PRUint32 height)
 {
 	this->width = width;
 	this->height = height;
@@ -203,6 +184,25 @@ Widget::Init(Handle *hwnd, PRUint32 width, PRUint32 height)
 
 	this->CreateBrowserWindow ();
 	return NS_OK;	
+}
+
+void
+Widget::Shutdown ()
+{
+	widgetCount--;
+
+	if (widgetCount == 0) {
+		if (appShell) {
+			// Shutdown the appshell service.
+			this->appShell->Spindown();
+			NS_RELEASE(this->appShell);
+			this->appShell = 0;
+		}
+		GRE_Shutdown();
+		#ifdef NS_UNIX
+		g_idle_add (gtk_shutdown, NULL);
+		#endif
+	}
 }
 
 nsresult 
