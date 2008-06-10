@@ -160,9 +160,9 @@ class Widget
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
-		nsresult Load (CallbackBin * events);
+		nsresult Init (CallbackBin * events);
 		void Shutdown ();
-		nsresult Init (Handle * hwnd, PRUint32 width, PRUint32 height);
+		nsresult Create (Handle * hwnd, PRUint32 width, PRUint32 height);
 		nsresult CreateBrowserWindow ();
 
 		// Layout

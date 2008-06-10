@@ -1,3 +1,7 @@
+2008-06-10  Andreia Gaita <avidigal@novell.com> 
+
+	* Widget.h: Fix mismatching calls
+
 2008-06-02  Andreia Gaita <avidigal@novell.com> 
 
 	* gtkWidget.cpp, Widget.cpp, Widget.h: Clean up
