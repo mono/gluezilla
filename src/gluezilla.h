@@ -120,6 +120,7 @@ extern "C"
 		void (STDCALL *OnProgress)			(nsIWebProgress *webProgress, nsIRequest *request, PRInt32 curTotalProgress, PRInt32 maxTotalProgress);
 		void (STDCALL *OnLocationChanged)	(nsIWebProgress *webProgress, nsIRequest *request, nsIURI * uri);
 		void (STDCALL *OnStatusChange)		(nsIWebProgress *webProgress, nsIRequest *request, const PRUnichar *message, PRInt32 status);
+		void (STDCALL *OnSecurityChange)	(nsIWebProgress *webProgress, nsIRequest *request, PRUint32 status);
 	    
 		//return true to abort/consume
 		PRBool (STDCALL *OnDomKeyDown)		(KeyInfo keyInfo, ModifierKeys modifiers, nsIDOMNode * node);
@@ -165,6 +166,8 @@ extern "C"
 
 		void (STDCALL *OnLoad)			();
 		void (STDCALL *OnUnload)		();
+		
+		void (STDCALL *OnShowContextMenu) (PRUint32 contextFlags, nsIDOMEvent * event, nsIDOMNode * node);
 		
 		void (STDCALL *OnGeneric)			(const PRUnichar* type);
 

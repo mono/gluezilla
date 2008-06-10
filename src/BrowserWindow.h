@@ -25,11 +25,12 @@ class BrowserWindow :
 	public nsIWebBrowserChrome,
 	public nsIWebBrowserChromeFocus,
 	public nsIWebProgressListener,
-	public nsIURIContentListener,
+//	public nsIURIContentListener,
 	public nsSupportsWeakReference,
 	public nsIWindowCreator,
 //	public nsIEmbeddingSiteWindow,
-	public nsIEmbeddingSiteWindow2
+	public nsIEmbeddingSiteWindow2,
+	public nsIContextMenuListener
 {
 
  public:
@@ -46,10 +47,11 @@ class BrowserWindow :
 	NS_DECL_NSIWEBBROWSERCHROME
 	NS_DECL_NSIWEBBROWSERCHROMEFOCUS
 	NS_DECL_NSIWEBPROGRESSLISTENER
-	NS_DECL_NSIURICONTENTLISTENER
+//	NS_DECL_NSIURICONTENTLISTENER
 	NS_DECL_NSIWINDOWCREATOR
 	NS_DECL_NSIEMBEDDINGSITEWINDOW
 	NS_DECL_NSIEMBEDDINGSITEWINDOW2
+	NS_DECL_NSICONTEXTMENULISTENER
 
 
 	// initialization

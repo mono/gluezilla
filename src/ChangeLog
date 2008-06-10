@@ -1,5 +1,13 @@
 2008-06-10  Andreia Gaita <avidigal@novell.com> 
 
+	* BrowserWindow.cpp, BrowserWindow.h: Disable uri context listener (not
+	  being used right now). Add context menu event listener, security
+	  change callback.
+	* gluezilla.h: Add context menu event and security change callback.
+	* interfaces.h: Add support for context menu event listener.
+
+2008-06-10  Andreia Gaita <avidigal@novell.com> 
+
 	* Widget.h: Fix mismatching calls
 
 2008-06-02  Andreia Gaita <avidigal@novell.com> 

@@ -26,6 +26,7 @@
 #include <docshell/nsIDocShellTreeItem.h>
 #include <nsIEmbeddingSiteWindow.h>
 #include <webbrwsr/nsIEmbeddingSiteWindow2.h>
+#include <nsIContextMenuListener.h>
 
 // for NS_APPSHELL_CID
 #include <widget/nsWidgetsCID.h>

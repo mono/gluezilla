@@ -113,7 +113,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
     nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
     webBrowser->AddWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
 
-	webBrowser->SetParentURIContentListener (static_cast<nsIURIContentListener*>(this));
+//	webBrowser->SetParentURIContentListener (static_cast<nsIURIContentListener*>(this));
 
 	baseWindow->SetVisibility( PR_TRUE );
 
@@ -343,12 +343,13 @@ NS_INTERFACE_MAP_BEGIN(BrowserWindow)
 	NS_INTERFACE_MAP_ENTRY(nsIWebBrowserChromeFocus)
 	NS_INTERFACE_MAP_ENTRY(nsIInterfaceRequestor)
 	NS_INTERFACE_MAP_ENTRY(nsIWebProgressListener)
-	NS_INTERFACE_MAP_ENTRY(nsIURIContentListener)
+//	NS_INTERFACE_MAP_ENTRY(nsIURIContentListener)
 	NS_INTERFACE_MAP_ENTRY(nsSupportsWeakReference)
 	NS_INTERFACE_MAP_ENTRY_AMBIGUOUS(nsISupports, nsIWebProgressListener)
 	NS_INTERFACE_MAP_ENTRY(nsIWindowCreator)
 	NS_INTERFACE_MAP_ENTRY(nsIEmbeddingSiteWindow)
 	NS_INTERFACE_MAP_ENTRY(nsIEmbeddingSiteWindow2)
+	NS_INTERFACE_MAP_ENTRY(nsIContextMenuListener)
 NS_INTERFACE_MAP_END
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -585,69 +586,73 @@ BrowserWindow::OnLocationChange(nsIWebProgress *webProgress, nsIRequest *request
 NS_IMETHODIMP 
 BrowserWindow::OnStatusChange(nsIWebProgress *webProgress, nsIRequest *request, nsresult aStatus, const PRUnichar *aMessage)
 {
-	PRINT ("gluezilla: OnStatusChange");
+	PRINT ("gluezilla: OnStatusChange\n");
 	owner->events->OnStatusChange (webProgress, request, aMessage, aStatus);
     return NS_OK;
 }
 
 /* void onSecurityChange (in nsIWebProgress aWebProgress, in nsIRequest aRequest, in unsigned long aState); */
 NS_IMETHODIMP 
-BrowserWindow::OnSecurityChange(nsIWebProgress *aWebProgress, nsIRequest *aRequest, PRUint32 aState)
+BrowserWindow::OnSecurityChange (nsIWebProgress *webProgress, nsIRequest *request, PRUint32 state)
 {
-    return NS_ERROR_NOT_IMPLEMENTED;
+    owner->events->OnSecurityChange (webProgress, request, state);
+	return NS_OK;
 }
+
+
+/* nsIURIContentListener */
 
 /* boolean onStartURIOpen (in nsIURI aURI); */
-NS_IMETHODIMP 
-BrowserWindow::OnStartURIOpen(nsIURI *aURI, PRBool *_retval)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::OnStartURIOpen(nsIURI *aURI, PRBool *_retval)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 /* boolean doContent (in string aContentType, in boolean aIsContentPreferred, in nsIRequest aRequest, out nsIStreamListener aContentHandler); */
-NS_IMETHODIMP 
-BrowserWindow::DoContent(const char *aContentType, PRBool aIsContentPreferred, nsIRequest *aRequest, nsIStreamListener **aContentHandler, PRBool *_retval)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::DoContent(const char *aContentType, PRBool aIsContentPreferred, nsIRequest *aRequest, nsIStreamListener **aContentHandler, PRBool *_retval)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 /* boolean isPreferred (in string aContentType, out string aDesiredContentType); */
-NS_IMETHODIMP 
-BrowserWindow::IsPreferred(const char *aContentType, char **aDesiredContentType, PRBool *_retval)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::IsPreferred(const char *aContentType, char **aDesiredContentType, PRBool *_retval)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 /* boolean canHandleContent (in string aContentType, in boolean aIsContentPreferred, out string aDesiredContentType); */
-NS_IMETHODIMP 
-BrowserWindow::CanHandleContent(const char *aContentType, PRBool aIsContentPreferred, char **aDesiredContentType, PRBool *_retval)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::CanHandleContent(const char *aContentType, PRBool aIsContentPreferred, char **aDesiredContentType, PRBool *_retval)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 /* attribute nsISupports loadCookie; */
-NS_IMETHODIMP 
-BrowserWindow::GetLoadCookie(nsISupports * *aLoadCookie)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-NS_IMETHODIMP 
-BrowserWindow::SetLoadCookie(nsISupports * aLoadCookie)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::GetLoadCookie(nsISupports * *aLoadCookie)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
+//NS_IMETHODIMP 
+//BrowserWindow::SetLoadCookie(nsISupports * aLoadCookie)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 /* attribute nsIURIContentListener parentContentListener; */
-NS_IMETHODIMP 
-BrowserWindow::GetParentContentListener(nsIURIContentListener * *aParentContentListener)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
-NS_IMETHODIMP 
-BrowserWindow::SetParentContentListener(nsIURIContentListener * aParentContentListener)
-{
-    return NS_ERROR_NOT_IMPLEMENTED;
-}
+//NS_IMETHODIMP 
+//BrowserWindow::GetParentContentListener(nsIURIContentListener * *aParentContentListener)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
+//NS_IMETHODIMP 
+//BrowserWindow::SetParentContentListener(nsIURIContentListener * aParentContentListener)
+//{
+//    return NS_ERROR_NOT_IMPLEMENTED;
+//}
 
 
 
@@ -743,3 +748,14 @@ BrowserWindow::FocusPrevElement()
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
+
+// nsIContextMenuListener
+
+NS_IMETHODIMP 
+BrowserWindow::OnShowContextMenu (PRUint32 contextFlags, nsIDOMEvent * event, nsIDOMNode * node)
+{
+	PRINT ("gluezilla: OnShowContextMenu\n");
+	owner->events->OnShowContextMenu (contextFlags, event, node);
+}
+
+
