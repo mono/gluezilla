@@ -756,6 +756,7 @@ BrowserWindow::OnShowContextMenu (PRUint32 contextFlags, nsIDOMEvent * event, ns
 {
 	PRINT ("gluezilla: OnShowContextMenu\n");
 	owner->events->OnShowContextMenu (contextFlags, event, node);
+	return NS_OK;
 }
 
 

@@ -1,3 +1,7 @@
+2008-06-11  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Fix missing return
+
 2008-06-10  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp, BrowserWindow.h: Disable uri context listener (not
