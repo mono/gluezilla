@@ -57,21 +57,6 @@ if test -z $mozilla_nss; then
    exit 1
 fi
 
-AC_MSG_CHECKING(Mozilla XPCOM pkg-config module name)
-mozilla_xpcom_pcs="xpcom mozilla-xpcom firefox-xpcom xulrunner-xpcom"
-for pc in $mozilla_xpcom_pcs; do
-	if $PKG_CONFIG --exists $pc; then
-		AC_MSG_RESULT($pc)
-		mozilla_xpcom=$pc
-		break;
-	fi
-done
-
-if test -z $mozilla_xpcom; then
-   echo You need to install the Mozilla XPCOM development package.
-   exit 1
-fi
-
 AC_ARG_ENABLE([local],
 	AC_HELP_STRING([--enable-local], [Use local gecko (build/)]),
 		[
@@ -82,6 +67,28 @@ AC_ARG_ENABLE([local],
 			esac
 		],
 		[local=no])
+
+XPCOM_PKGS=""
+
+if test "x${local}" == xno ; then
+
+	AC_MSG_CHECKING(Mozilla XPCOM pkg-config module name)
+	mozilla_xpcom_pcs="xpcom mozilla-xpcom firefox-xpcom xulrunner-xpcom"
+	for pc in $mozilla_xpcom_pcs; do
+		if $PKG_CONFIG --exists $pc; then
+			AC_MSG_RESULT($pc)
+			mozilla_xpcom=$pc
+			break;
+		fi
+	done
+
+	if test -z $mozilla_xpcom; then
+		echo You need to install the Mozilla XPCOM development package.
+		exit 1
+	fi
+	
+	XPCOM_PKGS="$mozilla_xpcom"
+fi
 
 AC_ARG_ENABLE([optimize],
 	AC_HELP_STRING([--enable-optimize], [Enable optimizations (-O2)]),
@@ -113,13 +120,6 @@ fi
 AC_SUBST(autoconf_default_CXXFLAGS)
 
 
-XPIDL=`pkg-config --variable=libdir $mozilla_xpcom`/xpidl
-XPFLAGS=-I`pkg-config --variable=includedir $mozilla_xpcom`
-
-AC_SUBST(XPIDL)
-AC_SUBST(XPFLAGS)
-
-XPCOM_PKGS="$mozilla_xpcom"
 NSPR_PKGS="$mozilla_nspr"
 
 if test "x${local}" != xno ; then

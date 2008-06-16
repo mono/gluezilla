@@ -1,3 +1,8 @@
+2008-06-16  Andreia Gaita <avidigal@novell.com> 
+
+	* configure.ac: Do not check for xpcom dev packages if we're building
+	  with a local sdk
+
 2008-02-20  Andreia Gaita <avidigal@novell.com>
 
 	* configure.ac: Add flag for char compatibility with
