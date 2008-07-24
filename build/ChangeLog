@@ -1,3 +1,7 @@
+2008-07-24  Alp Toker  <alp@nuanti.com>
+
+	* Makefile.am: Include dom/* in dist to fix the Windows build.
+
 2008-04-18  Andreia Gaita <avidigal@novell.com> 
 
 	* include_extras/dom/nsIScriptGlobalObjectOwner.h: Javascript eval
