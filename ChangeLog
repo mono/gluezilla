@@ -1,3 +1,8 @@
+2008-08-07  Andreia Gaita <avidigal@novell.com> 
+
+	* configure.ac: Check and distinguish between gecko 1.8 and 1.9, define
+	  a XUL_VERSION flag to be used to tweak header include paths.
+
 2008-06-16  Andreia Gaita <avidigal@novell.com> 
 
 	* configure.ac: Do not check for xpcom dev packages if we're building

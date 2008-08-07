@@ -182,12 +182,14 @@ char const * GetAvailableRuntime ()
 	if (*runtimePath)
 		return runtimePath;
 
+#if XUL_VERSION == 2
 	const char* xpcomLocation = GRE_GetXPCOMPath();
 	if (xpcomLocation)
 	{
 		strcpy(runtimePath, xpcomLocation);
 		return runtimePath;
 	}
+#endif
 
 	static const GREVersionRange version = {
 	"1.8", PR_TRUE,

@@ -1,3 +1,20 @@
+2008-08-07  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Remove cast macro calls that went walkies on gecko
+	  1.9. EOL fixes.
+	* windows.mak: Pass in the new defines to the windows build.
+	* Widget.cpp: If we're building against gecko 1.9:
+	  NS_XPCOMPROXY_CONTRACTID definition has been moved to an
+	  unavailable header, define it. AppShell appears to have
+	  disappeared, don't call it. Tweak the shutdown call to use the new
+	  api.
+	* LocationProvider.cpp: Don't call GRE_GetXPCOMPath on gecko 1.9, it
+	  was removed. EOL fixes.
+	* Makefile.am: Only use gluezilla_* headers if we're building against
+	  gecko 1.8
+	* interfaces.h: Tweak header include paths depending on which gecko
+	  version we're building against. EOL fixes.
+
 2008-06-11  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp: Fix missing return

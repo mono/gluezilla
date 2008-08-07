@@ -35,6 +35,10 @@ extern GAsyncQueue *queueout;
 #define PROXY_ALWAYS  0x0004   // ignore check to see if the eventQ is on the same thread as the caller, and alway return a proxied object.
 #endif
 
+#ifndef NS_XPCOMPROXY_CONTRACTID
+#define NS_XPCOMPROXY_CONTRACTID "@mozilla.org/xpcomproxy;1"
+#endif
+
 PRUint32 Widget::widgetCount = 0;
 
 static NS_DEFINE_CID(kAppShellCID, NS_APPSHELL_CID);
@@ -138,6 +142,7 @@ Widget::Init (CallbackBin *events)
 			return -1;
 		}
 
+#if XUL_VERSION == 2
 		nsCOMPtr<nsIAppShell> appShell;
 		appShell = do_CreateInstance(kAppShellCID);
 		if (!appShell) {
@@ -148,6 +153,7 @@ Widget::Init (CallbackBin *events)
 		NS_ADDREF(this->appShell);
 		this->appShell->Create(0, nsnull);
 		this->appShell->Spinup();
+#endif
 
 	}
 	this->events = events;
@@ -192,13 +198,20 @@ Widget::Shutdown ()
 	widgetCount--;
 
 	if (widgetCount == 0) {
+#if XUL_VERSION == 2
 		if (appShell) {
 			// Shutdown the appshell service.
 			this->appShell->Spindown();
 			NS_RELEASE(this->appShell);
 			this->appShell = 0;
 		}
+#endif
+#if XUL_VERSION > 2
+		XPCOMGlueShutdown ();
+#else
 		GRE_Shutdown();
+#endif
+		
 		#ifdef NS_UNIX
 		g_idle_add (gtk_shutdown, NULL);
 		#endif
