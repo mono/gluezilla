@@ -1,3 +1,8 @@
+2008-08-19  Andreia Gaita <avidigal@novell.com> 
+
+	* configure.ac: Add configure option to force the use of gecko 1.8 when
+	  both 1.8 and 1.9 are available
+
 2008-08-07  Andreia Gaita <avidigal@novell.com> 
 
 	* configure.ac: Check and distinguish between gecko 1.8 and 1.9, define

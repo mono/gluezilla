@@ -2,7 +2,7 @@ AC_INIT(README)
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gluezilla,1.9)
+AM_INIT_AUTOMAKE(gluezilla,2.0)
 AM_MAINTAINER_MODE
 AC_PROG_CXX
 AC_HEADER_STDC
@@ -68,21 +68,36 @@ AC_ARG_ENABLE([local],
 		],
 		[local=no])
 
+AC_ARG_ENABLE([xulrunner-1.8],
+	AC_HELP_STRING([--enable-xulrunner-1.8], [Force use of xulrunner 1.8]),
+		[
+			case "${enableval}" in
+				yes) oldxul=yes ;;
+				no) oldxul=no ;;
+				*) AC_MSG_ERROR(bad value ${enableval} for --enable-xulrunner-1.8) ;;
+			esac
+		],
+		[oldxul=no])
+
+
 XPCOM_PKGS=""
 XUL_VERSION=0
 
 if test "x${local}" == xno ; then
 
-	AC_MSG_CHECKING(Mozilla XPCOM > 1.8)
-	mozilla_xpcom_pcs="libxul-embedding-unstable"
-	for pc in $mozilla_xpcom_pcs; do
-		if $PKG_CONFIG --exists $pc; then
-			AC_MSG_RESULT($pc)
-			mozilla_xpcom=$pc
-			XUL_VERSION=3
-			break;
-		fi
-	done
+	if test "x${oldxul}" != xyes ; then
+
+		AC_MSG_CHECKING(Mozilla XPCOM > 1.8)
+		mozilla_xpcom_pcs="libxul-embedding-unstable"
+		for pc in $mozilla_xpcom_pcs; do
+			if $PKG_CONFIG --exists $pc; then
+				AC_MSG_RESULT($pc)
+				mozilla_xpcom=$pc
+				XUL_VERSION=3
+				break;
+			fi
+		done
+	fi
 
 	if test -z $mozilla_xpcom; then
 		AC_MSG_RESULT(not found)
