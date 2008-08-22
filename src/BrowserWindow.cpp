@@ -64,7 +64,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 	if ( ! webBrowser )
 		return NS_ERROR_FAILURE;
 
-    (void)webBrowser->SetContainerWindow( NS_STATIC_CAST( nsIWebBrowserChrome*, this ) );
+    (void) webBrowser->SetContainerWindow (static_cast<nsIWebBrowserChrome *> (this));
 
     nsCOMPtr<nsIDocShellTreeItem> dsti = do_QueryInterface( webBrowser );
     dsti->SetItemType( nsIDocShellTreeItem::typeContentWrapper );
@@ -73,7 +73,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 	sessionHistory = do_CreateInstance(NS_SHISTORY_CONTRACTID);
 	webNav->SetSessionHistory(sessionHistory);
 
-    nsCOMPtr<nsIWindowCreator> windowCreator (NS_STATIC_CAST(nsIWindowCreator *, this));
+    nsCOMPtr<nsIWindowCreator> windowCreator (static_cast<nsIWindowCreator *> (this));
 
     // Attach it via the watcher service
     nsCOMPtr<nsIWindowWatcher> watcher = do_GetService(NS_WINDOWWATCHER_CONTRACTID);
@@ -132,7 +132,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 		nsCOMPtr<nsIWidget> mozWidget;
 		baseWindow->GetMainWidget(getter_AddRefs(mozWidget));
 
-		GdkWindow *tmp_window = NS_STATIC_CAST(GdkWindow *, mozWidget->GetNativeData(NS_NATIVE_WINDOW));
+		GdkWindow *tmp_window = static_cast<GdkWindow *> (mozWidget->GetNativeData(NS_NATIVE_WINDOW));
 
 		// and, thanks to superwin we actually need the parent of that.
 		tmp_window = gdk_window_get_parent(tmp_window);
@@ -140,7 +140,7 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 		// save the widget ID - it should be the mozarea of the window.
 		gpointer data = nsnull;
 		gdk_window_get_user_data(tmp_window, &data);
-		this->nativeMozWidget = NS_STATIC_CAST(Handle *, data);
+		this->nativeMozWidget = static_cast<Handle *> (data);
 #endif		
 */
 		return NS_OK;
@@ -410,7 +410,7 @@ BrowserWindow::CreateChromeWindow(
 	//if (aChromeFlags & nsIWebBrowserChrome::CHROME_OPENAS_CHROME)
 	//	this->isChrome = PR_TRUE;
 
-	*_retval = NS_STATIC_CAST(nsIWebBrowserChrome *, this);
+	*_retval = static_cast<nsIWebBrowserChrome *> (this);
 	
 	if (*_retval) {
 		NS_ADDREF(*_retval);
@@ -437,13 +437,13 @@ BrowserWindow::CreateChromeWindow(
 	// realized before that can happen.
 	gtk_widget_realize(GTK_WIDGET(newEmbed));
 	
-	Widget *newOwner = NS_STATIC_CAST(Widget *, newEmbed->data);
+	Widget *newOwner = static_cast<Widget *> (newEmbed->data);
 	
 	// set the chrome flag on the new window if it's a chrome open
 //	if (aChromeFlags & nsIWebBrowserChrome::CHROME_OPENAS_CHROME)
 //		newOwner->mIsChrome = PR_TRUE;
 	
-	*_retval = NS_STATIC_CAST(nsIWebBrowserChrome *, this);
+	*_retval = static_cast<nsIWebBrowserChrome *> (this);
 	
 	if (*_retval) {
 		NS_ADDREF(*_retval);
@@ -729,7 +729,7 @@ BrowserWindow::SetTitle(const PRUnichar * aTitle)
 NS_IMETHODIMP 
 BrowserWindow::GetSiteWindow(void * *aSiteWindow)
 {
-  *aSiteWindow = NS_STATIC_CAST(void *, owner->getHandle());
+  *aSiteWindow = static_cast<void *> (owner->getHandle());
   return NS_OK;
 }
 

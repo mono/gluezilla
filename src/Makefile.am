@@ -4,7 +4,7 @@ AM_CXXFLAGS = @autoconf_default_CXXFLAGS@
 
 lib_LTLIBRARIES = libgluezilla.la
 
-INCLUDES = $(GLUEZILLA_CFLAGS)
+INCLUDES = $(GLUEZILLA_CFLAGS) -DXUL_VERSION=$(XUL_VERSION)
 
 libgluezilla_la_SOURCES = 	\
 	interfaces.h \
@@ -24,9 +24,13 @@ libgluezilla_la_SOURCES = 	\
 	gtkWidget.h	\
 	gluezilla.cpp	\
 	gluezilla.h   \
-	FastDelegate.h \
+	FastDelegate.h
+
+if !OLDXUL
+libgluezilla_la_SOURCES += \
 	gluezilla_nsIScriptContext.h \
 	gluezilla_nsIScriptGlobalObject.h
+endif
 
 libgluezilla_la_LIBADD = $(GLUEZILLA_LIBS)
 

@@ -1,3 +1,9 @@
+2008-08-22  Andreia Gaita <avidigal@novell.com> 
+
+	* configure.ac: Add check for xulrunner 1.9, and switch for forcing 1.8
+	  if both are available. Add XUL_VERSION define for changing include
+	  paths depending on the xulrunner version we're building against.
+
 2008-06-16  Andreia Gaita <avidigal@novell.com> 
 
 	* configure.ac: Do not check for xpcom dev packages if we're building

@@ -1,3 +1,19 @@
+2008-08-22  Andreia Gaita <avidigal@novell.com> 
+
+	* BrowserWindow.cpp: Remove cast macros that are missing with xulrunner
+	  1.9
+	* windows.mak: Add XUL_VERSION define for the windows build.
+	* Widget.cpp: Define NS_XPCOMPROXY_CONTRACTID if it's not defined yet
+	  (xulrunner 1.9 has this inside a private header that we can't
+	  include). Only initialize the AppShell if we're building against
+	  xulrunner 1.8 (AppShell is not available on 1.9, apparently :P)
+	* LocationProvider.cpp: Ask for specific xulrunner version on runtime
+	  depending on which xulrunner we're building against. EOL fixes.
+	* Makefile.am: Don't include custom gluezilla_* headers for xulrunner
+	  1.9
+	* interfaces.h: Change include paths depending on which xulrunner
+	  version we're building against. Remove unused XRE API defines.
+
 2008-06-11  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp: Fix missing return

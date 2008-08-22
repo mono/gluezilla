@@ -27,7 +27,7 @@ else
    echo I was looking for mono.pc file
 fi
 
-AC_MSG_CHECKING(Mozilla NSPR pkg-config module name)
+AC_MSG_CHECKING(Mozilla NSPR)
 mozilla_nspr_pcs="nspr mozilla-nspr firefox-nspr xulrunner-nspr seamonkey-nspr"
 for pc in $mozilla_nspr_pcs; do
 	if $PKG_CONFIG --exists $pc; then
@@ -42,7 +42,7 @@ if test -z $mozilla_nspr; then
    exit 1
 fi
 
-AC_MSG_CHECKING(Mozilla NSS pkg-config module name)
+AC_MSG_CHECKING(Mozilla NSS)
 mozilla_nss_pcs="nss mozilla-nss firefox-nss xulrunner-nss seamonkey-nss"
 for pc in $mozilla_nss_pcs; do
 	if $PKG_CONFIG --exists $pc; then
@@ -68,19 +68,50 @@ AC_ARG_ENABLE([local],
 		],
 		[local=no])
 
+AC_ARG_ENABLE([xulrunner-1.8],
+	AC_HELP_STRING([--enable-xulrunner-1.8], [Force use of xulrunner 1.8]),
+		[
+			case "${enableval}" in
+				yes) oldxul=yes ;;
+				no) oldxul=no ;;
+				*) AC_MSG_ERROR(bad value ${enableval} for --enable-xulrunner-1.8) ;;
+			esac
+		],
+		[oldxul=no])
+
+
 XPCOM_PKGS=""
+XUL_VERSION=0
 
 if test "x${local}" == xno ; then
 
-	AC_MSG_CHECKING(Mozilla XPCOM pkg-config module name)
-	mozilla_xpcom_pcs="xpcom mozilla-xpcom firefox-xpcom xulrunner-xpcom"
-	for pc in $mozilla_xpcom_pcs; do
-		if $PKG_CONFIG --exists $pc; then
-			AC_MSG_RESULT($pc)
-			mozilla_xpcom=$pc
-			break;
-		fi
-	done
+	if test "x${oldxul}" != xyes ; then
+
+		AC_MSG_CHECKING(Mozilla XPCOM > 1.8)
+		mozilla_xpcom_pcs="libxul-embedding-unstable"
+		for pc in $mozilla_xpcom_pcs; do
+			if $PKG_CONFIG --exists $pc; then
+				AC_MSG_RESULT($pc)
+				mozilla_xpcom=$pc
+				XUL_VERSION=3
+				break;
+			fi
+		done
+	fi
+
+	if test -z $mozilla_xpcom; then
+		AC_MSG_RESULT(not found)
+		AC_MSG_CHECKING(Mozilla XPCOM 1.8)
+		mozilla_xpcom_pcs="xpcom mozilla-xpcom firefox-xpcom xulrunner-xpcom"
+		for pc in $mozilla_xpcom_pcs; do
+			if $PKG_CONFIG --exists $pc; then
+				AC_MSG_RESULT($pc)
+				mozilla_xpcom=$pc
+				XUL_VERSION=2
+				break;
+			fi
+		done
+	fi
 
 	if test -z $mozilla_xpcom; then
 		echo You need to install the Mozilla XPCOM development package.
@@ -89,6 +120,10 @@ if test "x${local}" == xno ; then
 	
 	XPCOM_PKGS="$mozilla_xpcom"
 fi
+
+AM_CONDITIONAL([OLDXUL], [test x$XUL_VERSION = x2])
+
+AC_SUBST(XUL_VERSION)
 
 AC_ARG_ENABLE([optimize],
 	AC_HELP_STRING([--enable-optimize], [Enable optimizations (-O2)]),
@@ -130,16 +165,16 @@ if test "x${local}" != xno ; then
 	
 	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L../build/lib"
 else
-	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 gthread-2.0 $XPCOM_PKGS`
+	GLUEZILLA_CFLAGS=`pkg-config --cflags gtk+-2.0 gthread-2.0 $XPCOM_PKGS $NSPR_PKGS`
 	GLUEZILLA_LIBS=`pkg-config --libs gtk+-2.0 gthread-2.0 $NSPR_PKGS`
-	XULLIBDIR=`pkg-config --variable=libdir $XPCOM_PKGS`
-	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -L${XULLIBDIR}"
+	XULLIBDIR=`pkg-config --libs-only-L $XPCOM_PKGS`
+	GLUEZILLA_LIBS="${GLUEZILLA_LIBS} ${XULLIBDIR}"
 fi
 
 if test "x${optimize}" == xno ; then
 	GLUEZILLA_CFLAGS="-DDEBUG -DFORCE_PR_LOG ${GLUEZILLA_CFLAGS}"
 fi
-GLUEZILLA_CFLAGS="-DXPCOM_GLUE -fno-rtti -fshort-wchar ${GLUEZILLA_CFLAGS}"
+GLUEZILLA_CFLAGS="-DXPCOM_GLUE -DXPCOM_GLUE_NEEDS_NSPR -fno-rtti -fshort-wchar ${GLUEZILLA_CFLAGS}"
 GLUEZILLA_LIBS="${GLUEZILLA_LIBS} -lxpcomglue"
 
 

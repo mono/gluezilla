@@ -22,7 +22,7 @@ CFG=Debug
 OBJDIR=
 
 cc=cl.exe
-cflags=/D "XPCOM_GLUE" /D "NO_BUILD_REFCNT_LOGGING" /D "_WINDLL" /FD /EHsc /Fo"$(OBJDIR)\\" /Fd"$(OBJDIR)\\" /nologo /c /TP /wd4005 /wd4996 -I. -I../build/include -I../build/include/xpcom -I../build/include/string -I../build/include/nspr
+cflags=/D "XPCOM_GLUE" /DXPCOM_GLUE_NEEDS_NSPR /DXUL_VERSION=2 /D "NO_BUILD_REFCNT_LOGGING" /D "_WINDLL" /FD /EHsc /Fo"$(OBJDIR)\\" /Fd"$(OBJDIR)\\" /nologo /c /TP /wd4005 /wd4996 -I. -I../build/include -I../build/include/xpcom -I../build/include/string -I../build/include/nspr
 
 !IF  "$(CFG)" == "Debug"
 cdebug=/Od /D "DEBUG" /D "_MBCS" /RTC1 /RTCc /MDd /Gy /W3 /ZI 
