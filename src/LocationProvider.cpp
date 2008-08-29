@@ -192,7 +192,11 @@ char const * GetAvailableRuntime ()
 #endif
 
 	static const GREVersionRange version = {
+#if XUL_VERSION == 2
 	"1.8", PR_TRUE,
+#else
+	"1.9", PR_TRUE,
+#endif
 	"9.9", PR_TRUE
 	};
 

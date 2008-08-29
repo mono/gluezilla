@@ -1,3 +1,8 @@
+2008-08-29  Andreia Gaita <avidigal@novell.com>
+
+	* LocationProvider.cpp: Force dynamic loader to use a specific
+	minimum xulrunner version depending on which one it gets built with.
+
 2008-08-07  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp: Remove cast macro calls that went walkies on gecko
