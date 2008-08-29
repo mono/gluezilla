@@ -1,3 +1,12 @@
+2008-08-29  Andreia Gaita <avidigal@novell.com> 
+
+	[backported from trunk, r111902]
+	* BrowserWindow.cpp, Widget.cpp: Check result codes from ns* calls and
+	  and bail out if they fail.
+	* gluezilla.cpp: Check result codes from ns* calls and and bail out if
+	  they fail. Addref document and webnavigation objects before
+	  returning them to managed land.
+
 2008-08-22  Andreia Gaita <avidigal@novell.com> 
 
 	* BrowserWindow.cpp: Remove cast macros that are missing with xulrunner

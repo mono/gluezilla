@@ -107,7 +107,15 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
     baseWindow = do_QueryInterface (webBrowser);
 	
 	result = baseWindow->InitWindow( hwnd, nsnull,  0, 0, width, height );
+	if (!NS_SUCCEEDED(result)) {
+		SHOUT("BrowserWindow: Failed to initialize window\n");
+		return NS_ERROR_FAILURE;
+	}
     result = baseWindow->Create();
+	if (!NS_SUCCEEDED(result)) {
+		SHOUT("BrowserWindow: Failed to create window\n");
+		return NS_ERROR_FAILURE;
+	}
 
     nsCOMPtr<nsIWebProgressListener> wpl (static_cast<nsIWebProgressListener*>(this));
     nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
