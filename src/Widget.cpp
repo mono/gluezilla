@@ -224,6 +224,10 @@ Widget::CreateBrowserWindow()
 	PRINT("Widget::CreateBrowserWindow!\n");
 	browserWindow->setParent( this );
 	nsresult ret = browserWindow->Create( this->hwnd, this->width, this->height );
+	if (!NS_SUCCEEDED(ret)) {
+		SHOUT("Failed to create a browser window\n");
+		return -1;
+	}
 	Handle * nativeMozWindow = browserWindow->getNativeWin ();
 	this->Navigate ("about:blank");
 	return NS_OK;

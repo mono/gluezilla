@@ -58,6 +58,9 @@ gluezilla_createBrowserWindow (CallbackBin *events, Handle *hwnd,
 	if (p)
 		delete (p);
 
+	if (!NS_SUCCEEDED(result))
+		return NULL;
+
 	Handle * handle = hwnd;
 
 	p = new Params ();
@@ -70,6 +73,9 @@ gluezilla_createBrowserWindow (CallbackBin *events, Handle *hwnd,
 	result = widget->BeginInvoke (p);
 	if (p)
 		delete (p);
+
+	if (!NS_SUCCEEDED(result))
+		return NULL;
 
 	return reinterpret_cast<Handle*>(widget);
 }
@@ -272,6 +278,7 @@ gluezilla_getDomDocument (Handle *instance)
 
 	nsresult result = widget->BeginInvoke (p);
 	nsIDOMHTMLDocument * ret (p->document);
+	NS_ADDREF(ret);
 	if (p)
 		delete (p);
 	return ret;
@@ -287,6 +294,7 @@ gluezilla_getWebNavigation (Handle *instance)
 
 	nsresult result = widget->BeginInvoke (p);
 	nsIWebNavigation * ret (p->navigation);
+	NS_ADDREF(ret);
 	if (p)
 		delete (p);
 	return ret;

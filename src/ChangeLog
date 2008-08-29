@@ -1,5 +1,13 @@
 2008-08-29  Andreia Gaita <avidigal@novell.com>
 
+	* BrowserWindow.cpp, Widget.cpp, gluezilla.cpp: Check result codes
+	from ns* calls and and bail out if they fail.
+
+	* gluezilla.cpp: Addref document and webnavigation objects before
+	returning them to managed land.
+
+2008-08-29  Andreia Gaita <avidigal@novell.com>
+
 	* LocationProvider.cpp: Force dynamic loader to use a specific
 	minimum xulrunner version depending on which one it gets built with.
 
