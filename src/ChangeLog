@@ -1,3 +1,8 @@
+2008-09-08  Andreia Gaita <avidigal@novell.com> 
+
+	* gluezilla.cpp, gluezilla.h: Return the version of xulrunner that's
+	  being used so I can distinguish which cache directory to use
+
 2008-08-29  Andreia Gaita <avidigal@novell.com>
 
 	* BrowserWindow.cpp, Widget.cpp, gluezilla.cpp: Check result codes
