@@ -81,7 +81,7 @@ AC_ARG_ENABLE([xulrunner-1.8],
 
 
 XPCOM_PKGS=""
-XUL_VERSION=0
+XUL_VERSION=2
 
 if test "x${local}" == xno ; then
 
