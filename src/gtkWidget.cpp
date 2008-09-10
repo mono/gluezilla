@@ -108,6 +108,7 @@ native_embed_widget_destroy(GtkObject *object)
 	NativeEmbedWidget *embed = GTK_NATIVE_EMBED(object);
 
 	embed->data = NULL;	
+	gtk_shutdown (NULL);
 }
 
 static void

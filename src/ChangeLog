@@ -1,3 +1,16 @@
+2008-09-10  Andreia Gaita <avidigal@novell.com> 
+
+	* Widget.cpp, gtkWidget.cpp: Use the widget's destroy event to call the
+	  quit routine.
+	* gluezilla.cpp: Return the version of xulrunner that's being used so I
+	  can distinguish which cache directory to use. Quit the main loop
+	  only instead of the entire app.
+	* gluezilla.h: Return the version of xulrunner that's being used so I
+	  can distinguish which cache directory to use.
+
+	Fixes: app never quitting, and segfaults when there are two different 
+	xulrunner runtimes installed
+
 2008-08-29  Andreia Gaita <avidigal@novell.com> 
 
 	[backported from trunk, r111902]

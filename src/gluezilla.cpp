@@ -25,7 +25,7 @@ gluezilla_debug (int signal)
 	PRINT2 ("debug signal: %d\n", signal);
 }
 
-NS_METHOD_(Handle*)
+NS_METHOD_(short)
 gluezilla_init (Platform platform, Platform * mozPlatform)
 {	
 #ifdef NS_UNIX
@@ -38,7 +38,11 @@ gluezilla_init (Platform platform, Platform * mozPlatform)
 	*mozPlatform = Winforms;
 #endif
 
-	return 0;
+#if XUL_VERSION == 2
+	return 2;
+#else
+	return 3;
+#endif
 }
 
 NS_METHOD_(Handle*)
@@ -479,6 +483,6 @@ gboolean
 gtk_shutdown (gpointer data)
 {
 	PRINT2 ("gtk_shutdown %p \n", g_thread_self ());	
-	gtk_exit (0);
+	gtk_main_quit ();
 }
 #endif
