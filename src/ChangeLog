@@ -1,3 +1,9 @@
+2008-09-10  Andreia Gaita <avidigal@novell.com> 
+
+	* Widget.cpp, gtkWidget.cpp: Use the widget's destroy event to call the
+	  quit routine.
+	* gluezilla.cpp: Quit the main loop only instead of the entire app
+
 2008-09-08  Andreia Gaita <avidigal@novell.com> 
 
 	* gluezilla.cpp, gluezilla.h: Return the version of xulrunner that's

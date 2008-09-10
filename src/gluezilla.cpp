@@ -483,6 +483,6 @@ gboolean
 gtk_shutdown (gpointer data)
 {
 	PRINT2 ("gtk_shutdown %p \n", g_thread_self ());	
-	gtk_exit (0);
+	gtk_main_quit ();
 }
 #endif

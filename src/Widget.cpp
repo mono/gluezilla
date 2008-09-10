@@ -211,10 +211,6 @@ Widget::Shutdown ()
 #else
 		GRE_Shutdown();
 #endif
-		
-		#ifdef NS_UNIX
-		g_idle_add (gtk_shutdown, NULL);
-		#endif
 	}
 }
 
