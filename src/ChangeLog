@@ -1,3 +1,10 @@
+2008-10-14  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.h:
+	* gluezilla.h:
+	* gluezilla.cpp: Added method to retrieve a service manager pointer from
+	the gui thread.
+
 2008-09-10  Andreia Gaita <avidigal@novell.com> 
 
 	* Widget.cpp, gtkWidget.cpp: Use the widget's destroy event to call the

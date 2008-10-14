@@ -225,6 +225,7 @@ extern "C"
 	NS_EXPORT_(nsresult) 	gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount);
 
 	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager();
+	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager2(Handle *instance);
 	NS_EXPORT_(char*) gluezilla_evalScript (Handle *instance, const char * script);
 
 #ifdef __cplusplus

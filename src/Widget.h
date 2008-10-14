@@ -67,6 +67,7 @@ class Widget
 			delegates["getNavigation"].bind (this, &Widget::GetNavigation);
 			delegates["getProxyForObject"].bind (this, &Widget::GetProxyForObject);
 			delegates["evalScript"].bind (this, &Widget::EvalScript);
+			delegates["getServiceManager"].bind (this, &Widget::GetServiceManager);
 		}
 		~Widget() {
 			int a = 0;
@@ -157,6 +158,16 @@ class Widget
 			return 0;
 		}
 
+		
+		nsresult GetServiceManager (Params * params) {
+			nsCOMPtr<nsIServiceManager> result;
+			nsCOMPtr<nsIServiceManager> servMan;
+			NS_GetServiceManager (getter_AddRefs (servMan));
+			this->GetProxyForObject (nsIServiceManager::GetIID(), servMan, getter_AddRefs (result));
+			NS_ADDREF(params->result = result);
+			return NS_OK;
+		}
+		
 		// end of generic targets for delegation
 
 		// Initialization and Shutdown
