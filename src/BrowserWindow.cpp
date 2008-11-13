@@ -383,8 +383,7 @@ BrowserWindow::GetInterface(const nsIID & aIID, void * *aInstancePtr)
 NS_IMETHODIMP 
 BrowserWindow::SetStatus(PRUint32 statusType, const PRUnichar *status)
 {
-	//statusText = (char *)NS_ConvertUTF16toUTF8( status ).get();
-//	owner->events->OnStatusChange (status, 100);
+	owner->events->OnStatusChange (NULL, NULL, status, 100);
 	return NS_OK;
 }
 
