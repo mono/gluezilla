@@ -1,3 +1,7 @@
+2008-11-13  Andreia Gaita  <shana@jitted.com>
+
+       * BrowserWindow.cpp: Activate link hover status messages updates
+
 2008-10-14  Andreia Gaita  <avidigal@novell.com>
 
 	* Widget.h:
