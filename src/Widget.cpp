@@ -200,6 +200,7 @@ Widget::Create ()
 void
 Widget::Shutdown ()
 {
+	browserWindow->Shutdown ();
 	widgetCount--;
 
 	if (widgetCount == 0) {
@@ -211,11 +212,11 @@ Widget::Shutdown ()
 			this->appShell = 0;
 		}
 #endif
-#if XUL_VERSION > 2
-		XPCOMGlueShutdown ();
-#else
-		GRE_Shutdown();
+
+#if XUL_VERSION == 2
+		GRE_Shutdown ();
 #endif
+		XPCOMGlueShutdown ();
 	}
 }
 

@@ -1,3 +1,8 @@
+2008-11-23  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.cpp, BrowserWindow.*: Remove event listeners when shutting down.
+	Call both XPCOMShutdown and GRE_Shutdown on xul 1.8 (this might fix #429453)
+
 2008-11-22  Andreia Gaita  <shana@jitted.com>
 
 	* Widget.*, gluezilla.*: Separate initialization in 3 stages so events

@@ -84,7 +84,8 @@ class BrowserWindow :
 	nsCOMPtr<nsIWebNavigation> getWebNavigation () { return this->webNav; }
 	
 	nsresult AttachEvent (nsIDOMEventTarget * target, const char * type, const char * name);
-	nsresult DettachEvent (const char * type, const char * name);
+	nsresult DetachEvent (const char * type, const char * name);
+	nsresult Shutdown ();
 
 	Widget * owner;
 	nsCOMPtr<nsIWebBrowser> 	webBrowser;

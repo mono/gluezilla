@@ -53,6 +53,16 @@ BrowserWindow::BrowserWindow (void)
 	isFocused = PR_FALSE;
 }
 
+nsresult
+BrowserWindow::Shutdown ()
+{
+	PRINT("BrowserWindow::Shutdown\n");
+	nsCOMPtr<nsIWebProgressListener> wpl (static_cast<nsIWebProgressListener*>(this));
+    nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
+	webBrowser->RemoveWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
+	listeners.clear ();
+	return NS_OK;
+}
 
 nsresult
 BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
@@ -83,27 +93,9 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
 	
     nsCOMPtr<nsIX509CertDB> certdb = do_GetService(NS_X509CERTDB_CONTRACTID, &result);
 
-
-	//nsCOMPtr<nsISupports> psm = do_GetService("@mozilla.org/psm;1"); 
-	
-
-//#define ENTER_SITE_PREF      "security.warn_entering_secure"
-//#define WEAK_SITE_PREF       "security.warn_entering_weak"
-//#define MIXEDCONTENT_PREF    "security.warn_viewing_mixed"
-//#define INSECURE_SUBMIT_PREF "security.warn_submit_insecure"
-//
-//	nsCOMPtr<nsIPrefBranch> prefBranch (do_GetService (NS_PREFSERVICE_CONTRACTID));
-//	prefBranch->SetBoolPref (ENTER_SITE_PREF, PR_FALSE);
-//	prefBranch->SetBoolPref (WEAK_SITE_PREF, PR_FALSE);
-//	prefBranch->SetBoolPref (MIXEDCONTENT_PREF, PR_FALSE);
-//	prefBranch->SetBoolPref (INSECURE_SUBMIT_PREF, PR_FALSE);
-//
-
 	/** Component registration... ***/
-
 	RegisterComponents ();
 
-	
     baseWindow = do_QueryInterface (webBrowser);
 	
 	result = baseWindow->InitWindow( hwnd, nsnull,  0, 0, width, height );
@@ -120,8 +112,6 @@ BrowserWindow::Create ( Handle * hwnd, PRInt32 width, PRInt32 height)
     nsCOMPtr<nsIWebProgressListener> wpl (static_cast<nsIWebProgressListener*>(this));
     nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
     webBrowser->AddWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
-
-//	webBrowser->SetParentURIContentListener (static_cast<nsIURIContentListener*>(this));
 
 	baseWindow->SetVisibility( PR_TRUE );
 
@@ -325,7 +315,7 @@ nsresult BrowserWindow::AttachEvent (nsIDOMEventTarget * target, const char * ty
 	return rv;
 }
 
-nsresult BrowserWindow::DettachEvent (const char * type, const char * name) 
+nsresult BrowserWindow::DetachEvent (const char * type, const char * name) 
 {
 	nsEmbedCString typeName (type);
 	typeName.Append (":");
@@ -338,8 +328,6 @@ nsresult BrowserWindow::DettachEvent (const char * type, const char * name)
 	}
 	return NS_OK;
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //
