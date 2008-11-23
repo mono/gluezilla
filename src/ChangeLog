@@ -1,3 +1,8 @@
+2008-11-22  Andreia Gaita  <shana@jitted.com>
+
+	* Widget.*, gluezilla.*: Separate initialization in 3 stages so events
+	  can be registered before the window is actually created
+
 2008-11-13  Andreia Gaita  <shana@jitted.com>
 
 	* BrowserWindow.cpp: Activate link hover status messages updates

@@ -179,10 +179,11 @@ extern "C"
 	NS_EXPORT_(void) gluezilla_debug (int signal);
 	
 	NS_EXPORT_(short) gluezilla_init (Platform platform, Platform * mozPlatform);
-	NS_EXPORT_(Handle *) gluezilla_createBrowserWindow (CallbackBin *events, 
-														Handle *hwnd, PRInt32 width, PRInt32 height, 
-														const char * startDir, const char * dataDir, 
-														Platform platform);
+	NS_EXPORT_(Handle *) gluezilla_bind (CallbackBin *events, 
+										 Handle *hwnd, PRInt32 width, PRInt32 height, 
+										 const char * startDir, const char * dataDir, 
+										 Platform platform);
+	NS_EXPORT_(int) gluezilla_createBrowserWindow (Handle *instance);
 
 	// layout
 	NS_EXPORT_(int) gluezilla_focus (Handle *instance, FocusOption focus);

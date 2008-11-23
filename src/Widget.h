@@ -45,6 +45,7 @@ class Widget
 
 			// initialization and shutdown
 			delegates["init"].bind (this, &Widget::Init);
+			delegates["bind"].bind (this, &Widget::Bind);
 			delegates["create"].bind (this, &Widget::Create);
 			delegates["shutdown"].bind (this, &Widget::Shutdown);
 
@@ -86,8 +87,12 @@ class Widget
 			return this->Init (params->events);
 		}
 
+		nsresult Bind (Params * params) {
+			return this->Bind (params->hwnd, params->width, params->height);
+		}
+
 		nsresult Create (Params * params) {
-			return this->Create (params->hwnd, params->width, params->height);
+			return this->Create ();
 		}
 
 		nsresult Shutdown (Params * params) {
@@ -173,8 +178,9 @@ class Widget
 		// Initialization and Shutdown
 		nsresult Init (CallbackBin * events);
 		void Shutdown ();
-		nsresult Create (Handle * hwnd, PRUint32 width, PRUint32 height);
-		nsresult CreateBrowserWindow ();
+		nsresult Bind (Handle *hwnd, PRUint32 width, PRUint32 height);
+		nsresult Create ();
+		nsresult CreateBrowserWindow();
 
 		// Layout
 		nsresult Focus (FocusOption focus);

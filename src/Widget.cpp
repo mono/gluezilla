@@ -162,7 +162,7 @@ Widget::Init (CallbackBin *events)
 }
 
 nsresult 
-Widget::Create (Handle *hwnd, PRUint32 width, PRUint32 height)
+Widget::Bind (Handle *hwnd, PRUint32 width, PRUint32 height)
 {
 	this->width = width;
 	this->height = height;
@@ -188,6 +188,11 @@ Widget::Create (Handle *hwnd, PRUint32 width, PRUint32 height)
 	browserWindow->AddRef ();
 	browserWindow->SetChromeFlags( nsIWebBrowserChrome::CHROME_ALL );
 
+	return NS_OK;
+}
+nsresult 
+Widget::Create ()
+{
 	this->CreateBrowserWindow ();
 	return NS_OK;	
 }
