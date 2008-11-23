@@ -455,7 +455,7 @@ gluezilla_CStringSetData (nsACString &aStr, const char *aBuf, PRUint32 aCount)
 	return NS_CStringSetData (aStr, aBuf, aCount);
 }
 
-NS_METHOD_(char *)
+NS_METHOD_(PRUnichar *)
 gluezilla_evalScript (Handle *instance, const char * script)
 {
 	Widget *widget = reinterpret_cast<Widget *> (instance);	
@@ -465,7 +465,7 @@ gluezilla_evalScript (Handle *instance, const char * script)
 	p->string = strdup (script);
 
 	nsresult result = widget->BeginInvoke (p);
-	char * string = strdup (p->string);
+	PRUnichar * string = p->uniString;
 	if (p)
 		delete (p);
 	return string;

@@ -1,5 +1,9 @@
 2008-11-23  Andreia Gaita  <shana@jitted.com>
 
+	* Widget.*, gluezilla.*: Fix type of strings returned from script evaluation
+
+2008-11-23  Andreia Gaita  <shana@jitted.com>
+
 	* Widget.cpp: Don't navigate to about:blank by default, there's no need, and
 	this way we don't have to filter out events for this first load (and rendering
 	content works even if there is no initial document, which was the whole point

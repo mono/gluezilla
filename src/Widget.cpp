@@ -434,7 +434,7 @@ Widget::GetProxyForNavigation ()
 	return GetProxyForObject (nsIWebNavigation::GetIID(), navigation, getter_AddRefs (this->webNav));
 }
 
-char *
+PRUnichar *
 Widget::EvalScript (const char * script)
 {
 	nsCOMPtr< nsIScriptGlobalObjectOwner > theGlobalObjectOwner( do_GetInterface( browserWindow->webBrowser ) );
@@ -448,7 +448,7 @@ Widget::EvalScript (const char * script)
 	nsresult result = theScriptContext->EvaluateString (NS_ConvertUTF8toUTF16(script),
 	   nsnull, nsnull, "", 1, nsnull, &output, &IsUndefined);
 
-	return (char *)NS_ConvertUTF16toUTF8 (output).get ();
+	return (PRUnichar *)NS_StringCloneData (output);
 }
 
 // EVENTS

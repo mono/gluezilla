@@ -159,7 +159,7 @@ class Widget
 		}
 		
 		nsresult EvalScript (Params * params) {
-			params->string = this->EvalScript (params->string);
+			params->uniString = this->EvalScript (params->string);
 			return 0;
 		}
 
@@ -203,7 +203,7 @@ class Widget
 		nsresult GetProxyForNavigation ();
 		nsresult GetProxyForObject (REFNSIID iid, nsISupports *object, void **result);
 		
-		char * EvalScript (const char * script);
+		PRUnichar * EvalScript (const char * script);
 
 		Handle * getHandle () { return this->hwnd;}
 

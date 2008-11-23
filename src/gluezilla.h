@@ -227,7 +227,7 @@ extern "C"
 
 	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager();
 	NS_EXPORT_(nsIServiceManager*) gluezilla_getServiceManager2(Handle *instance);
-	NS_EXPORT_(char*) gluezilla_evalScript (Handle *instance, const char * script);
+	NS_EXPORT_(PRUnichar*) gluezilla_evalScript (Handle *instance, const char * script);
 
 #ifdef __cplusplus
 }
@@ -245,6 +245,9 @@ struct Params {
 	union {
 		struct {
 			char * string;
+		};
+		struct {
+			PRUnichar * uniString;
 		};
 		struct {
 			Handle * hwnd;
