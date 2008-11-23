@@ -231,7 +231,6 @@ Widget::CreateBrowserWindow()
 		return -1;
 	}
 	Handle * nativeMozWindow = browserWindow->getNativeWin ();
-	this->Navigate ("about:blank");
 	return NS_OK;
 }
 
