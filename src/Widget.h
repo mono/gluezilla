@@ -245,6 +245,6 @@ class Widget
 		Platform platform;
 	
 		// the appshell we have created
-		nsIAppShell *appShell;
+		nsCOMPtr<nsIAppShell> appShell;
 };
 #endif
