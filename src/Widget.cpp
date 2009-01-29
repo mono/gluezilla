@@ -150,7 +150,6 @@ Widget::Init (CallbackBin *events)
 		  return -1;
 		}
 		this->appShell = appShell.get();
-		NS_ADDREF(this->appShell);
 		this->appShell->Create(0, nsnull);
 		this->appShell->Spinup();
 #endif
@@ -208,7 +207,6 @@ Widget::Shutdown ()
 		if (appShell) {
 			// Shutdown the appshell service.
 			this->appShell->Spindown();
-			NS_RELEASE(this->appShell);
 			this->appShell = 0;
 		}
 #endif

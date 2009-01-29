@@ -1,3 +1,9 @@
+2009-01-29  Andreia Gaita  <shana@jitted.com>
+
+	* BrowserWindow.cpp: null checks to fix crashes on shutdown. Fixes #469627
+	* Widget.[h|cpp]: Define appShell as a smart pointer so it does automatic
+	refcounting and xulrunner can refcount it internally, as well.
+
 2008-11-23  Andreia Gaita  <shana@jitted.com>
 
 	* Widget.*, gluezilla.*: Fix type of strings returned from script evaluation

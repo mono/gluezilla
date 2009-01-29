@@ -57,9 +57,13 @@ nsresult
 BrowserWindow::Shutdown ()
 {
 	PRINT("BrowserWindow::Shutdown\n");
-	nsCOMPtr<nsIWebProgressListener> wpl (static_cast<nsIWebProgressListener*>(this));
+	if (!webBrowser)
+		return NS_OK;
+
+	nsCOMPtr<nsIWebProgressListener> wpl ((nsIWebProgressListener*) this);
     nsCOMPtr<nsIWeakReference> weakWpl (NS_GetWeakReference (wpl));
-	webBrowser->RemoveWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
+	if (weakWpl)
+		webBrowser->RemoveWebBrowserListener (weakWpl, NS_GET_IID (nsIWebProgressListener));
 	listeners.clear ();
 	return NS_OK;
 }
