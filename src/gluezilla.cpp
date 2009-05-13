@@ -11,6 +11,7 @@
 
 #include "gluezilla.h"
 #include "Widget.h"
+#include <stdlib.h>
 
 #ifdef NS_UNIX
 #include "gtkWidget.h"
@@ -75,8 +76,12 @@ gluezilla_bind (CallbackBin *events, Handle *hwnd,
 	p->height = height;
 
 	result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
+		p->hwnd = NULL;
 		delete (p);
+	}
 
 	if (!NS_SUCCEEDED(result))
 		return NULL;
@@ -93,8 +98,11 @@ NS_METHOD_(int) gluezilla_createBrowserWindow (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -111,8 +119,11 @@ NS_METHOD_(int) gluezilla_focus (Handle *instance, FocusOption focus)
 	p->focus = focus;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -125,8 +136,11 @@ NS_METHOD_(int) gluezilla_blur (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -139,8 +153,11 @@ NS_METHOD_(int) gluezilla_activate (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -153,8 +170,11 @@ NS_METHOD_(int) gluezilla_deactivate (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -169,8 +189,11 @@ NS_METHOD_(int) gluezilla_resize (Handle *instance, PRUint32 width, PRUint32 hei
 	p->height = height;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -188,8 +211,13 @@ gluezilla_navigate (Handle *instance, const char * uri)
 	p->string = strdup (uri);
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
+		free (p->string);
+		p->string = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -203,8 +231,11 @@ gluezilla_forward (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -218,8 +249,11 @@ gluezilla_back (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -233,8 +267,11 @@ gluezilla_home (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -248,8 +285,11 @@ gluezilla_stop (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -264,8 +304,11 @@ gluezilla_reload (Handle *instance, ReloadOption option)
 	p->option = option;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;
 }
 
@@ -279,8 +322,11 @@ gluezilla_shutdown (Handle *instance)
 	p->instance = widget;
 
 	nsresult result = widget->BeginInvoke (p);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return result;	
 }
 
@@ -297,8 +343,11 @@ gluezilla_getDomDocument (Handle *instance)
 	nsresult result = widget->BeginInvoke (p);
 	nsIDOMHTMLDocument * ret (p->document);
 	NS_ADDREF(ret);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return ret;
 }
 
@@ -313,8 +362,11 @@ gluezilla_getWebNavigation (Handle *instance)
 	nsresult result = widget->BeginInvoke (p);
 	nsIWebNavigation * ret (p->navigation);
 	NS_ADDREF(ret);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	return ret;
 }
 
@@ -379,8 +431,11 @@ gluezilla_getServiceManager2 (Handle *instance)
 	nsresult rv = widget->BeginInvoke (p);
 	nsIServiceManager * ret (reinterpret_cast<nsIServiceManager *> (p->result));
 	NS_ADDREF(ret);
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
 		delete (p);
+	}
 	
 	return ret;
 }
@@ -401,8 +456,12 @@ gluezilla_getProxyForObject (Handle *instance, REFNSIID iid, nsISupports *object
 	NS_ADDREF(*result = p->result);
 	NS_RELEASE (p->result);
 
-	if (p)
+	if (p) {
+		p->name = NULL;
+		p->instance = NULL;
+		p->object = NULL;
 		delete (p);
+	}
 	return;
 }
 
@@ -464,10 +523,17 @@ gluezilla_evalScript (Handle *instance, const char * script)
 	p->instance = widget;
 	p->string = strdup (script);
 
-	nsresult result = widget->BeginInvoke (p);
+	nsresult result = widget->BeginInvoke (p, FALSE);
+	if (NS_FAILED(result))
+		return NULL;
+
 	PRUnichar * string = p->uniString;
-	if (p)
+	if (p) {
+		free (p->string);
+		p->instance = NULL;
+		p->name = NULL;
 		delete (p);
+	}
 	return string;
 }
 

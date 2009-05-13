@@ -47,12 +47,30 @@ static NS_DEFINE_CID(kAppShellCID, NS_APPSHELL_CID);
 nsresult 
 Widget::BeginInvoke (Params * params)
 {
+	BeginInvoke (params, PR_TRUE);
+}
+nsresult
+Widget::BeginInvoke (Params * params, PRBool wait)
+{
 #ifdef NS_UNIX
 	if (this->platform == Winforms) {
 		GThread *thread = g_thread_self ();
 		if (thread != ui_thread_id) {
-			g_idle_add (gtk_invoke, params);
-			g_async_queue_pop (queueout);
+
+			gdk_threads_enter ();
+			while (g_async_queue_try_pop (queueout) != NULL);
+			guint id = g_idle_add (gtk_invoke, params);
+			gdk_threads_leave ();
+
+			if (wait)
+				g_async_queue_pop (queueout);
+			else {
+				GTimeVal popEnd;
+				g_get_current_time(&popEnd);
+				g_time_val_add(&popEnd, G_USEC_PER_SEC/10);
+				if (!g_async_queue_timed_pop (queueout, &popEnd))
+					return NS_ERROR_FAILURE;
+			}
 		} else {
 			return EndInvoke (params);
 		}
@@ -69,14 +87,14 @@ Widget::BeginInvoke (Params * params)
 #ifdef NS_UNIX
 static gboolean gtk_invoke (gpointer data)
 {
+	if (!data)
+		return NS_ERROR_FAILURE;
+	gdk_threads_enter ();
 	Params * p = (Params *)data;
 	Widget *widget = (Widget *)p->instance;
-
-	gdk_threads_enter ();
 	nsresult ret = widget->EndInvoke (p);
 	gdk_threads_leave ();
-
-	g_async_queue_push (queueout, &ret);
+	g_async_queue_push (queueout, data);
 }
 #endif
 

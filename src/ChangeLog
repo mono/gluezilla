@@ -1,3 +1,18 @@
+2009-05-13  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.[h|cpp]: BeginInvoke now checks if it should wait for a response
+	from the invoke call or not - evalScript calls might hang because the
+	browser doesn't pump the main loop if no mouse events happen on the window
+	and if the call is done in response to browser events, so the queue_pop
+	would hang forever. The queue is flushed prior to adding a new idle_call
+	so any previous responses are discarded.
+
+	* gluezilla.cpp: Return values from BeginInvoke is checked for errors - 
+	if there was an error, the Params object is not disposed, because an 
+	error condition means the invoke response was received before returning,
+	so the invoke call will still need this object. Also, clean up all 
+	data inside Params objects.
+
 2009-01-29  Andreia Gaita  <shana@jitted.com>
 
 	* BrowserWindow.cpp: null checks to fix crashes on shutdown. Fixes #469627
