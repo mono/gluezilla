@@ -75,6 +75,7 @@ class Widget
 		}
 
 		nsresult BeginInvoke (Params * params);
+		nsresult BeginInvoke (Params * params, PRBool wait);
 
 		nsresult EndInvoke (Params * params) {
 			return delegates[params->name](params);
