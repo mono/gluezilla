@@ -47,7 +47,7 @@ static NS_DEFINE_CID(kAppShellCID, NS_APPSHELL_CID);
 nsresult 
 Widget::BeginInvoke (Params * params)
 {
-	BeginInvoke (params, PR_TRUE);
+	return BeginInvoke (params, PR_TRUE);
 }
 nsresult
 Widget::BeginInvoke (Params * params, PRBool wait)

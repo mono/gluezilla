@@ -1,3 +1,7 @@
+2009-10-01  Andreia Gaita  <avidigal@novell.com>
+
+	* Widget.cpp: fix return on BeginInvoke
+
 2009-05-13  Andreia Gaita  <avidigal@novell.com>
 
 	* Widget.[h|cpp]: BeginInvoke now checks if it should wait for a response
