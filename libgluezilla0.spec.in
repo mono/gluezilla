@@ -1,0 +1,44 @@
+%define real_name gluezilla
+
+Name:           libgluezilla0
+Version:        @VERSION@
+Release:        0
+License:        LGPL v2.0 only ; MPL ..
+Url:            http://www.mono-project.com
+Source0:        %{real_name}-%{version}.tar.bz2
+Summary:        Glue library for Winforms Web Control
+Group:          Development/Languages/Mono
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+BuildRequires:  gcc-c++ gtk2-devel
+BuildRequires:  mozilla-xulrunner191-devel
+
+%description
+A simple library to embed Gecko (xulrunner) for the Mono Winforms
+WebControl.
+
+%files
+%defattr(-, root, root)
+%_libdir/libgluezilla.so*
+%doc AUTHORS COPYING ChangeLog* INSTALL README TODO
+
+%prep
+%setup -q -n %{real_name}-%{version}
+
+%build
+export CFLAGS="$RPM_OPT_FLAGS"
+%configure
+make
+
+%install
+make install DESTDIR=%{buildroot}
+# Unwanted files:
+rm -f %{buildroot}/%{_libdir}/libgluezilla.la
+
+%clean
+rm -rf %{buildroot}
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%changelog
