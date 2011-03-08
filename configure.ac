@@ -93,11 +93,11 @@ if test "x${local}" == xno ; then
 			for pc in $mozilla_xpcom_pcs; do
 				if $PKG_CONFIG --exists $pc; then
 					mozilla_xpcom=$pc
-					XUL_VERSION=4
+					XUL_VERSION=3
 					version="$(pkg-config --modversion $pc)"
-					minor=`echo "$version" | sed -e 's,.*\.\(.*\)\..*\..*,\1,'`
-					if test $minor -eq 9; then
-						XUL_VERSION=3
+					minor=`echo "$version" | sed -e 's,\([[0-9]]*\)\..*,\1,'`
+					if test $minor -ge 2; then
+						XUL_VERSION=4
 					fi
 					AC_MSG_RESULT(Found $version)
 					break;
