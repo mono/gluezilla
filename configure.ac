@@ -92,22 +92,14 @@ if test "x${local}" == xno ; then
 			mozilla_xpcom_pcs="libxul-embedding libxul-embedding-unstable"
 			for pc in $mozilla_xpcom_pcs; do
 				if $PKG_CONFIG --exists $pc; then
-					AC_MSG_RESULT($pc)
-					mozilla_xpcom=$pc
-					XUL_VERSION=3
-					break;
-				fi
-			done
-		fi
-
-		if test -z $mozilla_xpcom; then
-			AC_MSG_CHECKING(Mozilla XPCOM >= 2)
-			mozilla_xpcom_pcs="libxul-embedding"
-			for pc in $mozilla_xpcom_pcs; do
-				if $PKG_CONFIG --exists $pc; then
-					AC_MSG_RESULT($pc)
 					mozilla_xpcom=$pc
 					XUL_VERSION=4
+					version="$(pkg-config --modversion $pc)"
+					minor=`echo "$version" | sed -e 's,.*\.\(.*\)\..*\..*,\1,'`
+					if test $minor -eq 9; then
+						XUL_VERSION=3
+					fi
+					AC_MSG_RESULT(Found $version)
 					break;
 				fi
 			done
