@@ -4,7 +4,18 @@
 #define TO_STRING(x) #x
 
 //Gecko Embedding API
+#if XUL_VERSION < 4
 #include <nsEmbedAPI.h>
+#else
+#include <nscore.h>
+#include <nsXPCOM.h>
+#include <nsILocalFile.h>
+#include <nsIDirectoryService.h>
+#define NS_GRE_COMPONENT_DIR                    "GreComsD"
+#define NS_XPCOM_COMPONENT_DIR                  "ComsD"
+#define NS_XPCOM_COMPONENT_REGISTRY_FILE        "ComRegF"
+#define NS_XPCOM_XPTI_REGISTRY_FILE             "XptiRegF"
+#endif
 
 //XPCOM API
 #include <nsCOMPtr.h>
@@ -78,8 +89,12 @@
 #include <nsIPromptService.h>
 #include <nsISecurityWarningDialogs.h>
 #include <nsIComponentRegistrar.h>
+#if XUL_VERSION < 4
 #include <nsIGenericFactory.h>
-
+#else
+#include <mozilla/ModuleUtils.h>
+struct nsModuleComponentInfo;
+#endif
 // preferences
 #include <nsIPrefBranch.h>
 #include <nsIPrefService.h>
@@ -131,12 +146,15 @@
   typedef type (NS_FROZENCALL * name##Type) params; \
   extern name##Type name NS_HIDDEN;
 
+#if XUL_VERSION < 4
 XRE_API(nsresult,
 	XRE_InitEmbedding, (nsILocalFile *aLibXULDirectory,
 						nsILocalFile *aAppDirectory,
 						nsIDirectoryServiceProvider *aAppDirProvider,
 						nsStaticModuleInfo const *aStaticComponents,
 						PRUint32 aStaticComponentCount))
+#endif
+
 
 XRE_API(void, XRE_TermEmbedding, ())
 

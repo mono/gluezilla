@@ -21,6 +21,7 @@
 #define PROMPTSERVICE_CID \
 { 0x77686174, 0x2061, 0x6d20, { 0x69, 0x20, 0x74, 0x6F, 0x20, 0x64, 0x6F, 0x20 } }
 
+static NS_DEFINE_CID(kPROMPTSERVICE_CID, PROMPTSERVICE_CID);
 
 class PromptService : public nsIPromptService
 {

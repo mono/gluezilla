@@ -2,7 +2,7 @@ AC_INIT(README)
 AC_CANONICAL_SYSTEM
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(gluezilla,2.11)
+AM_INIT_AUTOMAKE(gluezilla,2.12)
 AM_MAINTAINER_MODE
 AC_PROG_CXX
 AC_HEADER_STDC
@@ -87,16 +87,29 @@ if test "x${local}" == xno ; then
 
 	if test "x${oldxul}" != xyes ; then
 
-		AC_MSG_CHECKING(Mozilla XPCOM > 1.8)
-		mozilla_xpcom_pcs="libxul-embedding-unstable"
+		AC_MSG_CHECKING(Mozilla XPCOM >= 2)
+		mozilla_xpcom_pcs="libxul-embedding"
 		for pc in $mozilla_xpcom_pcs; do
 			if $PKG_CONFIG --exists $pc; then
 				AC_MSG_RESULT($pc)
 				mozilla_xpcom=$pc
-				XUL_VERSION=3
+				XUL_VERSION=4
 				break;
 			fi
 		done
+
+		if test -z $mozilla_xpcom; then
+			AC_MSG_CHECKING(Mozilla XPCOM > 1.8)
+			mozilla_xpcom_pcs="libxul-embedding-unstable"
+			for pc in $mozilla_xpcom_pcs; do
+				if $PKG_CONFIG --exists $pc; then
+					AC_MSG_RESULT($pc)
+					mozilla_xpcom=$pc
+					XUL_VERSION=3
+					break;
+				fi
+			done
+		fi
 	fi
 
 	if test -z $mozilla_xpcom; then
@@ -121,9 +134,12 @@ if test "x${local}" == xno ; then
 	XPCOM_PKGS="$mozilla_xpcom"
 fi
 
-AM_CONDITIONAL([OLDXUL], [test x$XUL_VERSION = x2])
-
 AC_SUBST(XUL_VERSION)
+
+AM_CONDITIONAL([XUL_4], [test x$XUL_VERSION = x4])
+AM_CONDITIONAL([XUL_3], [test x$XUL_VERSION = x3])
+AM_CONDITIONAL([XUL_2], [test x$XUL_VERSION = x2])
+
 
 AC_ARG_ENABLE([optimize],
 	AC_HELP_STRING([--enable-optimize], [Enable optimizations (-O2)]),

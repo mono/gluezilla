@@ -26,7 +26,7 @@ libgluezilla_la_SOURCES = 	\
 	gluezilla.h   \
 	FastDelegate.h
 
-if OLDXUL
+if XUL_2
 libgluezilla_la_SOURCES += \
 	gluezilla_nsIScriptContext.h \
 	gluezilla_nsIScriptGlobalObject.h

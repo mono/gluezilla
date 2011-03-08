@@ -22,6 +22,7 @@
 #define SECURITYWARNINGSDIALOGS_CID \
 { 0x696E7465, 0x7265, 0x7374, { 0x69, 0x6E, 0x67, 0x20, 0x6C, 0x69, 0x66, 0x65 } }
 
+static NS_DEFINE_CID(kSECURITYWARNINGSDIALOGS_CID, SECURITYWARNINGSDIALOGS_CID);
 
 class SecurityWarningDialogs : public nsISecurityWarningDialogs
 {

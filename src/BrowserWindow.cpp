@@ -28,23 +28,6 @@
 NS_GENERIC_FACTORY_CONSTRUCTOR(SecurityWarningDialogs)
 NS_GENERIC_FACTORY_CONSTRUCTOR(PromptService)
 
-static const nsModuleComponentInfo components[] = {
-  {
-	SECURITYWARNINGSDIALOGS_CLASSNAME,
-	SECURITYWARNINGSDIALOGS_CID,
-	NS_SECURITYWARNINGDIALOGS_CONTRACTID,
-	SecurityWarningDialogsConstructor
-  },
-  {
-	PROMPTSERVICE_CLASSNAME,
-	PROMPTSERVICE_CID,
-	NS_PROMPTSERVICE_CONTRACTID,
-	PromptServiceConstructor
-  }
-
-};
-
-
 BrowserWindow::BrowserWindow (void)
 {
 	owner = nsnull;
@@ -162,17 +145,17 @@ nsresult BrowserWindow::RegisterComponents ()
     nsCOMPtr<nsIFactory> componentFactory;
     rv = NS_NewSecurityWarningServiceFactory(getter_AddRefs(componentFactory));
     if (NS_SUCCEEDED(rv)) {
-        compReg->RegisterFactory(components[0].mCID,
-                                 components[0].mDescription,
-                                 components[0].mContractID,
+		compReg->RegisterFactory(kSECURITYWARNINGSDIALOGS_CID,
+                                 SECURITYWARNINGSDIALOGS_CLASSNAME,
+                                 NS_SECURITYWARNINGDIALOGS_CONTRACTID,
                                  componentFactory);
 	}
 
     rv = NS_NewPromptServiceFactory(getter_AddRefs(componentFactory), this);
     if (NS_SUCCEEDED(rv)) {
-        compReg->RegisterFactory(components[1].mCID,
-                                 components[1].mDescription,
-                                 components[1].mContractID,
+        compReg->RegisterFactory(kPROMPTSERVICE_CID,
+                                 PROMPTSERVICE_CLASSNAME,
+                                 NS_PROMPTSERVICE_CONTRACTID,
                                  componentFactory);
 	}
 
